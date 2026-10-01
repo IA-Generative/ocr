@@ -60,7 +60,7 @@ services:
       - "--concurrency=1"
       - "-E"
       - "--hostname=paddle_worker@%h"
-    image: ocr-service-paddle
+    image: ocr-worker
     volumes:
       - ./apps/server/src/:/app/src/
       - ./apps/server/tests/:/app/tests
@@ -206,15 +206,14 @@ services:
       - ocr_backend
 
   migration:
-    image: ocr-api
+    image: ocr-migration
     command:
       - alembic
       - upgrade
       - head
     build:
-      target: test
       context: .
-      dockerfile: apps/server/ocr_backend/Dockerfile
+      dockerfile: apps/server/migration/Dockerfile
     container_name: ocr-migration
     volumes:
       - ./apps/server/src/:/app/src/

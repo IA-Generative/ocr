@@ -390,8 +390,8 @@ cluster-delete: ## Delete the local kind cluster
 .PHONY: load-image
 load-image: ## Load the locally built images into the kind cluster
 	@docker image tag ocr-api:latest ocr-api:v1
-	@docker image tag ocr-service-paddle:latest ocr-service-paddle:v1
-	@kind load docker-image ocr-service-paddle:v1 ocr-api:v1 --name ocr
+	@docker image tag ocr-worker:latest ocr-worker:v1
+	@kind load docker-image ocr-worker:v1 ocr-api:v1 --name ocr
 
 # -----------------------------------------------------------------------------
 ## ▸ Release
