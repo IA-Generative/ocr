@@ -23,14 +23,14 @@ cd mon-projet-ocr
 uv init
 
 # Ajouter le SDK comme dépendance locale
-uv pip install -e /path/to/ocr-api/sdk
+uv pip install -e /path/to/ocr/sdk
 ```
 
 ### Dans un projet existant avec pip
 
 ```bash
 # Depuis votre projet
-pip install -e /path/to/ocr-api/sdk
+pip install -e /path/to/ocr/sdk
 ```
 
 ## Utilisation de base

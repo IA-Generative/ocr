@@ -10,9 +10,9 @@ SDK Python pour interagir avec l'API OCR. Supporte les clients synchrones et asy
 fragment `#subdirectory=` pour que `pip`/`uv` trouve `sdk/pyproject.toml`.
 
 ```bash
-pip install "git+https://github.com/IA-Generative/ocr-api.git#subdirectory=sdk"
+pip install "git+https://github.com/IA-Generative/ocr.git#subdirectory=sdk"
 # ou avec uv
-uv add "git+https://github.com/IA-Generative/ocr-api.git#subdirectory=sdk"
+uv add "git+https://github.com/IA-Generative/ocr.git#subdirectory=sdk"
 ```
 
 ### En local (développement du SDK lui-même)

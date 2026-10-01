@@ -9,7 +9,7 @@
 **Option 1: SSH** (requires SSH keys configured)
 
 ```bash
-uv add git@github.com:IA-Generative/ocr-api.git#subdirectory=sdk/python
+uv add git@github.com:IA-Generative/ocr.git#subdirectory=sdk/python
 ```
 
 **Option 2: HTTPS with GitHub Token** (for private repos)
@@ -19,13 +19,13 @@ uv add git@github.com:IA-Generative/ocr-api.git#subdirectory=sdk/python
 export GITHUB_TOKEN=your_personal_access_token
 
 # Then install
-uv add https://${GITHUB_TOKEN}@github.com/IA-Generative/ocr-api.git#subdirectory=sdk/python
+uv add https://${GITHUB_TOKEN}@github.com/IA-Generative/ocr.git#subdirectory=sdk/python
 ```
 
 **Option 3: GitHub CLI** (if `gh` is installed and authenticated)
 
 ```bash
-uv add https://github.com/IA-Generative/ocr-api.git#subdirectory=sdk/python
+uv add https://github.com/IA-Generative/ocr.git#subdirectory=sdk/python
 ```
 
 #### From Local Directory
@@ -46,7 +46,7 @@ uv pip install -e .
 `#subdirectory=` fragment to find `sdk/pyproject.toml`:
 
 ```bash
-pip install "git+https://github.com/IA-Generative/ocr-api.git#subdirectory=sdk"
+pip install "git+https://github.com/IA-Generative/ocr.git#subdirectory=sdk"
 ```
 
 #### From Local Directory

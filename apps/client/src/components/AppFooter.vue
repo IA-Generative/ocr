@@ -3,7 +3,7 @@ import { useBackendHealth } from '@/composables/use-backend-health'
 import { OCR_API_URL } from '@/utils/constants'
 
 const APP_VERSION = __APP_VERSION__
-const GITHUB_REPO_URL = 'https://github.com/IA-Generative/ocr-api'
+const GITHUB_REPO_URL = 'https://github.com/IA-Generative/ocr'
 const API_DOCS_URL = `${OCR_API_URL}/docs`
 
 const { health, loading, error } = useBackendHealth()

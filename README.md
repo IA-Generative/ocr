@@ -42,7 +42,7 @@ Client Node.js (≥ 18, `fetch` natif) avec des types TypeScript pour toutes les
 📦 **[Voir le SDK](sdk/js/README.md)** - Client TypeScript pour Node.js
 
 ```bash
-npm install "git+https://github.com/IA-Generative/ocr-api.git#path:sdk/js"
+npm install "git+https://github.com/IA-Generative/ocr.git#path:sdk/js"
 ```
 
 ```ts

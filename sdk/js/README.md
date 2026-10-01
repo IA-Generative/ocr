@@ -9,9 +9,9 @@ Cible Node.js uniquement (≥ 18, `fetch` natif) — pas prévu pour tourner dan
 Ce SDK vit dans un sous-dossier de ce monorepo, pas dans son propre dépôt :
 
 ```bash
-npm install "git+https://github.com/IA-Generative/ocr-api.git#path:sdk/js"
+npm install "git+https://github.com/IA-Generative/ocr.git#path:sdk/js"
 # ou avec pnpm
-pnpm add "git+https://github.com/IA-Generative/ocr-api.git#path:sdk/js"
+pnpm add "git+https://github.com/IA-Generative/ocr.git#path:sdk/js"
 ```
 
 npm/pnpm exécutent automatiquement le script `prepare` (compilation TypeScript) après un install depuis Git.
