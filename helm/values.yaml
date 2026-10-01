@@ -225,7 +225,7 @@ api:
     registry: "ghcr.io"
     # -- Repository to use for the app.
     # @section -- Api
-    repository: "ia-generative/ocr-api/api"
+    repository: "ia-generative/ocr/api"
     # -- Image pull policy for the app.
     # @section -- Api
     pullPolicy: "IfNotPresent"
@@ -1018,7 +1018,7 @@ frontend:
     registry: "ghcr.io"
     # -- Repository to use for the app.
     # @section -- Frontend
-    repository: "ia-generative/ocr-api/frontend"
+    repository: "ia-generative/ocr/frontend"
     # -- Image pull policy for the app.
     # @section -- Frontend
     pullPolicy: "IfNotPresent"
@@ -1751,7 +1751,7 @@ worker:
     registry: "ghcr.io"
     # -- Repository to use for the app.
     # @section -- Worker
-    repository: "ia-generative/ocr-api/worker"
+    repository: "ia-generative/ocr/worker"
     # -- Image pull policy for the app.
     # @section -- Worker
     pullPolicy: "IfNotPresent"
@@ -2628,7 +2628,7 @@ jobs:
       registry: "ghcr.io"
       # -- Repository to use for the migration job.
       # @section -- Jobs
-      repository: "ia-generative/ocr-api/api"
+      repository: "ia-generative/ocr/migration"
       # -- Image pull policy for the migration job.
       # @section -- Jobs
       pullPolicy: "IfNotPresent"
@@ -2806,7 +2806,7 @@ cronjobs: {}
 #   concurrencyPolicy: "Forbid"
 #   image:
 #     registry: "ghcr.io"
-#     repository: "ia-generative/ocr-api/api"
+#     repository: "ia-generative/ocr/api"
 #     pullPolicy: "IfNotPresent"
 #     tag: ""
 #   podSecurityContext:
