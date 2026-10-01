@@ -90,13 +90,46 @@ docker-build-ocr-worker:
         echo "Error: Could not extract appVersion from helm/Chart.yaml"
         exit 1
       fi
-      TAGS="ocr-service-paddle-2.10.0:$SHORT_SHA ocr-worker:$SHORT_SHA"
-      TAGS="$TAGS ocr-service-paddle-2.10.0:$CI_COMMIT_REF_SLUG ocr-worker:$CI_COMMIT_REF_SLUG"
+      TAGS="ocr-worker:$SHORT_SHA"
+      TAGS="$TAGS ocr-worker:$CI_COMMIT_REF_SLUG"
       # Version tags from dev and main only, see docker-build-ocr-api.
       if [ "$CI_COMMIT_BRANCH" = "dev" ] || [ "$CI_COMMIT_BRANCH" = "main" ]; then
-        TAGS="$TAGS ocr-service-paddle-2.10.0:$APP_VERSION ocr-worker:$APP_VERSION"
+        TAGS="$TAGS ocr-worker:$APP_VERSION"
         if echo "$APP_VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-          TAGS="$TAGS ocr-service-paddle-2.10.0:latest ocr-worker:latest"
+          TAGS="$TAGS ocr-worker:latest"
+        fi
+      fi
+      export IMAGE_NAMES="$TAGS"
+      echo "Building with tags: $IMAGE_NAMES"
+
+docker-build-ocr-migration:
+  stage: docker-build
+  extends:
+    - .kaniko:build-push
+  variables:
+    DOCKERFILE: "apps/server/migration/Dockerfile"
+    WORKING_DIR: "."
+    IMAGE_NAMES: ""  # Overridden in before_script
+    EXTRA_BUILD_ARGS: "--build-arg DOCKERHUB_MIRROR_URL=${DOCKERHUB_MIRROR_URL}"
+  rules:
+    - when: always
+  before_script:
+    - |
+      SHORT_SHA=$(echo $CI_COMMIT_SHA | cut -c1-7)
+      # See docker-build-ocr-api: this pipeline never runs as a GitLab tag pipeline,
+      # so the version tag comes from the appVersion already committed to Chart.yaml.
+      APP_VERSION=$(grep '^appVersion:' helm/Chart.yaml | awk '{print $2}' | tr -d '"')
+      if [ -z "$APP_VERSION" ]; then
+        echo "Error: Could not extract appVersion from helm/Chart.yaml"
+        exit 1
+      fi
+      TAGS="ocr-migration:$SHORT_SHA"
+      TAGS="$TAGS ocr-migration:$CI_COMMIT_REF_SLUG"
+      # Version tags from dev and main only, see docker-build-ocr-api.
+      if [ "$CI_COMMIT_BRANCH" = "dev" ] || [ "$CI_COMMIT_BRANCH" = "main" ]; then
+        TAGS="$TAGS ocr-migration:$APP_VERSION"
+        if echo "$APP_VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+          TAGS="$TAGS ocr-migration:latest"
         fi
       fi
       export IMAGE_NAMES="$TAGS"

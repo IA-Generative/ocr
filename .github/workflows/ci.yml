@@ -92,12 +92,14 @@ jobs:
         add() { SERVICES=$(jq -c --argjson s "$1" '. + [$s]' <<<"$SERVICES"); }
 
         if [ "$SERVER" = "true" ] || [ "$CI" = "true" ]; then
-          # Both server images build from the repository root: their
-          # Dockerfiles copy apps/server/** plus the root alembic.ini.
-          # IMAGE_TARGET is not optional - the last stage of each Dockerfile is
-          # `test`, so an untargeted build would publish the test image.
+          # The server images build from the repository root: their
+          # Dockerfiles copy apps/server/** plus the root alembic.ini. The api
+          # and worker images must name their target - the last stage of their
+          # Dockerfiles is `test`, so an untargeted build would publish the test
+          # image. The migration Dockerfile has a single stage.
           add '{"name":"api","context":".","dockerfile":"apps/server/ocr_backend/Dockerfile","target":"builder"}'
           add '{"name":"worker","context":".","dockerfile":"apps/server/business/paddleocr2/Dockerfile","target":"builder"}'
+          add '{"name":"migration","context":".","dockerfile":"apps/server/migration/Dockerfile","target":""}'
         fi
         if [ "$CLIENT" = "true" ] || [ "$CI" = "true" ]; then
           add '{"name":"frontend","context":"apps/client","dockerfile":"apps/client/Dockerfile","target":"prod"}'

@@ -104,6 +104,7 @@ jobs:
         service:
         - api
         - worker
+        - migration
         - frontend
     with:
       IMAGE: ${{ needs.list-closed-prs.outputs.image-base }}/${{ matrix.service }}:pr-${{ matrix.pr.number }}
@@ -123,6 +124,7 @@ jobs:
         service:
         - api
         - worker
+        - migration
         - frontend
     with:
       IMAGE: ${{ needs.list-closed-prs.outputs.image-base }}/${{ matrix.service }}

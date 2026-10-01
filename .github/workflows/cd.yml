@@ -129,9 +129,10 @@ jobs:
       fail-fast: false
       matrix:
         service:
-        # Both server images build from the repository root, and both must name
-        # their target: the last stage of each Dockerfile is `test`, so an
-        # untargeted build would publish the test image.
+        # The server images build from the repository root. The api and worker
+        # images must name their target: the last stage of their Dockerfiles is
+        # `test`, so an untargeted build would publish the test image. The
+        # migration Dockerfile has a single stage.
         - name: api
           context: .
           dockerfile: apps/server/ocr_backend/Dockerfile
@@ -140,6 +141,10 @@ jobs:
           context: .
           dockerfile: apps/server/business/paddleocr2/Dockerfile
           target: builder
+        - name: migration
+          context: .
+          dockerfile: apps/server/migration/Dockerfile
+          target: ""
         - name: frontend
           context: apps/client
           dockerfile: apps/client/Dockerfile
