@@ -1,8 +1,8 @@
 apiVersion: v2
 name: ocr
 type: application
-version: 0.3.2
-appVersion: "0.21.1"
+version: 0.4.0
+appVersion: "0.22.0"
 description: A Helm chart to deploy ocr.
 # home: https://this-is-tobi.com
 deprecated: false
