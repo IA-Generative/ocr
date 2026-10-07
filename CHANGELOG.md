@@ -29,6 +29,28 @@
 - code clean
 - :art: change minio vars
 
+## [0.22.0](https://github.com/IA-Generative/ocr/compare/v0.21.1...v0.22.0) (2026-10-07)
+
+
+### Features
+
+* **docker:** add a dedicated migration image ([038f606](https://github.com/IA-Generative/ocr/commit/038f606700445f8f2290cd46a38b93961bfbf5ec))
+
+
+### Bug Fixes
+
+* **deps:** declare pyyaml, imported by the shared logger ([938e5a0](https://github.com/IA-Generative/ocr/commit/938e5a054da3e92c22aa46d17c9b4f2f320ff2a3))
+
+
+### Code Refactoring
+
+* **chart:** default to the ocr repository's ghcr.io images, migrate with the migration image ([6d2b06e](https://github.com/IA-Generative/ocr/commit/6d2b06e41da1dedd74b7b37fd107e6ba0770a572))
+
+
+### Dependencies
+
+* use the ocr-worker and ocr-migration images locally ([2cd0d3d](https://github.com/IA-Generative/ocr/commit/2cd0d3d16c0de7f60b6ba5dfc9a2cce24bf1ebcc))
+
 ## [0.21.1](https://github.com/IA-Generative/ocr-api/compare/v0.21.0...v0.21.1) (2026-09-30)
 
 
