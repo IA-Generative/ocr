@@ -74,6 +74,30 @@ Dans cette section vous trouverez le fonctionnement de cette application [docs/s
 
 ---
 
+## Images et chart Helm
+
+Les images sont publiées sous `ghcr.io/ia-generative/ocr/{api,worker,frontend,migration}`. Le chart `oci://ghcr.io/ia-generative/ocr/ocr` pointe sur ces images par défaut depuis sa version `0.4.0` (application `0.22.0`).
+
+Avant, les images se trouvaient sous `ghcr.io/ia-generative/ocr-api/{api,worker,frontend}`, et les versions `0.2.0-rc` à `0.3.1` du chart les utilisent par défaut (le job de migration utilise `ocr-api/api`). Tous les tags de version ont été copiés sous le nouvel emplacement avec les mêmes digests : si les anciens paquets ne sont plus disponibles, surchargez les dépôts d'images, les tags restent les mêmes.
+
+```yaml
+api:
+  image:
+    repository: ia-generative/ocr/api
+worker:
+  image:
+    repository: ia-generative/ocr/worker
+frontend:
+  image:
+    repository: ia-generative/ocr/frontend
+jobs:
+  migration:
+    image:
+      repository: ia-generative/ocr/migration
+```
+
+---
+
 ## Développement
 
 Toutes les commandes passent par le `Makefile`. `make` (ou `make help`) affiche la
