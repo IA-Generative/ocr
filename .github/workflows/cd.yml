@@ -208,7 +208,7 @@ jobs:
     - release
     - bump-chart
     if: ${{ needs.release.outputs.release-created == 'true' }}
-    # The only automatic CPiN sync left: dso-auto-sync.yaml is manual-only
+    # The only automatic CPiN sync left: dso-sync.yml is manual-only
     # (see that file) precisely because this job already covers every push
     # that matters - and does so correctly, since it only fires once
     # bump-chart has actually landed the version bump, instead of racing it
