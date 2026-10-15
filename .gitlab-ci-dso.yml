@@ -45,9 +45,10 @@ docker-build-ocr-api:
   before_script:
     - |
       SHORT_SHA=$(echo $CI_COMMIT_SHA | cut -c1-7)
-      # The DSO mirror only ever syncs branches, never tags (see .github/workflows/dso-sync.yml),
-      # so this pipeline never runs as a GitLab tag pipeline and $CI_COMMIT_TAG is
-      # always empty here. appVersion is the app version bump/release-please already
+      # The CPiN mirror only ever syncs branch refs, never tags (every trigger
+      # in cpin-sync.yml passes a branch name, not a tag), so this pipeline
+      # never runs as a GitLab tag pipeline and $CI_COMMIT_TAG is always empty
+      # here. appVersion is the app version bump/release-please already
       # committed to Chart.yaml before the sync ran - same source of truth
       # helm-package-push below reads for the chart's own version.
       APP_VERSION=$(grep '^appVersion:' helm/Chart.yaml | awk '{print $2}' | tr -d '"')
@@ -59,7 +60,7 @@ docker-build-ocr-api:
       TAGS="$TAGS ocr-api:$CI_COMMIT_REF_SLUG"
       # Pull requests tag the images pr-<N>, matching this repository's own
       # pr-<N> images on GHCR. GITHUB_PR_NUMBER is only set when the sync was
-      # triggered for a pull request (see .github/workflows/dso-sync.yml);
+      # triggered for a pull request (see .github/workflows/cpin-sync.yml);
       # like the ref-slug tag it carries no version, so it never clobbers a
       # released image.
       if [ -n "$GITHUB_PR_NUMBER" ]; then

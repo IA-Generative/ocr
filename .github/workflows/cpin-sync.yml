@@ -1,4 +1,4 @@
-name: Trigger dso sync
+name: Trigger CPiN sync
 
 # Mirrors a branch to the CPiN GitLab instance, which is what actually builds
 # the Harbor images and packages the chart the clusters deploy.
@@ -14,10 +14,11 @@ name: Trigger dso sync
 # thing for releases, plus pointless GitLab pipelines for every push that
 # is not one (a workflow-only change, a hotfix, docs).
 #
-# Kept as a manual escape hatch for whatever `sync-cpin` cannot cover on its
-# own - re-running a sync that failed, or forcing one outside a release.
+# Kept as a manual escape hatch for whatever the shared `sync-cpin.yml`
+# reusable cannot cover on its own - re-running a sync that failed, or
+# forcing one outside a release.
 #
-# One opt-in automatic case: a pull request carrying the `sync-dso` label
+# One opt-in automatic case: a pull request carrying the `sync-cpin` label
 # syncs its HEAD branch on labeling and on every push while labeled. That
 # builds the four Harbor images tagged `pr-<N>` (see .gitlab-ci-dso.yml) and
 # nothing else - `helm-package-push` runs on tags/main/dev only, so a PR
@@ -51,7 +52,7 @@ jobs:
       github.event_name == 'workflow_dispatch'
       || (
         !github.event.pull_request.draft
-        && contains(github.event.pull_request.labels.*.name, 'sync-dso')
+        && contains(github.event.pull_request.labels.*.name, 'sync-cpin')
       )
     # Posts to the GitLab mirror API and touches nothing on GitHub.
     permissions: {}
