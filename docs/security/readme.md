@@ -1,7 +1,5 @@
 # Sécurité & Configuration Keycloak
 
-> Voir aussi : [Scan de sécurité Strix (CI/CD)](strix.md)
-
 L'authentification suit un modèle **Backend-for-Frontend (BFF)** : le frontend ne parle jamais
 directement à Keycloak et ne détient aucun jeton. C'est le backend (`ocr_backend`) qui possède
 tout le flow OAuth2 Authorization Code + PKCE, via `/api/auth/{login,callback,logout,me}`
