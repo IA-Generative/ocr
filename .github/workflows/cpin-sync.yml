@@ -80,7 +80,9 @@ jobs:
       # Set only on pull requests: lets .gitlab-ci-dso.yml tag every image
       # `pr-<N>` as well, matching this repository's own pr-<N> images on
       # GHCR. Empty on manual runs, which stay on the plain sha/ref-slug
-      # tags.
-      ADDITIONAL_VARIABLES: ${{ github.event.pull_request.number > 0 && format('{"GITHUB_PR_NUMBER":"{0}"}', github.event.pull_request.number) || '' }}
+      # tags. Concats, not format(): GitHub's format() follows .NET string
+      # syntax, where the literal JSON braces would need {{ }} escaping, and
+      # an escaped }} would truncate the enclosing ${{ }} expression.
+      ADDITIONAL_VARIABLES: ${{ github.event.pull_request.number > 0 && '{"GITHUB_PR_NUMBER":"' || '' }}${{ github.event.pull_request.number > 0 && github.event.pull_request.number || '' }}${{ github.event.pull_request.number > 0 && '"}' || '' }}
     secrets:
       GIT_MIRROR_TOKEN: ${{ secrets.GITLAB_TRIGGER_TOKEN }}
