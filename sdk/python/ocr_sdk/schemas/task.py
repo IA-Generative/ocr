@@ -64,6 +64,19 @@ class TaskStatus(str, Enum):
     TIMEOUT = "timeout"  # N’a pas pu terminer dans le temps imparti
 
 
+class LayoutStatus(str, Enum):
+    """Statut de la détection de layout, dans ``task.extras["layout_status"]``."""
+
+    PENDING = "pending"
+    PARTIAL = "partial"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    SKIPPED = "skipped"
+
+
+LAYOUT_STATUS_KEY = "layout_status"
+
+
 class TaskOperation(str, Enum):
     OCR: str = "ocr"
     DEFAULT: str = "default"
