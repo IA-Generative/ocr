@@ -12,7 +12,7 @@ from typing import Any, Dict
 from pydantic import BaseModel, ConfigDict
 
 from ocr_sdk.schemas.box import BaseBox, Bbox, Checkbox
-from ocr_sdk.schemas.layout import Layout
+from ocr_sdk.schemas.layout import Layout, TableCell, TableContent
 from ocr_sdk.schemas.template import FormEntry, LLMFormField, ImageFormDetector
 from ocr_sdk.schemas.vector import Vector
 from ocr_sdk.schemas.input import InputForm, RegionOfInterest
@@ -25,6 +25,7 @@ from ocr_sdk.schemas.task import (
     TaskOutput,
     TaskStatus,
     TaskOperation,
+    LayoutStatus,
     TaskStats,
     TaskStatsGlobal,
     TaskStatsUser,
@@ -36,6 +37,8 @@ __all__ = [
     "Bbox",
     "Checkbox",
     "Layout",
+    "TableCell",
+    "TableContent",
     "FormEntry",
     "LLMFormField",
     "ImageFormDetector",
@@ -51,6 +54,7 @@ __all__ = [
     "TaskOutput",
     "TaskStatus",
     "TaskOperation",
+    "LayoutStatus",
     "TaskStats",
     "TaskStatsGlobal",
     "TaskStatsUser",
