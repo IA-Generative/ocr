@@ -24,11 +24,62 @@ s3_client_connector = S3Connector(s3_client=s3_client, bucket_name=s3_settings.A
 main_ocr_settings = OCRModelSettings()
 
 
+LAYOUT_PROCESS_NAME = "layout"
+TABLE_PROCESS_NAME = "table"
+
+
+def load_layout_worker(worker_weight: float = 1) -> Pipeline:
+    """Worker de détection des zones (queue ``layout``), exécuté en parallèle de l'OCR."""
+    from business.layout.configs.layout import LayoutSettings
+    from business.layout.models.layout_detection import LayoutDetectionModel
+    from business.layout.worker.layout_worker import LayoutWorker
+
+    settings = LayoutSettings()
+    return Pipeline(
+        workers=[
+            LayoutWorker(
+                name="layout-worker",
+                file_connector=s3_client_connector,
+                models=[LayoutDetectionModel(settings=settings)],
+                batch_size=settings.LAYOUT_BATCH_SIZE,
+                worker_weight=worker_weight,
+                settings=settings,
+            )
+        ]
+    )
+
+
+def load_table_worker(worker_weight: float = 1) -> Pipeline:
+    """Worker de structure des tables (queue ``table``), alimenté par le worker layout."""
+    from business.layout.configs.layout import LayoutSettings
+    from business.layout.models.table_structure import TableStructureModel
+    from business.layout.worker.table_worker import TableWorker
+
+    settings = LayoutSettings()
+    return Pipeline(
+        workers=[
+            TableWorker(
+                name="table-worker",
+                file_connector=s3_client_connector,
+                models=[TableStructureModel(settings=settings)],
+                batch_size=1,
+                worker_weight=worker_weight,
+                settings=settings,
+            )
+        ]
+    )
+
+
 def load_worker(
     name: str,
     batch_size: int = 1,
     worker_weight: float = 1,
 ) -> Pipeline:
+    if name == LAYOUT_PROCESS_NAME:
+        return load_layout_worker(worker_weight=worker_weight)
+    if name == TABLE_PROCESS_NAME:
+        return load_table_worker(worker_weight=worker_weight)
+
     # logger.info(f"---- {name} selected ----")
     ################# CACHE CLIENT ##################
     cache = TaskCache(file_connector=s3_client_connector)
