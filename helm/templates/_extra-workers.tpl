@@ -15,7 +15,14 @@ is non-empty can't be reset to an empty value from here.
 */}}
 {{- define "helper.extraWorker.values" -}}
 {{- $overrides := deepCopy (index .root.Values .key) -}}
-{{- mustMergeOverwrite (deepCopy .root.Values.worker) (omit $overrides "enabled") | toYaml -}}
+{{- $merged := mustMergeOverwrite (deepCopy .root.Values.worker) (omit $overrides "enabled") -}}
+{{- /* The extra workers don't create a ServiceAccount: they run under the one of `worker` (created by
+templates/worker/serviceaccount.yaml) unless they name their own. */ -}}
+{{- if $merged.serviceAccount.enabled -}}
+{{- $workerSa := .root.Values.worker.serviceAccount.name | default (printf "%s-%s" (include "helper.fullname" .root) "worker") -}}
+{{- $_ := set $merged.serviceAccount "name" (dig "serviceAccount" "name" $workerSa $overrides) -}}
+{{- end -}}
+{{- $merged | toYaml -}}
 {{- end -}}
 
 {{- define "helper.extraWorker.configmap" -}}
