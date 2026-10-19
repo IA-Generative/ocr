@@ -12,6 +12,8 @@ from src.connector.broker_connector import celery_app, celery_config
 from src.logger import logger
 from src.schemas.input import InputForm, RegionOfInterest
 from src.schemas.task import (
+    LAYOUT_STATUS_KEY,
+    LayoutStatus,
     TaskForm,
     TaskModel,
     TaskOperation,
@@ -19,6 +21,7 @@ from src.schemas.task import (
     TaskUpdateForm,
     task_table,
 )
+from src.utils.layout import LAYOUT_QUEUE, LAYOUT_WORKER_NAME, is_layout_content_type, layout_enabled
 from ocr_backend.core.security.token import RequestContext
 from ocr_backend.core.security.factory import TokenVerifier
 
@@ -26,6 +29,27 @@ from ..connectors import s3_client_connector
 
 router = APIRouter(tags=["Jobs"])
 WORKER_NAME = "worker.tasks.ocr"
+
+
+def _enqueue_layout(task_data: TaskModel, user_id: str, saved_path: str) -> None:
+    """Envoie la même tâche au worker layout, avec sa propre copie du fichier source.
+
+    Le worker OCR supprime le sien à la fin ; le worker layout, plus lent, a besoin du sien.
+    """
+    layout_key = f"{user_id}/{task_data.id}/layout/{os.path.basename(saved_path)}"
+    s3_client_connector.client.copy_object(
+        Bucket=s3_client_connector.bucket_name,
+        Key=layout_key,
+        CopySource={"Bucket": s3_client_connector.bucket_name, "Key": saved_path},
+    )
+    layout_task = task_data.model_copy(deep=True)
+    layout_task.input.storage_file_path = layout_key
+    celery_app.send_task(
+        LAYOUT_WORKER_NAME,
+        args=[json.dumps(layout_task.model_dump())],
+        task_id=f"{task_data.id}-layout",
+        queue=LAYOUT_QUEUE,
+    )
 
 
 def _handle_pdf_interest_zone(file_path: str, interest_zone: Optional[str]) -> list[RegionOfInterest]:
@@ -95,6 +119,13 @@ async def upload_file(
     group_id: str = Form("DEFAULT"),
     interest_zone: Optional[str] = Form(None),
     task_operation: TaskOperation = Form(TaskOperation.DEFAULT.value),
+    with_layout: bool = Form(
+        True,
+        description=(
+            "Run the layout detection (tables, images, formulas) in parallel of the OCR. "
+            "Only applies to images and PDFs; progress is reported in `extras.layout_status`."
+        ),
+    ),
     ctx: RequestContext = Depends(TokenVerifier),
 ):
     extras = {}
@@ -145,6 +176,14 @@ async def upload_file(
         _, extension = os.path.splitext(file.filename)
 
         extras = task_data.extras
+        run_layout = (
+            with_layout
+            and layout_enabled()
+            and task_operation == TaskOperation.DEFAULT
+            and is_layout_content_type(file.content_type)
+            and interest_zone is None
+        )
+        extras[LAYOUT_STATUS_KEY] = (LayoutStatus.PENDING if run_layout else LayoutStatus.SKIPPED).value
         input_form = InputForm(
             storage_file_path=saved_path,
             raw_filename=os.path.basename(file.filename),
@@ -167,6 +206,16 @@ async def upload_file(
         os.remove(temp_file_path)
 
         logger.debug(f"{task_data.id} worker name {WORKER_NAME} - {celery_config.CELERY_APP_NAME}" + "\n" + 79 * "*")
+
+        if run_layout:
+            # Avant l'envoi OCR : l'OCR réécrit `extras`, un échec ici doit donc être persisté avant qu'il ne démarre.
+            try:
+                _enqueue_layout(task_data, user_id=ctx.user_id, saved_path=saved_path)
+            except Exception as e:
+                logger.error(f"Cannot enqueue layout for task {task_data.id}: {e}")
+                extras[LAYOUT_STATUS_KEY] = LayoutStatus.FAILED.value
+                extras["layout_error"] = str(e)
+                task_data = task_table.update_task(task_id=task_data.id, form_data=TaskUpdateForm(extras=extras))
 
         celery_app.send_task(WORKER_NAME, args=[json.dumps(task_data.model_dump())], task_id=task_data.id)
 
