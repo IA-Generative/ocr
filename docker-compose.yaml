@@ -88,6 +88,95 @@ services:
     env_file:
       - .env
 
+  # Détection de layout, en parallèle de l'OCR, avec un worker par modèle. Même image que
+  # `ocr_service` ; seules la queue Celery (`-Q`), le nom de tâche et PROCESS_NAME changent.
+  # Ces workers n'écrivent en base qu'une fois l'OCR terminé.
+  # `layout_service` : zones de la page (layouts, images, formules).
+  layout_service:
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: 2.0
+          memory: 4000M
+        reservations:
+          cpus: 2.0
+          memory: 4000M
+    container_name: layout-service
+    command:
+      - "celery"
+      - "-A"
+      - "services.main"
+      - "worker"
+      - "--pool=solo"
+      - "--loglevel=info"
+      - "--concurrency=1"
+      - "-E"
+      - "-Q"
+      - "layout"
+      - "--hostname=layout_worker@%h"
+    image: ocr-worker
+    volumes:
+      - ./apps/server/src/:/app/src/
+      - ./apps/server/tests/:/app/tests
+      - ./apps/server/services/:/app/services/
+      - ./apps/server/business/:/app/business/
+    depends_on:
+      - redis
+      - rustfs
+      - db
+    environment:
+      - PROCESS_NAME=layout
+      - WORKER_NAME=worker.tasks.layout
+      - CELERY_APP_NAME=default
+      - SERVICE_NAME=layout_worker
+      - ENVIRONMENT=development
+    env_file:
+      - .env
+
+  # `table_service` : structure et texte des tableaux, alimenté par `layout_service`.
+  table_service:
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: 2.0
+          memory: 4000M
+        reservations:
+          cpus: 2.0
+          memory: 4000M
+    container_name: table-service
+    command:
+      - "celery"
+      - "-A"
+      - "services.main"
+      - "worker"
+      - "--pool=solo"
+      - "--loglevel=info"
+      - "--concurrency=1"
+      - "-E"
+      - "-Q"
+      - "table"
+      - "--hostname=table_worker@%h"
+    image: ocr-worker
+    volumes:
+      - ./apps/server/src/:/app/src/
+      - ./apps/server/tests/:/app/tests
+      - ./apps/server/services/:/app/services/
+      - ./apps/server/business/:/app/business/
+    depends_on:
+      - redis
+      - rustfs
+      - db
+    environment:
+      - PROCESS_NAME=table
+      - WORKER_NAME=worker.tasks.table
+      - CELERY_APP_NAME=default
+      - SERVICE_NAME=table_worker
+      - ENVIRONMENT=development
+    env_file:
+      - .env
+
   ocr_backend:
     image: ocr-api
     build:
