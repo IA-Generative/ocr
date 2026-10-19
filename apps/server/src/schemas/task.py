@@ -94,6 +94,26 @@ class TaskStatus(str, Enum):
     TIMEOUT = "timeout"  # N’a pas pu terminer dans le temps imparti
 
 
+class LayoutStatus(str, Enum):
+    """Statut du worker layout, stocké dans ``task.extras["layout_status"]``.
+
+    Le worker OCR passe la tâche à ``completed`` indépendamment du layout, qui est
+    fusionné dans ``output`` une fois l'OCR terminé : ce champ indique au client si
+    les ``layouts``/``tables``/``images``/``formulas`` sont déjà disponibles. Une erreur du seul
+    worker de tables laisse le statut à ``completed`` avec ``extras.layout_error``.
+    """
+
+    PENDING = "pending"
+    # Zones (layouts, images, formules) disponibles ; la structure des tables est encore en cours.
+    PARTIAL = "partial"
+    COMPLETED = "completed"
+    FAILED = "failed"
+    SKIPPED = "skipped"
+
+
+LAYOUT_STATUS_KEY = "layout_status"
+
+
 class TaskOperation(str, Enum):
     OCR: str = "ocr"
     DEFAULT: str = "default"

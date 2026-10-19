@@ -13,6 +13,11 @@ class Page(BaseModel):
     page_url: Optional[str] = None
     boxes: List[Bbox] = Field(default_factory=list, description="Detections")
     layouts: List[Layout] = Field(default_factory=list, description="Layout definition")
+    tables: List[Layout] = Field(default_factory=list, description="Layout regions of type table, with their structure")
+    images: List[Layout] = Field(
+        default_factory=list, description="Layout regions of type image/chart/seal (bbox only)"
+    )
+    formulas: List[Layout] = Field(default_factory=list, description="Layout regions of type formula (bbox only)")
     checkboxes: List[Checkbox] = Field(default_factory=list, description="Checkbox definition")
     form_entries: List[Union[LLMFormField, FormEntry]] = Field(default_factory=list, description="Form extraction")
     image_form_detector: Optional[ImageFormDetector] = Field(
