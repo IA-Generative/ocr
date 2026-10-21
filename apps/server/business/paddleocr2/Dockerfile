@@ -70,6 +70,15 @@ COPY apps/server/business/paddleocr2 /app/business/paddleocr2
 RUN uv run business/paddleocr2/utils/download_paddle_models.py \
   --folder $PADDLE_OCR_BASE_DIR
 
+# Download layout / table models (worker layout, same image). Only the config and the download
+# script are copied here so that a change in the layout code does not redo the download layer.
+COPY apps/server/business/__init__.py /app/business/__init__.py
+COPY apps/server/business/layout/__init__.py /app/business/layout/__init__.py
+COPY apps/server/business/layout/configs /app/business/layout/configs
+COPY apps/server/business/layout/utils/download_layout_models.py /app/business/layout/utils/download_layout_models.py
+RUN uv run business/layout/utils/download_layout_models.py \
+  --folder $PADDLE_OCR_BASE_DIR
+
 # Copy application code
 COPY apps/server/business/__init__.py /app/business/__init__.py
 COPY apps/server/business/cache /app/business/cache
@@ -79,6 +88,7 @@ COPY apps/server/business/features /app/business/features
 COPY apps/server/business/docling_inference /app/business/docling_inference
 COPY apps/server/business/extractions /app/business/extractions
 COPY apps/server/business/liteparse /app/business/liteparse
+COPY apps/server/business/layout /app/business/layout
 
 # Copy common code
 COPY apps/server/src /app/src

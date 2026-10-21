@@ -331,8 +331,19 @@ describe('ocrClient file uploads', () => {
     const form = init.body as FormData
     expect(form.get('group_id')).toBe('MY_GROUP')
     expect(form.get('task_operation')).toBe('default')
+    expect(form.get('with_layout')).toBe('true')
     const file = form.get('file') as File
     expect(file.name).toBe('document.pdf')
+  })
+
+  it('createJob() can opt out of the layout detection', async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(makeTask({ status: 'queued' })))
+    const client = new OCRClient('http://localhost:5000')
+
+    await client.createJob(filePath, { withLayout: false })
+
+    const form = fetchMock.mock.calls[0]![1].body as FormData
+    expect(form.get('with_layout')).toBe('false')
   })
 
   it('processDocument() sends the raw file body with the upload headers', async () => {

@@ -27,6 +27,8 @@ export interface CreateJobOptions {
   groupId?: string
   interestZone?: string
   taskOperation?: TaskOperation
+  /** Also detect the layout (tables, images, formulas) of images and PDFs. Default: true. */
+  withLayout?: boolean
 }
 
 export interface ProcessDocumentOptions {
@@ -235,6 +237,7 @@ export class OCRClient {
     form.append('file', new Blob([new Uint8Array(data)], { type: guessMimeType(filePath) }), basename(filePath))
     form.append('group_id', options.groupId ?? DEFAULT_GROUP_ID)
     form.append('task_operation', options.taskOperation ?? DEFAULT_TASK_OPERATION)
+    form.append('with_layout', String(options.withLayout ?? true))
     if (options.interestZone) {
       form.append('interest_zone', options.interestZone)
     }

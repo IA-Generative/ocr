@@ -34,6 +34,9 @@ class EmptyContentException(Exception): ...
 class FileNotSupported(Exception): ...
 
 
+class LayoutNotApplicable(Exception): ...
+
+
 class BaseWorker(ABC):
     def __init__(
         self,
