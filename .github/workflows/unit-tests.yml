@@ -27,13 +27,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    # docker-compose-test.yaml interpolates these into the ocr_backend service; CI has no
-    # .env.local supplying real values, so an unset default here just quiets Compose's
-    # "variable is not set" warning without changing what the container actually gets.
+    # docker-compose-test.yaml interpolates this into the image builds; CI has no .env.local
+    # supplying a real value, so an unset default here just quiets Compose's "variable is
+    # not set" warning without changing what the container actually gets.
     env:
       HARBOR_PROXY_URL: ""
-      OPENAI_BASE_URL: ""
-      VISION_MODEL: ""
     steps:
     - name: Checkout repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -82,8 +80,6 @@ jobs:
     # See run-tests-backend above: same docker-compose-test.yaml, same unset-variable noise.
     env:
       HARBOR_PROXY_URL: ""
-      OPENAI_BASE_URL: ""
-      VISION_MODEL: ""
     steps:
     - name: Checkout repository
       uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1

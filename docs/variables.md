@@ -32,7 +32,6 @@ Légende : ✅ = obligatoire (le service plante/refuse de démarrer si absente) 
 | Variable | Obligatoire | Description | Default | Utilisation |
 |:---|:---:|:---|:---|:---|
 | `MODEL_NAME` | ❌ | Choix du modèle OCR (`paddle` ou `surya`). | `paddle` | `OCRModelSettings` |
-| `USE_VISION_LLM_EXTRACT_KIE` | ❌ | Active l'extraction KIE via un LLM de vision. | `False` | `OCRModelSettings` |
 
 ---
 
@@ -154,7 +153,6 @@ flow OAuth2 Authorization Code + PKCE, via `/api/auth/{login,callback,logout,me}
 
 | Variable | Obligatoire | Description | Default | Utilisation |
 |:---|:---:|:---|:---|:---|
-| `MONITOR_RESSOURCE_EVERY` | ❌ | Fréquence (en secondes) pour monitorer la consommation de ressources d'une tâche. | `5` (exemple) | `resource_monitor` dans les tâches |
 | `DATABASE_URL` | ✅ | URL de connexion à la base de données PostgreSQL. Obligatoire pour le job de migration (`migration/env.py`, plante sans fallback) ; l'application applicative retombe silencieusement sur SQLite local si absente (log `WARNING`) — **ne pas compter sur ce fallback en prod, uniquement pour du dev/test local**. | - (fallback SQLite local en dehors de la migration) | `migration/env.py`, `src/connector/db_connector.py` |
 | `ENVIRONMENT` | ❌ | Environnement d'exécution (`development`, `production`, ...). | - | `services/main.py`, `src/logger.py`, `ocr_backend/main.py` |
 | `SERVICE_NAME` | ❌ | Nom du service pour les logs structurés. | - | `src/logger.py` |
@@ -163,7 +161,7 @@ flow OAuth2 Authorization Code + PKCE, via `/api/auth/{login,callback,logout,me}
 | `MODEL_FEATURE_NAME` | ❌ | Nom du modèle de features utilisé par les collections. | - | `ocr_backend/routers/collections.py` |
 
 > ℹ️ **Vues dans Vault, vérifiées contre le code** :
-> - `API_KEYS` ✅ utilisée — clés API acceptées par **cette** API (`ocr_backend/core/security/factory.py:47`, défaut `default-api-key` si absente).
+> - `API_KEYS` ✅ utilisée — clés API acceptées par **cette** API (`ocr_backend/core/security/factory.py`, liste séparée par des virgules ; si la variable est absente ou vide, aucune clé n'est acceptée).
 > - `VERIFY_TOKEN_MODEL` ✅ utilisée — sélectionne le vérificateur d'auth (`keycloak` par défaut, ou `full-access`) (`ocr_backend/core/security/factory.py:112`).
 > - `SERVER_BASE_URL` ❌ **aucune occurrence dans ce repo** (code, tests, SDK). Vraisemblablement une variable côté *consommateur* de cette API (un autre service qui appelle l'OCR API et a besoin de savoir où elle vit), pas une variable lue par ce backend.
 > - `SERVER_API_KEY` ❌ **idem, aucune occurrence** — probablement le pendant côté client de `API_KEYS` (la clé que le consommateur envoie), pas une variable lue par ce backend.
@@ -237,9 +235,6 @@ LANGFUSE_SECRET_KEY=sk-lf-xxxxxxxxxxxxxxxxxxxx
 LANGFUSE_HOST=https://cloud.langfuse.com
 LANGFUSE_DEBUG=true
 LANGFUSE_TRACING_ENVIRONMENT=preprod
-
-# Monitoring
-MONITOR_RESSOURCE_EVERY=5
 
 # Database (obligatoire)
 DATABASE_URL=postgresql://user:password@localhost:5432/dbname
