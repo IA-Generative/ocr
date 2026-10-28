@@ -8,7 +8,9 @@ type Toaster = ReturnType<typeof useToaster>
 async function freshToaster (defaultTimeout?: number): Promise<Toaster> {
   vi.resetModules()
   const { default: factory } = await import('@/composables/use-toaster')
-  return defaultTimeout === undefined ? factory() : factory(defaultTimeout)
+  return defaultTimeout === undefined
+    ? factory()
+    : factory(defaultTimeout)
 }
 
 describe('useToaster', () => {

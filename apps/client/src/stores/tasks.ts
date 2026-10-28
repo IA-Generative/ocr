@@ -18,14 +18,21 @@ const http = createHttpClient(OCR_API_URL)
 const { addErrorMessage, addSuccessMessage } = useToaster()
 
 export const useTasksStore = defineStore('tasks', () => {
-  const userTasksPaginated = ref<PaginatedTasks>({ items: [], page: 1, page_size: 10, total: 0 })
+  const userTasksPaginated = ref<PaginatedTasks>({
+    items: [],
+    page: 1,
+    page_size: 10,
+    total: 0,
+  })
   const loading = ref(false)
   const error = ref<string | undefined>(undefined)
 
   async function fetchUserTasks (page = 1, page_size = 10) {
     loading.value = true
     try {
-      const { data } = await http.get<Partial<PaginatedTasks>>(`/tasks/user/`, { params: { page, page_size } })
+      const { data } = await http.get<Partial<PaginatedTasks>>(`/tasks/user/`, {
+        params: { page, page_size },
+      })
       userTasksPaginated.value = {
         total: data.total ?? 0,
         page: data.page ?? page,
@@ -53,7 +60,9 @@ export const useTasksStore = defineStore('tasks', () => {
         total: Math.max(0, (userTasksPaginated.value.total || items.length) - 1),
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : String(err)
+      const message = err instanceof Error
+        ? err.message
+        : String(err)
       addErrorMessage({ title: 'Erreur :', description: `Impossible de supprimer la tâche: ${message}` })
       throw err
     }

@@ -204,7 +204,10 @@ function styleForBox (box: Bbox, isMatch: boolean): CSSProperties {
 function copyText (text: string) {
   navigator.clipboard.writeText(text)
     .then(() => addSuccessMessage({ title: 'Copie', description: text }))
-    .catch(err => addErrorMessage({ title: 'Erreur copie', description: String(err) }))
+    .catch(err => addErrorMessage({
+      title: 'Erreur copie',
+      description: String(err),
+    }))
 }
 
 async function onDownloadText () {
@@ -213,7 +216,10 @@ async function onDownloadText () {
     await store.downloadText(props.data.id)
     addSuccessMessage({ title: 'Succes', description: 'Document telecharge.' })
   } catch (error) {
-    addErrorMessage({ title: 'Erreur', description: String(error) })
+    addErrorMessage({
+      title: 'Erreur',
+      description: String(error),
+    })
   }
 }
 </script>

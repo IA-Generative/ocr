@@ -31,7 +31,14 @@ function initializeApp () {
         app,
         dsn: SENTRY_FRONTEND_DSN,
         environment: ENVIRONMENT,
-        sendDefaultPii: false,
+        // v11 collects everything unless told otherwise: keep the restrictive behaviour the
+        // former `sendDefaultPii: false` gave (no user info, cookies, headers or bodies).
+        dataCollection: {
+          userInfo: false,
+          cookies: false,
+          httpHeaders: false,
+          httpBodies: [],
+        },
       })
     } catch (e) {
       console.error('Sentry initialization failed, continuing without it:', e)

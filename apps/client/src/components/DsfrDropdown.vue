@@ -18,7 +18,9 @@ export interface DsfrDropdownProps {
 const { mainButton, buttons } = toRefs(props)
 
 const dropdownSize = computed(() =>
-  props.mainButton.size !== '' ? props.mainButton.size : undefined,
+  props.mainButton.size !== ''
+    ? props.mainButton.size
+    : undefined,
 )
 
 const buttonsDropdown = computed(() => {

@@ -2,6 +2,10 @@
 
 declare const __APP_VERSION__: string
 
+// CSS entry point reached through the package's `exports` map; TypeScript 6 reports it
+// as an unresolved side-effect import without this declaration.
+declare module '@gouvminint/vue-dsfr/styles'
+
 declare module 'virtual:pwa-register/vue' {
   import type { Ref } from 'vue'
 

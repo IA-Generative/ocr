@@ -272,7 +272,9 @@ export const useOcrStore = defineStore('ocr', () => {
     try {
       const response = await http.get<string>(
         `/text-task/${taskId}`,
-        { headers: { accept: 'text/plain' } },
+        {
+          headers: { accept: 'text/plain' },
+        },
       )
 
       const text = response.data

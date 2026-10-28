@@ -58,8 +58,14 @@ const imgStyle = computed(() => {
 
 function copyText () {
   navigator.clipboard.writeText(props.text)
-    .then(() => addSuccessMessage({ title: 'Copié', description: props.text.slice(0, 100) }))
-    .catch(err => addErrorMessage({ title: 'Erreur copie', description: String(err) }))
+    .then(() => addSuccessMessage({
+      title: 'Copié',
+      description: props.text.slice(0, 100),
+    }))
+    .catch(err => addErrorMessage({
+      title: 'Erreur copie',
+      description: String(err),
+    }))
 }
 </script>
 

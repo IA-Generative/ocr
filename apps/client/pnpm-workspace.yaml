@@ -1,26 +1,8 @@
 # Packages published within the last 24h are not resolved (pnpm's default), and
 # `strict` stops pnpm from silently granting itself an exemption when it hits
-# one — a human reviews it and adds it below instead.
+# one — a human reviews it and adds it to `minimumReleaseAgeExclude` instead.
 minimumReleaseAgeStrict: true
-
-# Vue 3.5.42 and @types/node 26.4.0 were published the same morning this branch
-# was cut, so the 24h quarantine had not elapsed yet. Both come from their
-# official orgs and were reviewed. Drop this block once they have aged out:
-#   pnpm pm clean --lockfile && pnpm install
-minimumReleaseAgeExclude:
-  - '@types/node@26.4.0'
-  - '@vue/compiler-core@3.5.42'
-  - '@vue/compiler-dom@3.5.42'
-  - '@vue/compiler-sfc@3.5.42'
-  - '@vue/compiler-ssr@3.5.42'
-  - '@vue/reactivity@3.5.42'
-  - '@vue/runtime-core@3.5.42'
-  - '@vue/runtime-dom@3.5.42'
-  - '@vue/server-renderer@3.5.42'
-  - '@vue/shared@3.5.42'
-  - vue@3.5.42
-
-shellEmulator: true
+minimumReleaseAgeExcludePrune: true
 
 trustPolicy: no-downgrade
 
@@ -32,6 +14,8 @@ trustPolicyExclude:
   - semver
   # workbox-build's maintained fork of @surma/rollup-plugin-off-main-thread.
   - '@trickfilm400/rollup-plugin-off-main-thread'
+
+shellEmulator: true
 
 overrides:
   # Transitive, security-only bumps (Dependabot); no direct dependency needs pinning.

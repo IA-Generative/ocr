@@ -45,11 +45,28 @@ export default antfu(
     stylistic: {
       overrides: {
         'style/comma-dangle': ['error', 'always-multiline'],
-        'style/quote-props': ['error', 'as-needed', { keywords: false, unnecessary: true }],
-        'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
-        'style/max-statements-per-line': ['error', { max: 2 }],
+        'style/quote-props': [
+          'error',
+          'as-needed',
+          { keywords: false, unnecessary: true },
+        ],
+        'style/brace-style': [
+          'error',
+          '1tbs',
+          { allowSingleLine: true },
+        ],
+        'style/max-statements-per-line': [
+          'error',
+          { max: 2 },
+        ],
         'style/space-before-function-paren': ['error', 'always'],
-        'style/spaced-comment': ['error', 'always', { markers: ['#region', '#endregion', '/'] }],
+        'style/spaced-comment': [
+          'error',
+          'always',
+          {
+            markers: ['#region', '#endregion', '/'],
+          },
+        ],
       },
     },
   },
@@ -65,35 +82,58 @@ export default antfu(
       'antfu/if-newline': 'off',
       curly: ['error', 'all'],
       'jsonc/sort-keys': 'off',
-      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-console': [
+        'error',
+        {
+          allow: ['warn', 'error'],
+        },
+      ],
       // The UI is written in French, where a no-break space before `?`, `!`,
       // `:` and `»` is correct typography. Keep flagging it in code, allow it
       // in the strings and templates that hold user-facing prose.
-      'no-irregular-whitespace': ['error', { skipStrings: true, skipTemplates: true }],
-      'ts/ban-ts-comment': ['error', { 'ts-ignore': 'allow-with-description' }],
+      'no-irregular-whitespace': [
+        'error',
+        { skipStrings: true, skipTemplates: true },
+      ],
+      'ts/ban-ts-comment': [
+        'error',
+        { 'ts-ignore': 'allow-with-description' },
+      ],
       'unused-imports/no-unused-imports': 'error',
-      'unused-imports/no-unused-vars': ['error', {
-        vars: 'all',
-        varsIgnorePattern: '^_',
-        args: 'after-used',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'all',
-        caughtErrorsIgnorePattern: '^_',
-        destructuredArrayIgnorePattern: '^_',
-      }],
+      'unused-imports/no-unused-vars': [
+        'error',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+        },
+      ],
     },
   },
   {
     name: 'ocr/vue',
     files: ['**/*.vue'],
     rules: {
-      'vue/max-attributes-per-line': ['error', { singleline: { max: 1 }, multiline: { max: 1 } }],
-      'vue/no-irregular-whitespace': ['error', {
-        skipStrings: true,
-        skipTemplates: true,
-        skipHTMLAttributeValues: true,
-        skipHTMLTextContents: true,
-      }],
+      'vue/max-attributes-per-line': [
+        'error',
+        {
+          singleline: { max: 1 },
+          multiline: { max: 1 },
+        },
+      ],
+      'vue/no-irregular-whitespace': [
+        'error',
+        {
+          skipStrings: true,
+          skipTemplates: true,
+          skipHTMLAttributeValues: true,
+          skipHTMLTextContents: true,
+        },
+      ],
       'vue/no-v-html': 'off',
     },
   },
@@ -106,7 +146,12 @@ export default antfu(
       ...pluginPlaywright.configs['flat/recommended'].rules,
       // `login()` asserts on the landing page before returning, so a test whose
       // whole point is "logging in works" is not assertion-less.
-      'playwright/expect-expect': ['warn', { assertFunctionNames: ['login'] }],
+      'playwright/expect-expect': [
+        'warn',
+        {
+          assertFunctionNames: ['login'],
+        },
+      ],
     },
   },
   {

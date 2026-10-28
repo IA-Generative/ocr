@@ -11,7 +11,11 @@ function getRandomAlphaNum () {
 }
 
 function getRandomHtmlId (prefix = '', suffix = '') {
-  return (prefix ? `${prefix}-` : '') + getRandomString(5) + (suffix ? `-${suffix}` : '')
+  return (prefix
+    ? `${prefix}-`
+    : '') + getRandomString(5) + (suffix
+    ? `-${suffix}`
+    : '')
 }
 
 function getRandomString (length: number) {
@@ -57,14 +61,18 @@ function useToaster (defaultTimeout = 10000) {
   }
 
   function addSuccessMessage (message: Message | string) {
-    const msg = typeof message === 'string' ? { description: message } : message
+    const msg = typeof message === 'string'
+      ? { description: message }
+      : message
     addMessage({
       ...msg,
       type: 'success',
     })
   }
   function addErrorMessage (message: Message | string) {
-    const msg = typeof message === 'string' ? { description: message } : message
+    const msg = typeof message === 'string'
+      ? { description: message }
+      : message
     addMessage({
       ...msg,
       type: 'error',

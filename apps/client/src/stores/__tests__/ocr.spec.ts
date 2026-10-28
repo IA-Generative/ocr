@@ -3,10 +3,16 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useOcrStore } from '@/stores/ocr'
 
 const { http } = vi.hoisted(() => ({
-  http: { get: vi.fn(), post: vi.fn(), delete: vi.fn() },
+  http: {
+    get: vi.fn(),
+    post: vi.fn(),
+    delete: vi.fn(),
+  },
 }))
 
-vi.mock('@/api/http-client', () => ({ default: () => http }))
+vi.mock('@/api/http-client', () => ({
+  default: () => http,
+}))
 
 function fileOf (type: string, size = 1024, name = 'document.pdf') {
   const file = new File(['x'], name, { type })
@@ -59,7 +65,9 @@ describe('ocr store', () => {
 
   describe('pollTask', () => {
     it('settles on a completed task and stops polling', async () => {
-      http.get.mockResolvedValue({ data: { id: 't1', status: 'completed' } })
+      http.get.mockResolvedValue({
+        data: { id: 't1', status: 'completed' },
+      })
       const store = useOcrStore()
 
       await store.pollTask('t1', 0)
@@ -71,8 +79,12 @@ describe('ocr store', () => {
 
     it('keeps polling through in_progress and records the percentage', async () => {
       http.get
-        .mockResolvedValueOnce({ data: { id: 't1', status: 'in_progress', percentage: 40 } })
-        .mockResolvedValueOnce({ data: { id: 't1', status: 'completed' } })
+        .mockResolvedValueOnce({
+          data: { id: 't1', status: 'in_progress', percentage: 40 },
+        })
+        .mockResolvedValueOnce({
+          data: { id: 't1', status: 'completed' },
+        })
       const store = useOcrStore()
 
       await store.pollTask('t1', 0)
@@ -84,7 +96,11 @@ describe('ocr store', () => {
 
     it('surfaces the API error message when the task fails', async () => {
       http.get.mockResolvedValue({
-        data: { id: 't1', status: 'failed', extras: { error: 'OCR engine crashed' } },
+        data: {
+          id: 't1',
+          status: 'failed',
+          extras: { error: 'OCR engine crashed' },
+        },
       })
       const store = useOcrStore()
 
@@ -95,7 +111,9 @@ describe('ocr store', () => {
     })
 
     it('falls back to a generic message when the failure carries no detail', async () => {
-      http.get.mockResolvedValue({ data: { id: 't1', status: 'failed' } })
+      http.get.mockResolvedValue({
+        data: { id: 't1', status: 'failed' },
+      })
       const store = useOcrStore()
 
       await store.pollTask('t1', 0)
@@ -105,8 +123,12 @@ describe('ocr store', () => {
 
     it('reports the caller position while queued', async () => {
       http.get
-        .mockResolvedValueOnce({ data: { id: 't1', status: 'queued', position: 2 } })
-        .mockResolvedValueOnce({ data: { id: 't1', status: 'completed' } })
+        .mockResolvedValueOnce({
+          data: { id: 't1', status: 'queued', position: 2 },
+        })
+        .mockResolvedValueOnce({
+          data: { id: 't1', status: 'completed' },
+        })
       const store = useOcrStore()
 
       await store.pollTask('t1', 0)
@@ -134,7 +156,9 @@ describe('ocr store', () => {
         if (polls === 3) {
           store.stopPolling()
         }
-        return { data: { id: 't1', status: 'in_progress', percentage: polls * 10 } }
+        return {
+          data: { id: 't1', status: 'in_progress', percentage: polls * 10 },
+        }
       })
 
       await store.pollTask('t1', 0)
@@ -158,7 +182,9 @@ describe('ocr store', () => {
         if (polls === 2) {
           store.reset()
         }
-        return { data: { id: 't1', status: 'in_progress' } }
+        return {
+          data: { id: 't1', status: 'in_progress' },
+        }
       })
 
       await store.pollTask('t1', 0)
