@@ -10,6 +10,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends libatomic1 \
     && rm -rf /var/lib/apt/lists/*
 
+# Re-declared here because an ARG set before `FROM` is not visible inside a stage: without
+# this line `${PNPM_VERSION}` expands to nothing and the newest pnpm gets installed instead.
+ARG PNPM_VERSION
 RUN npm install --ignore-scripts --location=global pnpm@${PNPM_VERSION}
 
 WORKDIR /app
