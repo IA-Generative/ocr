@@ -40,7 +40,12 @@ describe('ocrClient', () => {
   })
 
   it('getHealth sends a GET and parses the response', async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse({ name: 'ocr-api', version: '1.0', up_time: '1s', status: 'healthy' }))
+    fetchMock.mockResolvedValueOnce(jsonResponse({
+      name: 'ocr-api',
+      version: '1.0',
+      up_time: '1s',
+      status: 'healthy',
+    }))
 
     const client = new OCRClient('http://localhost:5000')
     const health = await client.getHealth()
@@ -189,7 +194,14 @@ describe('ocrClient', () => {
   })
 
   it('getUserTasks() encodes pagination params and returns the paginated envelope', async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse({ total: 1, page: 2, page_size: 5, items: [makeTask()] }))
+    fetchMock.mockResolvedValueOnce(jsonResponse({
+      total: 1,
+      page: 2,
+      page_size: 5,
+      items: [
+        makeTask(),
+      ],
+    }))
 
     const client = new OCRClient('http://localhost:5000')
     const result = await client.getUserTasks(2, 5)
@@ -270,7 +282,10 @@ describe('ocrClient', () => {
   })
 
   it('waitForTask() throws OCRAPIError when the task fails', async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse(makeTask({ status: 'failed', extras: { error: 'boom' } })))
+    fetchMock.mockResolvedValueOnce(jsonResponse(makeTask({
+      status: 'failed',
+      extras: { error: 'boom' },
+    })))
 
     const client = new OCRClient('http://localhost:5000')
 
@@ -336,7 +351,9 @@ describe('ocrClient file uploads', () => {
   })
 
   it('processDocument() sends the raw file body with the upload headers', async () => {
-    fetchMock.mockResolvedValueOnce(jsonResponse([{ page_content: 'hello', metadata: {} }]))
+    fetchMock.mockResolvedValueOnce(jsonResponse([
+      { page_content: 'hello', metadata: {} },
+    ]))
 
     const client = new OCRClient('http://localhost:5000')
     const results = await client.processDocument(filePath, { maxWaitTimeSeconds: 5, pollIntervalSeconds: 1 })
