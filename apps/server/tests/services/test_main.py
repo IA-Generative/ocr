@@ -71,3 +71,26 @@ def test_task_process_paddle(storage_service: BaseFileConnector, mocked_pipeline
         actual = TaskModel.model_validate(result)
         assert actual.id == task.id
         assert actual.status == TaskStatus.COMPLETED.value
+
+
+def test_failed_task_keeps_its_error_but_not_the_stack_trace():
+    import services.main as worker_main
+
+    class FailingPipeline:
+        def process(self, task):
+            raise RuntimeError("model exploded")
+
+    task = task_table.insert_new_task(
+        user_id="test",
+        form_data=TaskForm(user_id="test", type="OCR", status=TaskStatus.QUEUED.value, percentage=0, extras={}),
+    )
+
+    with patch.object(worker_main, "process_ocr", FailingPipeline()):
+        with pytest.raises(RuntimeError, match="model exploded"):
+            worker_main._run_task(task)
+
+    stored = task_table.get_task_by_id(task.id)
+    assert stored.status == TaskStatus.FAILED.value
+    assert stored.extras["error"] == "model exploded"
+    # `extras` is part of the task returned by the API.
+    assert "traceback" not in stored.extras

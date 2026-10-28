@@ -111,9 +111,10 @@ def _run_task(task: TaskModel) -> dict:
 
         return task.model_dump()
     except Exception as e:
+        # `extras` is returned as-is by the tasks API: the stack trace stays in the logs.
+        logger.error(f"[_run_task] task {task.id} failed: {e}\n{traceback.format_exc()}")
         task.extras = task.extras if task.extras else {}
         task.extras["error"] = str(e)
-        task.extras["traceback"] = traceback.format_exc()
         task_table.update_task(
             task_id=task.id,
             form_data=TaskForm(
