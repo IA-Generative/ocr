@@ -1,6 +1,6 @@
 # ocr
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square)
 
 A Helm chart to deploy ocr.
 
@@ -24,7 +24,9 @@ A Helm chart to deploy ocr.
 | enabled | bool | `true` | Master switch for the whole chart. When `false`, every template renders nothing (no api/ frontend/worker/jobs/cronjobs/redis/postgres/cnpg/extraObjects at all) - use this to keep a release/namespace registered with a deployment system (e.g. an ArgoCD Application that always gets generated for every app/env combination) without actually deploying any resource into it. |
 | extraObjects | object | `{}` | Map of extra specs to dynamically add to this chart. Each key is a unique, arbitrary name for the object (only used so `-f` values files/overrides can add, override or remove a single entry by key instead of the whole list - lists don't merge across values files in Helm). Each entry must be written as a YAML literal block scalar string (see the commented `my-configmap`/`my-vault-secret` examples below for the exact syntax), not a nested map: only the string form is passed through `tpl` as raw text, so multi-line substitutions (`nindent`, `include "helper.labels"`, ...) render correctly; a nested map form only round-trips safely for single-scalar substitutions like `{{ .Values.fullnameOverride }}`. |
 | fullnameOverride | string | `""` | String to fully override the default application name. |
+| layoutWorker | object | `{"command":["celery","--config","celeryconfig","-A","services.main","worker","-E","-Q","layout","--hostname=layout_worker@%h"],"enabled":true,"env":{"COMPONENT":"layout-worker","PROCESS_NAME":"layout","SERVICE_NAME":"layout_worker","WORKER_NAME":"worker.tasks.layout"},"kedaAutoscaler":{"redis":{"listName":"layout"}},"resources":{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"2","memory":"4Gi"}}}` | Layout detection worker: finds the page regions (layouts, images, formulas, table bboxes) in parallel of the OCR. Same image as `worker`, own Celery queue (`layout`). Only the keys that differ from `worker` are set here: every other `worker.*` key (image, probes, securityContext, volumes, celeryConfig, ...) is inherited, and any of them can be overridden. Merge caveat: a zero value (`false`, `0`, `""`) set here does not override a non-empty `worker` default. It never writes before the OCR is done (the task would be overwritten otherwise). |
 | nameOverride | string | `""` | Provide a name in place of the default application name. |
+| tableWorker | object | `{"command":["celery","--config","celeryconfig","-A","services.main","worker","-E","-Q","table","--hostname=table_worker@%h"],"enabled":true,"env":{"COMPONENT":"table-worker","PROCESS_NAME":"table","SERVICE_NAME":"table_worker","WORKER_NAME":"worker.tasks.table"},"kedaAutoscaler":{"redis":{"listName":"table"}},"resources":{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"2","memory":"4Gi"}}}` | Table structure worker: structure and text of the tables found by the layout worker. Same image as `worker`, own Celery queue (`table`); same override rules as `layoutWorker`. It only merges its result once the layout worker has written its own (`extras.layout_status`). |
 
 ### Global
 
@@ -51,7 +53,7 @@ A Helm chart to deploy ocr.
 | api.containerPort | int | `5000` | Api container port number. |
 | api.containerPortName | string | `"http"` | Api container port name. |
 | api.deploymentType | string | `"Deployment"` | Workload kind to deploy the app as. One of "Deployment" or "StatefulSet". |
-| api.env | object | `{"AWS_ACCESS_KEY_ID":"rustfsadmin","AWS_BUCKET_NAME":"ocr","AWS_DEFAULT_REGION":"us-east-1","AWS_ENDPOINT_URL":"http://ocr-rustfs:9000","AWS_SECRET_ACCESS_KEY":{"valueFrom":{"secretKeyRef":{"key":"secret-key","name":"ocr-rustfs"}}},"CELERY_APP_NAME":"ocr","COMPONENT":"api","DATABASE_URL":{"valueFrom":{"secretKeyRef":{"key":"uri","name":"ocr-postgres"}}},"REDIS_HOST":"ocr-redis-master","SEND_DEFAULT_PII":"False","SERVICE_NAME":"ocr_api","VERIFY_SSL":"False","VERIFY_TOKEN_MODEL":"keycloak"}` | Map or array of environment variables to inject into the app container (`valueFrom` supported). |
+| api.env | object | `{"AWS_ACCESS_KEY_ID":"rustfsadmin","AWS_BUCKET_NAME":"ocr","AWS_DEFAULT_REGION":"us-east-1","AWS_ENDPOINT_URL":"http://ocr-rustfs:9000","AWS_SECRET_ACCESS_KEY":{"valueFrom":{"secretKeyRef":{"key":"secret-key","name":"ocr-rustfs"}}},"CELERY_APP_NAME":"ocr","COMPONENT":"api","DATABASE_URL":{"valueFrom":{"secretKeyRef":{"key":"uri","name":"ocr-postgres"}}},"LAYOUT_ENABLED":"true","REDIS_HOST":"ocr-redis-master","SEND_DEFAULT_PII":"False","SERVICE_NAME":"ocr_api","VERIFY_SSL":"False","VERIFY_TOKEN_MODEL":"keycloak"}` | Map or array of environment variables to inject into the app container (`valueFrom` supported). |
 | api.envCm | object | `{}` | Map of environment variables to inject into a configmap loaded by the app container (`valueFrom` not supported). |
 | api.envFrom | list | `[]` | Api container env variables loaded from configmap or secret reference. List or map (merged with `global.envFrom` above, global entries first); see `global.envFrom` for both forms. |
 | api.envSecret | object | `{}` | Map of environment variables to inject into a secret loaded by the app container (`valueFrom` not supported). |
@@ -535,6 +537,23 @@ A Helm chart to deploy ocr.
 | jobs.migration.volumeMounts | list | `[]` | List of volume mounts to add to the migration job. |
 | jobs.migration.volumes | list | `[]` | List of volumes to add to the migration job. |
 
+### LayoutWorker
+
+#### General
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| layoutWorker.command | list | `["celery","--config","celeryconfig","-A","services.main","worker","-E","-Q","layout","--hostname=layout_worker@%h"]` | Container command: same as `worker`, plus `-Q layout` so it only consumes the layout queue. |
+| layoutWorker.enabled | bool | `true` | Deploy the layout worker. Keep `api.env.LAYOUT_ENABLED` in sync. |
+| layoutWorker.env | object | `{"COMPONENT":"layout-worker","PROCESS_NAME":"layout","SERVICE_NAME":"layout_worker","WORKER_NAME":"worker.tasks.layout"}` | Environment variables merged on top of `worker.env`. `PROCESS_NAME` selects the pipeline (`services/factory.py`), `WORKER_NAME` the Celery task name the API sends to. Set `LAYOUT_ENABLE_TABLES: "False"` here when `tableWorker.enabled` is `false`, so that no table is handed over to a queue nobody consumes. |
+| layoutWorker.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"2","memory":"4Gi"}}` | Container resources (the layout model is loaded once per replica). |
+
+#### KedaAutoscaler
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| layoutWorker.kedaAutoscaler.redis.listName | string | `"layout"` | Redis list (Celery queue) KEDA watches to scale the layout worker. |
+
 ### Postgres
 
 #### General
@@ -721,6 +740,23 @@ A Helm chart to deploy ocr.
 | rustfs.resources.limits.memory | string | `"512Mi"` | Memory limit for the RustFS container. |
 | rustfs.resources.requests.cpu | string | `"50m"` | CPU request for the RustFS container. |
 | rustfs.resources.requests.memory | string | `"128Mi"` | Memory request for the RustFS container. |
+
+### TableWorker
+
+#### General
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| tableWorker.command | list | `["celery","--config","celeryconfig","-A","services.main","worker","-E","-Q","table","--hostname=table_worker@%h"]` | Container command: same as `worker`, plus `-Q table` so it only consumes the table queue. |
+| tableWorker.enabled | bool | `true` | Deploy the table worker. If `false`, set `layoutWorker.env.LAYOUT_ENABLE_TABLES: "False"`. |
+| tableWorker.env | object | `{"COMPONENT":"table-worker","PROCESS_NAME":"table","SERVICE_NAME":"table_worker","WORKER_NAME":"worker.tasks.table"}` | Environment variables merged on top of `worker.env`. |
+| tableWorker.resources | object | `{"limits":{"cpu":"2","memory":"4Gi"},"requests":{"cpu":"2","memory":"4Gi"}}` | Container resources (the table pipeline loads several models per replica). |
+
+#### KedaAutoscaler
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| tableWorker.kedaAutoscaler.redis.listName | string | `"table"` | Redis list (Celery queue) KEDA watches to scale the table worker. |
 
 ### Worker
 

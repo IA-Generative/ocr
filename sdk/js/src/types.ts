@@ -40,6 +40,29 @@ export interface Checkbox extends BaseBox {
   is_checked: boolean
 }
 
+/** `src/schemas/layout.py::TableCell` */
+export interface TableCell {
+  /** 0-based index of the first row covered by the cell */
+  row: number
+  /** 0-based index of the first column covered by the cell */
+  col: number
+  rowspan: number
+  colspan: number
+  text: string
+  is_header: boolean
+  /** Normalized [xmin, ymin, xmax, ymax] on the page, when the model provides it */
+  bbox?: number[] | null
+}
+
+/** `src/schemas/layout.py::TableContent` */
+export interface TableContent {
+  html: string
+  markdown: string
+  n_rows: number
+  n_cols: number
+  cells: TableCell[]
+}
+
 /** `src/schemas/layout.py::Layout` */
 export interface Layout {
   cls_id: number
@@ -48,6 +71,8 @@ export interface Layout {
   /** [xmin, ymin, xmax, ymax] */
   coordinate: number[]
   content?: unknown
+  /** Structured content, only for `table` regions */
+  table?: TableContent | null
 }
 
 export interface RegionOfInterest {
@@ -105,6 +130,11 @@ export interface Page {
   page_url?: string | null
   boxes: Bbox[]
   layouts: Layout[]
+  tables: Layout[]
+  /** image / chart / seal regions (bbox only) */
+  images: Layout[]
+  /** formula regions (bbox only) */
+  formulas: Layout[]
   checkboxes: Checkbox[]
   form_entries: (LLMFormField | FormEntry)[]
   image_form_detector?: ImageFormDetector | null
@@ -181,3 +211,9 @@ export interface ProcessResponse {
 }
 
 export type TaskValueTransform = 'text' | 'form' | 'form-csv' | 'only-result'
+
+/**
+ * Progress of the layout detection, in `task.extras.layout_status`.
+ * `partial`: regions are available, the table structure is still being computed.
+ */
+export type LayoutStatus = 'pending' | 'partial' | 'completed' | 'failed' | 'skipped'

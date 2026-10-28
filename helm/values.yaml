@@ -484,6 +484,10 @@ api:
     # worker's name); COMPONENT feeds the `component` log field.
     SERVICE_NAME: "ocr_api"
     COMPONENT: "api"
+    # Layout detection (tables, images, formulas) is requested by default on every image/PDF job and
+    # runs on the `layoutWorker`/`tableWorker` components below. Set to "false" when they are not
+    # deployed (`layoutWorker.enabled: false`), otherwise `extras.layout_status` stays `pending` forever.
+    LAYOUT_ENABLED: "true"
     # "keycloak" is already `ocr_backend`'s own code default (`VERIFY_TOKEN_MODEL` in
     # `ocr_backend/core/security/factory.py`) - set explicit here so it doesn't silently depend on
     # that code default. With this mode, the API only ever authenticates a request via the BFF
@@ -2604,6 +2608,98 @@ worker:
         # -- Prometheus ServiceMonitor tlsConfig.
         # @section -- Worker
         tlsConfig: {}
+
+# -- Layout detection worker: finds the page regions (layouts, images, formulas, table bboxes) in
+# parallel of the OCR. Same image as `worker`, own Celery queue (`layout`). Only the keys that differ
+# from `worker` are set here: every other `worker.*` key (image, probes, securityContext, volumes,
+# celeryConfig, ...) is inherited, and any of them can be overridden. Merge caveat: a zero value
+# (`false`, `0`, `""`) set here does not override a non-empty `worker` default.
+# It never writes before the OCR is done (the task would be overwritten otherwise).
+# @section -- Layout worker
+layoutWorker:
+  # -- Deploy the layout worker. Keep `api.env.LAYOUT_ENABLED` in sync.
+  # @section -- Layout worker
+  enabled: true
+  # -- Container command: same as `worker`, plus `-Q layout` so it only consumes the layout queue.
+  # @section -- Layout worker
+  command:
+  - "celery"
+  - "--config"
+  - "celeryconfig"
+  - "-A"
+  - "services.main"
+  - "worker"
+  - "-E"
+  - "-Q"
+  - "layout"
+  - "--hostname=layout_worker@%h"
+  # -- Environment variables merged on top of `worker.env`. `PROCESS_NAME` selects the pipeline
+  # (`services/factory.py`), `WORKER_NAME` the Celery task name the API sends to. Set
+  # `LAYOUT_ENABLE_TABLES: "False"` here when `tableWorker.enabled` is `false`, so that no table
+  # is handed over to a queue nobody consumes.
+  # @section -- Layout worker
+  env:
+    PROCESS_NAME: "layout"
+    WORKER_NAME: "worker.tasks.layout"
+    SERVICE_NAME: "layout_worker"
+    COMPONENT: "layout-worker"
+  # -- Container resources (the layout model is loaded once per replica).
+  # @section -- Layout worker
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "2"
+    limits:
+      memory: "4Gi"
+      cpu: "2"
+  kedaAutoscaler:
+    redis:
+      # -- Redis list (Celery queue) KEDA watches to scale the layout worker.
+      # @section -- Layout worker
+      listName: "layout"
+
+# -- Table structure worker: structure and text of the tables found by the layout worker. Same
+# image as `worker`, own Celery queue (`table`); same override rules as `layoutWorker`. It only
+# merges its result once the layout worker has written its own (`extras.layout_status`).
+# @section -- Table worker
+tableWorker:
+  # -- Deploy the table worker. If `false`, set `layoutWorker.env.LAYOUT_ENABLE_TABLES: "False"`.
+  # @section -- Table worker
+  enabled: true
+  # -- Container command: same as `worker`, plus `-Q table` so it only consumes the table queue.
+  # @section -- Table worker
+  command:
+  - "celery"
+  - "--config"
+  - "celeryconfig"
+  - "-A"
+  - "services.main"
+  - "worker"
+  - "-E"
+  - "-Q"
+  - "table"
+  - "--hostname=table_worker@%h"
+  # -- Environment variables merged on top of `worker.env`.
+  # @section -- Table worker
+  env:
+    PROCESS_NAME: "table"
+    WORKER_NAME: "worker.tasks.table"
+    SERVICE_NAME: "table_worker"
+    COMPONENT: "table-worker"
+  # -- Container resources (the table pipeline loads several models per replica).
+  # @section -- Table worker
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "2"
+    limits:
+      memory: "4Gi"
+      cpu: "2"
+  kedaAutoscaler:
+    redis:
+      # -- Redis list (Celery queue) KEDA watches to scale the table worker.
+      # @section -- Table worker
+      listName: "table"
 
 jobs:
   migration:

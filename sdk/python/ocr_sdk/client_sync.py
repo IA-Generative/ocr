@@ -200,6 +200,7 @@ class SyncOCRClient:
         group_id: str = "DEFAULT",
         interest_zone: Optional[str] = None,
         task_operation: TaskOperation = TaskOperation.DEFAULT,
+        with_layout: bool = True,
     ) -> TaskModel:
         """Create a new OCR job from a local file.
 
@@ -208,6 +209,8 @@ class SyncOCRClient:
             group_id: Group ID for the task
             interest_zone: Optional JSON string defining regions of interest
             task_operation: Type of operation to perform
+            with_layout: Also detect the layout (tables, images, formulas) of images
+                and PDFs; see ``extras["layout_status"]`` for its progress
 
         Returns:
             TaskModel with job details
@@ -226,6 +229,7 @@ class SyncOCRClient:
             data = {
                 "group_id": group_id,
                 "task_operation": task_operation.value,
+                "with_layout": str(with_layout).lower(),
             }
 
             if interest_zone:
