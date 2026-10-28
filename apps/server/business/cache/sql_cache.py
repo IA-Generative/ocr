@@ -29,7 +29,7 @@ class TaskCache(BaseCache):
             return task
         filename = task.input.raw_filename
         content_type = task.input.content_type
-        content = self.file_connector.get_by_task_id(user_id=task.user_id, task_id=task.id)
+        content = self.file_connector.download_by_s3_key(s3_key=task.input.storage_file_path)
 
         if content_type.startswith("image/"):
             images = [Image.open(content).convert("RGB")]
