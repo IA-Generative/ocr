@@ -250,6 +250,9 @@ lint-fix: format-backend ## Alias for format-backend (deprecated)
 .PHONY: type-check
 type-check: ## Type-check the frontend (vue-tsc)
 	@echo "$(COLOR_BLUE)→$(COLOR_RESET) Type-checking frontend..."
+	@# vue-tsc needs src/auto-imports.d.ts, which Vite generates and git ignores: on a fresh
+	@# clone it only exists once the app has been built (or the dev server started) once.
+	@[ -f $(CLIENT_DIR)/src/auto-imports.d.ts ] || $(PNPM) --dir $(CLIENT_DIR) run build-only
 	@$(PNPM) --dir $(CLIENT_DIR) run type-check
 
 # -----------------------------------------------------------------------------
