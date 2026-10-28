@@ -68,3 +68,22 @@ def test_purge_old_tasks_uses_retention_days_from_settings():
     expected_cutoff = datetime.now() - timedelta(days=30)
     assert abs((cutoff - expected_cutoff).total_seconds()) < 5
     assert call_kwargs["batch_size"] == 50
+
+
+def test_beat_process_consumes_a_queue_the_ocr_workers_do_not_share():
+    import importlib
+
+    from src.connector.broker_connector import celery_app
+
+    from ocr_backend import celery_beat
+
+    original_queue = celery_app.conf.task_default_queue
+    try:
+        importlib.reload(celery_beat)
+
+        # The OCR workers and the API publish to Celery's default queue ("celery"); a beat
+        # worker sharing it would drop their jobs as unregistered tasks.
+        assert celery_app.conf.task_default_queue == celery_beat.PURGE_QUEUE
+        assert celery_beat.PURGE_QUEUE != "celery"
+    finally:
+        celery_app.conf.task_default_queue = original_queue

@@ -48,7 +48,7 @@ Légende : ✅ = obligatoire (le service plante/refuse de démarrer si absente) 
 
 ### Variables pour la purge périodique des tâches (Celery Beat)
 
-Purge automatique des tâches terminales (`completed`, `failed`, `canceled`, `timeout`) et de leurs fichiers S3/RustFS associés, une fois qu'elles dépassent la rétention configurée. Planifiée via Celery Beat (service `beat` de `docker-compose.yaml`, tâche `ocr_backend.purge_old_tasks` dans `ocr_backend/purge.py`).
+Purge automatique des tâches terminales (`completed`, `failed`, `canceled`, `timeout`) et de leurs fichiers S3/RustFS associés, une fois qu'elles dépassent la rétention configurée. Planifiée via Celery Beat (service `beat` de `docker-compose.yaml`, tâche `ocr_backend.purge_old_tasks` dans `ocr_backend/purge.py`). Le process beat consomme une file Celery dédiée (`purge`) : sur la file par défaut, partagée avec les workers OCR, chacun jetterait les messages de l'autre comme tâches inconnues.
 
 | Variable | Obligatoire | Description | Default | Utilisation |
 |:---|:---:|:---|:---|:---|
