@@ -9,9 +9,11 @@ deprecated: false
 annotations: {}
 keywords: []
 dependencies:
+  # Held on 0.27.x: later releases rewrite the Sentinel failover scripts and the way the
+  # password reaches redis-server, which needs a failover test on a cluster before bumping.
   - name: redis
     alias: redis
-    version: 0.37.13
+    version: 0.27.9
     repository: oci://registry-1.docker.io/cloudpirates
     condition: redis.enabled
   - name: postgres
