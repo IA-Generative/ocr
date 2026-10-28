@@ -33,13 +33,14 @@ def mock_model() -> MockeBaseModelPrediction:
     return MockeBaseModelPrediction()
 
 
-def test_get_content_file_success(mock_minio: S3Connector, mock_model: MockeBaseModelPrediction, dummy_task: TaskModel):
+def test_get_content_file_success(
+    mock_minio: S3Connector, mock_model: MockeBaseModelPrediction, dummy_task: TaskModel, tmp_path
+):
     expected_content = b"fake-bytes-content"
-    tmp_path = "data.txt"
-    with open(tmp_path, "wb") as f:
-        f.write(expected_content)
+    source_path = tmp_path / "data.txt"
+    source_path.write_bytes(expected_content)
 
-    mock_minio.save(task_id=dummy_task.id, user_id=dummy_task.user_id, file_path=tmp_path)
+    mock_minio.save(task_id=dummy_task.id, user_id=dummy_task.user_id, file_path=str(source_path))
     dummy_task.input = InputForm(
         storage_file_path=f"{dummy_task.user_id}/{dummy_task.id}/data.txt",
         raw_filename="data.txt",
@@ -55,6 +56,36 @@ def test_get_content_file_success(mock_minio: S3Connector, mock_model: MockeBase
 
     assert content == expected_content
     mock_minio.delete_by_task_id(user_id=dummy_task.user_id, task_id=dummy_task.id)
+
+
+def test_completed_task_drops_the_uploaded_file_but_keeps_the_page_images(
+    mock_minio: S3Connector, mock_model: MockeBaseModelPrediction, dummy_task: TaskModel
+):
+    image_path = "tests/data/valid/identite.jpg"
+    storage_file_path = mock_minio.save(
+        user_id=dummy_task.user_id, task_id=dummy_task.id, file_path=image_path, filename="identite.jpg"
+    )
+    dummy_task.input = InputForm(
+        storage_file_path=storage_file_path,
+        raw_filename="identite.jpg",
+        ext=".jpg",
+        size=123456,
+        content_type="image/jpg",
+    )
+    worker = AnyFileProcessWorker(name="test", file_connector=mock_minio, models=[mock_model])
+
+    try:
+        done = worker.process_task(task=dummy_task)
+
+        listing = mock_minio.client.list_objects_v2(
+            Bucket=mock_minio.bucket_name, Prefix=f"{dummy_task.user_id}/{dummy_task.id}/"
+        )
+        assert done.status == TaskStatus.COMPLETED.value
+        assert [obj["Key"] for obj in listing.get("Contents", [])] == [
+            f"{dummy_task.user_id}/{dummy_task.id}/images/page_0.jpg"
+        ]
+    finally:
+        mock_minio.delete_by_task_id(user_id=dummy_task.user_id, task_id=dummy_task.id)
 
 
 def test_get_content_file_exception(
