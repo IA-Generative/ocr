@@ -28,6 +28,11 @@ router = APIRouter(tags=["Jobs"])
 WORKER_NAME = "worker.tasks.ocr"
 
 
+def _remove_temp_file(path: Optional[str]) -> None:
+    if path and os.path.exists(path):
+        os.remove(path)
+
+
 def _handle_pdf_interest_zone(file_path: str, interest_zone: Optional[str]) -> list[RegionOfInterest]:
     doc = pymupdf.open(file_path)
     if doc.is_form_pdf:
@@ -37,18 +42,18 @@ def _handle_pdf_interest_zone(file_path: str, interest_zone: Optional[str]) -> l
         if len(regions) != len(doc):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Interest zone cannot be empty for PDF files {traceback.format_exc()}",
+                detail="Interest zone cannot be empty for PDF files",
             )
         return regions
     except JSONDecodeError as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid JSON format for interest_zone {e}{traceback.format_exc()}",
+            detail=f"Invalid JSON format for interest_zone {e}",
         )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid JSON format for interest_zone {e}{traceback.format_exc()}",
+            detail=f"Invalid JSON format for interest_zone {e}",
         )
 
 
@@ -57,7 +62,7 @@ def _handle_image_interest_zone(interest_zone: Optional[str]) -> list[RegionOfIn
     if len(regions) != 1:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Interest zone cannot be empty for image files {traceback.format_exc()}",
+            detail="Interest zone cannot be empty for image files",
         )
     return regions
 
@@ -74,7 +79,7 @@ def verify_interest_zone(
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid content type {traceback.format_exc()}",
+            detail=f"Invalid content type {content_type}",
         )
 
 
@@ -109,6 +114,7 @@ async def upload_file(
             group_id=group_id,
         ),
     )
+    temp_file_path = None
     try:
         async with aiofiles.tempfile.NamedTemporaryFile(delete=False) as temp_file:
             temp_file_path = temp_file.name
@@ -124,6 +130,7 @@ async def upload_file(
                 interest_zone=interest_zone,
             )
     except Exception as e:
+        _remove_temp_file(temp_file_path)
         logger.error(f"HTTPException for user {ctx.user_id}, task {task_data.id}: {e} - {traceback.format_exc()}")
         task_table.update_task(
             task_id=task_data.id,
@@ -135,7 +142,7 @@ async def upload_file(
         )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Invalid JSON format for interest_zone {e}{traceback.format_exc()}",
+            detail=f"Invalid JSON format for interest_zone {e}",
         )
 
     try:
@@ -173,6 +180,7 @@ async def upload_file(
         return task_data
 
     except Exception as e:
+        _remove_temp_file(temp_file_path)
         logger.error(
             f"Failed to upload file for user {ctx.user_id}, task {task_data.id}: {e} - {traceback.format_exc()}"
         )
@@ -186,5 +194,5 @@ async def upload_file(
         )
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"File upload failed: {e} {traceback.format_exc()}",
+            detail=f"File upload failed: {e}",
         )

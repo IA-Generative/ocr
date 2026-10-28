@@ -88,6 +88,34 @@ def test_upload_files_success(client):
     assert os.path.exists(file_from_minio)
 
 
+def test_failed_uploads_leave_no_temp_file_and_no_stack_trace(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
+    path = "tests/data/valid/cerfa_11573-09-filled.pdf"
+
+    # Rejected interest zone.
+    image_path = "tests/data/valid/identite.jpg"
+    with open(image_path, "rb") as image:
+        bad_zone = client.post(
+            "/api/jobs/",
+            files={"file": (image_path, image, "image/jpeg")},
+            data={"interest_zone": "invalid"},
+        )
+
+    # Storage failure after the upload was received.
+    with (
+        open(path, "rb") as pdf,
+        patch.object(s3_client_connector, "save", side_effect=Exception("storage unavailable")),
+    ):
+        storage_down = client.post("/api/jobs/", files={"file": (path, pdf, "application/pdf")})
+
+    assert bad_zone.status_code == 400
+    assert storage_down.status_code == 500
+    assert "storage unavailable" in storage_down.json()["detail"]
+    for response in (bad_zone, storage_down):
+        assert "Traceback" not in response.json()["detail"]
+    assert list(tmp_path.iterdir()) == []
+
+
 def test_upload_files_failed_invalid_task_type(client):
     """Test the api/jobs/ route with authentication"""
 
