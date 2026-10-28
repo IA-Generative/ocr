@@ -42,7 +42,7 @@ RUN pnpm run build
 
 
 # prod
-FROM docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine AS prod
+FROM docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine AS prod
 
 # The base image's CA bundle still trusts the eMudhra emSign ECC Root CA - G3, whose
 # intermediates have publicly recoverable private keys. Alpine's ca-certificates
