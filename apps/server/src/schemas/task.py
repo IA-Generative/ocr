@@ -207,7 +207,16 @@ class TaskTable:
     def get_tasks_by_user_id(self, user_id: str, page: int = 1, page_size: int = 10) -> Optional[List[TaskModel]]:
         offset = (page - 1) * page_size
         with self.get_db() as db:
-            tasks = db.query(Task).filter(Task.user_id == user_id).offset(offset).limit(page_size).all()
+            # Without an explicit order OFFSET/LIMIT pages overlap and skip rows; newest first
+            # matches what the task list shows, `id` makes equal timestamps deterministic.
+            tasks = (
+                db.query(Task)
+                .filter(Task.user_id == user_id)
+                .order_by(Task.created_at.desc(), Task.id)
+                .offset(offset)
+                .limit(page_size)
+                .all()
+            )
 
             if not tasks:
                 logger.warning(f"No tasks found for user {user_id}.")
@@ -320,7 +329,14 @@ class TaskTable:
     def get_tasks_by_group_id(self, group_id: str, page: int = 1, page_size: int = 10) -> Optional[List[TaskModel]]:
         offset = (page - 1) * page_size
         with self.get_db() as db:
-            tasks = db.query(Task).filter(Task.group_id == group_id).offset(offset).limit(page_size).all()
+            tasks = (
+                db.query(Task)
+                .filter(Task.group_id == group_id)
+                .order_by(Task.created_at.desc(), Task.id)
+                .offset(offset)
+                .limit(page_size)
+                .all()
+            )
 
             if not tasks:
                 logger.warning(f"No tasks found for group {group_id}.")
