@@ -153,6 +153,10 @@ major_version_zero = true
 env_override_existing_values = 1
 env_files = ["tests/.env.testing"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+# `src`, `services`, `business`... live at the root of apps/server; the `pytest` entry point
+# (unlike `python -m pytest`) does not put the working directory on sys.path.
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 120
