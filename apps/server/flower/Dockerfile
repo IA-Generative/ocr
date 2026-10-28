@@ -1,6 +1,6 @@
 ARG HARBOR_PROXY_URL
 
-FROM ${HARBOR_PROXY_URL:-docker.io}/python:3.11-slim
+FROM ${HARBOR_PROXY_URL:-docker.io}/python:3.13-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 

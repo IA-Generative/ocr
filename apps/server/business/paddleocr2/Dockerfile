@@ -14,7 +14,7 @@ ENV PADDLE_DEVICE=${PADDLE_DEVICE}
 ARG PADDLE_CUDA_INDEX=cu126
 ENV PADDLE_CUDA_INDEX=${PADDLE_CUDA_INDEX}
 
-RUN pip install --no-cache-dir uv
+RUN pip install --no-cache-dir uv==0.13.5
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /app
 
