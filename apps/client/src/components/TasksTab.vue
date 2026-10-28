@@ -29,7 +29,9 @@ const currentPage = ref(0)
 
 const totalPages = computed(() => {
   const total = store.userTasksPaginated?.total ?? 0
-  return total > 0 ? Math.ceil(total / PAGE_SIZE) : 0
+  return total > 0
+    ? Math.ceil(total / PAGE_SIZE)
+    : 0
 })
 
 const paginationPages = computed(() =>
@@ -87,9 +89,13 @@ const sortedTasks = computed(() => {
       return 0
     }
     if (sortAsc.value) {
-      return valA > valB ? 1 : -1
+      return valA > valB
+        ? 1
+        : -1
     }
-    return valA < valB ? 1 : -1
+    return valA < valB
+      ? 1
+      : -1
   })
 })
 

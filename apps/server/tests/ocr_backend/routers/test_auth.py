@@ -1,3 +1,4 @@
+import asyncio
 from unittest.mock import Mock
 from urllib.parse import parse_qs, urlparse
 
@@ -270,6 +271,27 @@ async def test_me_returns_user_profile_shape(fake_store):
         "lastName": "Martin",
         "groups": ["ocr-users"],
     }
+
+
+async def test_me_refreshes_the_session_off_the_event_loop(fake_store):
+    session = Mock(user_id="user-123", email="", first_name="", last_name="", groups=[])
+    on_event_loop = []
+
+    def ensure_fresh(sid, current):
+        try:
+            asyncio.get_running_loop()
+            on_event_loop.append(True)
+        except RuntimeError:
+            on_event_loop.append(False)
+        return current
+
+    fake_store.get.return_value = session
+    fake_store.ensure_fresh.side_effect = ensure_fresh
+
+    await auth_router.me(make_request(cookies={"ocr_session": "sid-1"}))
+
+    # ensure_fresh may sleep on the refresh lock and calls Keycloak synchronously.
+    assert on_event_loop == [False]
 
 
 async def test_me_without_session_is_unauthorized(fake_store):

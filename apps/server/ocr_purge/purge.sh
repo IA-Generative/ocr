@@ -76,14 +76,19 @@ for STATUS in "${STATUSES[@]}"; do
       --data-urlencode "status=$STATUS")
 
     HTTP_CODE=$(echo "$RESPONSE" | tail -n1)
-    BODY=$(echo "$RESPONSE" | head -n -1)
+    BODY=$(echo "$RESPONSE" | sed '$d')
 
-    if [ "$HTTP_CODE" -eq 200 ]; then
-        # Compter le nombre de tâches supprimées
-        COUNT=$(echo "$BODY" | jq '. | length' 2>/dev/null || echo "0")
+    if [ "$HTTP_CODE" -eq 200 ] || [ "$HTTP_CODE" -eq 204 ]; then
+        # L'API répond 204 sans corps : il n'y a alors aucun décompte à relire.
+        COUNT=0
+        if [ -n "$BODY" ]; then
+            COUNT=$(echo "$BODY" | jq '. | length' 2>/dev/null || echo "0")
+        fi
         TOTAL_DELETED=$((TOTAL_DELETED + COUNT))
 
-        if [ "$COUNT" -gt 0 ]; then
+        if [ "$HTTP_CODE" -eq 204 ]; then
+            echo "  ✅ Purge acceptée pour le statut '$STATUS' (204, pas de décompte renvoyé)"
+        elif [ "$COUNT" -gt 0 ]; then
             echo "  ✅ $COUNT tâches supprimées avec le statut '$STATUS'"
         else
             echo "  ℹ️ Aucune tâche trouvée avec le statut '$STATUS'"

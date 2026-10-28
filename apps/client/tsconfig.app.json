@@ -4,7 +4,7 @@
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
 
-    "baseUrl": ".",
+    // `paths` resolve against this file, so the `@/*` alias needs no `baseUrl` (removed in TypeScript 7).
     "paths": {
       "@/*": ["./src/*"]
     },

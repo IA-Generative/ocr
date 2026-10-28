@@ -12,14 +12,26 @@ function httpError (config: InternalAxiosRequestConfig, status: number) {
   return Object.assign(new Error(`Request failed with status code ${status}`), {
     config,
     isAxiosError: true,
-    response: { status, data: {}, statusText: '', headers: {}, config },
+    response: {
+      status,
+      data: {},
+      statusText: '',
+      headers: {},
+      config,
+    },
   })
 }
 
 function withTransport (client: AxiosInstance, handler: (config: InternalAxiosRequestConfig) => unknown) {
   client.defaults.adapter = async (config) => {
     const result = await handler(config as InternalAxiosRequestConfig)
-    return { data: result, status: 200, statusText: 'OK', headers: {}, config } as never
+    return {
+      data: result,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config,
+    } as never
   }
 }
 

@@ -1,4 +1,4 @@
-import fitz
+import pymupdf
 import io
 from time import time
 import tempfile
@@ -96,7 +96,9 @@ class FeatureSaver(BaseModelPrediction):
             raise ValueError("Interest zone must contain exactly one entry for image tasks.")
 
     def _handle_pdf_interest_zone(self, task: TaskModel):
-        doc: fitz.Document = fitz.open(self.file_connector.get_by_task_id(user_id=task.user_id, task_id=task.id))
+        doc: pymupdf.Document = pymupdf.open(
+            self.file_connector.download_by_s3_key(s3_key=task.input.storage_file_path)
+        )
         logger.debug(
             f"{Colors.YELLOW}[{self.__class__.__name__}]: Processing PDF with {len(doc)} pages for task {task.id} - is form: {doc.is_form_pdf} - interest zone: {len(task.input.interest_zone)} {Colors.RESET}"
         )
@@ -120,7 +122,7 @@ class FeatureSaver(BaseModelPrediction):
                 f"{Colors.YELLOW}[{self.__class__.__name__}][{task.id}]: Created interest zones for {len(task.input.interest_zone)} pages in the PDF.{Colors.RESET}"
             )
 
-    def _create_bbox_from_widget(self, widget: fitz.Widget, img: Image.Image, scale: float) -> Bbox:
+    def _create_bbox_from_widget(self, widget: pymupdf.Widget, img: Image.Image, scale: float) -> Bbox:
         rect = widget.rect
         name = widget.field_name
         value = widget.field_value

@@ -28,7 +28,13 @@ const stats = reactive({
   },
 })
 
-const COLORS = ['#4caf50', '#2196f3', '#ff9800', '#e91e63', '#9c27b0']
+const COLORS = [
+  '#4caf50',
+  '#2196f3',
+  '#ff9800',
+  '#e91e63',
+  '#9c27b0',
+]
 
 function polarToCartesian (cx, cy, r, angle) {
   const a = (angle - 90) * Math.PI / 180.0
@@ -38,7 +44,9 @@ function polarToCartesian (cx, cy, r, angle) {
 function describeArc (cx, cy, r, startAngle, endAngle) {
   const start = polarToCartesian(cx, cy, r, endAngle)
   const end = polarToCartesian(cx, cy, r, startAngle)
-  const largeArcFlag = endAngle - startAngle <= 180 ? '0' : '1'
+  const largeArcFlag = endAngle - startAngle <= 180
+    ? '0'
+    : '1'
   const d = [
     `M ${cx} ${cy}`,
     `L ${start.x} ${start.y}`,
@@ -78,7 +86,12 @@ const userSlices = computed(() => {
     const portion = ((v || 0) / total) * 360
     const path = describeArc(16, 16, 16, angle, angle + portion)
     angle += portion
-    return { label: k, value: v || 0, color: COLORS[i % COLORS.length], path }
+    return {
+      label: k,
+      value: v || 0,
+      color: COLORS[i % COLORS.length],
+      path,
+    }
   })
 })
 
@@ -93,7 +106,12 @@ const globalSlices = computed(() => {
     const portion = ((v || 0) / total) * 360
     const path = describeArc(16, 16, 16, angle, angle + portion)
     angle += portion
-    return { label: k, value: v || 0, color: COLORS[i % COLORS.length], path }
+    return {
+      label: k,
+      value: v || 0,
+      color: COLORS[i % COLORS.length],
+      path,
+    }
   })
 })
 

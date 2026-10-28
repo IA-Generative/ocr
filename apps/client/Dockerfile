@@ -1,15 +1,11 @@
-ARG PNPM_VERSION=11.24.0
+ARG PNPM_VERSION=11.28.9
 
 # dev
 FROM docker.io/node:24.22.1-slim AS dev
 
-# pnpm's native binary (@pnpm/exe) needs libatomic, which the slim base image doesn't
-# ship - without it the binary fails at runtime with "libatomic.so.1: cannot open
-# shared object file", not at install time.
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends libatomic1 \
-    && rm -rf /var/lib/apt/lists/*
-
+# Re-declared here because an ARG set before `FROM` is not visible inside a stage: without
+# this line `${PNPM_VERSION}` expands to nothing and the newest pnpm gets installed instead.
+ARG PNPM_VERSION
 RUN npm install --ignore-scripts --location=global pnpm@${PNPM_VERSION}
 
 WORKDIR /app
@@ -42,7 +38,7 @@ RUN pnpm run build
 
 
 # prod
-FROM docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine AS prod
+FROM docker.io/nginxinc/nginx-unprivileged:1.31.7-alpine AS prod
 
 # The base image's CA bundle still trusts the eMudhra emSign ECC Root CA - G3, whose
 # intermediates have publicly recoverable private keys. Alpine's ca-certificates

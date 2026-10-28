@@ -4,12 +4,12 @@ dependencies:
   version: 0.27.9
 - name: postgres
   repository: oci://registry-1.docker.io/cloudpirates
-  version: 0.19.6
+  version: 0.21.2
 - name: rustfs
   repository: oci://registry-1.docker.io/cloudpirates
-  version: 0.10.0
+  version: 0.10.1
 - name: cluster
   repository: https://cloudnative-pg.github.io/charts
-  version: 0.8.1
-digest: sha256:dfbf51f78178f51d5dc281e2f4338bcf9946826f93ddb8c90a023e3b52d77904
-generated: "2026-07-23T16:20:40.714142+02:00"
+  version: 0.9.0
+digest: sha256:ecc958d000a2cbad631272631301657a1c130e57a5f951f6d705aba8d94c58a1
+generated: "2026-10-28T15:21:34.130166+01:00"

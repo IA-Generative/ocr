@@ -1,6 +1,6 @@
-shellEmulator: true
-
+minimumReleaseAgeExcludePrune: true
 trustPolicy: no-downgrade
+shellEmulator: true
 
 overrides:
   # Transitive, security-only bumps (Dependabot); no direct dependency needs pinning.

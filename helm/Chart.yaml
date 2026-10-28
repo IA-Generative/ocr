@@ -1,7 +1,7 @@
 apiVersion: v2
 name: ocr
 type: application
-version: 0.4.0
+version: 0.4.1
 appVersion: "0.22.0"
 description: A Helm chart to deploy ocr.
 # home: https://this-is-tobi.com
@@ -9,6 +9,8 @@ deprecated: false
 annotations: {}
 keywords: []
 dependencies:
+  # Held on 0.27.x: later releases rewrite the Sentinel failover scripts and the way the
+  # password reaches redis-server, which needs a failover test on a cluster before bumping.
   - name: redis
     alias: redis
     version: 0.27.9
@@ -16,17 +18,17 @@ dependencies:
     condition: redis.enabled
   - name: postgres
     alias: postgres
-    version: 0.19.6
+    version: 0.21.2
     repository: oci://registry-1.docker.io/cloudpirates
     condition: postgres.enabled
   - name: rustfs
     alias: rustfs
-    version: 0.10.0
+    version: 0.10.1
     repository: oci://registry-1.docker.io/cloudpirates
     condition: rustfs.enabled
   - name: cluster
     alias: cnpg
-    version: 0.8.1
+    version: 0.9.0
     repository: https://cloudnative-pg.github.io/charts
     condition: cnpg.enabled
 sources:

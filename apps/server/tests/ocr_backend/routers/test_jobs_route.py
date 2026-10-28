@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 import os
 import tempfile
-from uuid import uuid4
 from unittest.mock import patch
 
 import pytest
@@ -31,30 +30,27 @@ def temp_file():
 
 
 def test_upload_file(client):
-    user_id = str(uuid4())
+    uploaded = 0
+    for img_path in sorted(glob.glob("tests/data/valid/*")):
+        if Path(img_path).is_dir():
+            continue
 
-    for img_path in glob.glob("tests/data/valid/*"):
-        if not Path(img_path).is_dir:
-            with open(img_path, "rb") as image_file:
-                files = {"file": (img_path, image_file, "multipart/form-data")}
+        with open(img_path, "rb") as image_file:
+            response = client.post("/api/jobs/", files={"file": (img_path, image_file, "multipart/form-data")})
 
-                # Effectuer l'appel à l'API pour uploader le fichier
-                response = client.post(
-                    f"/api/jobs/{user_id}",
-                    files=files,
-                )
+        assert response.status_code == 201, img_path
+        response_model = TaskModel(**response.json())
+        assert response_model.status == TaskStatus.QUEUED.value
+        assert response_model.input.storage_file_path == (
+            f"{response_model.user_id}/{response_model.id}/{os.path.basename(img_path)}"
+        )
 
-            # Vérifier la réponse
-            assert response.status_code == 201
-            response_model = TaskModel(**response.json())
-            assert response_model.status == TaskStatus.QUEUED.value
-            assert response_model.user_id == user_id
+        # The upload is stored under the key recorded on the task.
+        file_from_minio = s3_client_connector.download_by_s3_key(response_model.input.storage_file_path)
+        assert os.path.exists(file_from_minio)
+        uploaded += 1
 
-            # Vérifier que le fichier est bien enregistré dans Minio
-            task_id = response_model.id
-            file_from_minio = s3_client_connector.get_by_task_id(user_id, task_id)
-
-            assert os.path.exists(file_from_minio)
+    assert uploaded > 0
 
 
 def test_upload_files_success(client):
@@ -90,6 +86,34 @@ def test_upload_files_success(client):
     task_id = response_model.id
     file_from_minio = s3_client_connector.download_by_s3_key(f"{user_id}/{task_id}/{os.path.basename(path)}")
     assert os.path.exists(file_from_minio)
+
+
+def test_failed_uploads_leave_no_temp_file_and_no_stack_trace(client, tmp_path, monkeypatch):
+    monkeypatch.setattr(tempfile, "tempdir", str(tmp_path))
+    path = "tests/data/valid/cerfa_11573-09-filled.pdf"
+
+    # Rejected interest zone.
+    image_path = "tests/data/valid/identite.jpg"
+    with open(image_path, "rb") as image:
+        bad_zone = client.post(
+            "/api/jobs/",
+            files={"file": (image_path, image, "image/jpeg")},
+            data={"interest_zone": "invalid"},
+        )
+
+    # Storage failure after the upload was received.
+    with (
+        open(path, "rb") as pdf,
+        patch.object(s3_client_connector, "save", side_effect=Exception("storage unavailable")),
+    ):
+        storage_down = client.post("/api/jobs/", files={"file": (path, pdf, "application/pdf")})
+
+    assert bad_zone.status_code == 400
+    assert storage_down.status_code == 500
+    assert "storage unavailable" in storage_down.json()["detail"]
+    for response in (bad_zone, storage_down):
+        assert "Traceback" not in response.json()["detail"]
+    assert list(tmp_path.iterdir()) == []
 
 
 def test_upload_files_failed_invalid_task_type(client):

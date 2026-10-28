@@ -185,3 +185,14 @@ def test_process_document_upload_file_exception(mock_upload_file, mock_token_ver
     # Assert
     assert response.status_code == 500
     assert "Internal server error" in response.json()["detail"]
+
+
+@pytest.mark.parametrize("route", ["/api/process", "/api/v1/openwebui/process"])
+@pytest.mark.parametrize("header", ["poll-interval", "max-wait-time"])
+@pytest.mark.parametrize("value", ["0", "-1"])
+def test_process_routes_reject_non_positive_wait_headers(client, route, header, value):
+    # A poll interval of 0 (or less) never advances the wait counter, so the request would
+    # poll the database in a tight loop for as long as the task stays unfinished.
+    response = client.put(route, content=b"fake pdf content", headers={header: value})
+
+    assert response.status_code == 422, response.text

@@ -1,4 +1,4 @@
-import fitz
+import pymupdf
 from PIL import Image
 
 from src.schemas.box import Bbox
@@ -38,13 +38,13 @@ class PDFFormsExtractorWorker(BaseWorker):
             worker_weight=worker_weight,
             cache=cache,
         )
-        self._cached_doc: fitz.Document = None
+        self._cached_doc: pymupdf.Document = None
 
-    def _get_cached_document(self, task: TaskModel) -> fitz.Document:
+    def _get_cached_document(self, task: TaskModel) -> pymupdf.Document:
         # Always open a fresh document — no cross-task caching to avoid stale state
         self._clear_cached_document()
         tmp_filename = self.get_content_file(task=task)
-        self._cached_doc = fitz.open(tmp_filename)
+        self._cached_doc = pymupdf.open(tmp_filename)
         return self._cached_doc
 
     def _clear_cached_document(self):
@@ -84,7 +84,7 @@ class PDFFormsExtractorWorker(BaseWorker):
             )
             return task
         t = time.time()
-        doc: fitz.Document = self._get_cached_document(task)
+        doc: pymupdf.Document = self._get_cached_document(task)
         logger.debug(
             f"Time to open PDF {task.input.raw_filename} for task {task.id}: {time.time() - t:.2f}s",
             extra=extra_log,
@@ -188,7 +188,7 @@ class PDFFormsExtractorWorker(BaseWorker):
 
     def process(self, task: TaskModel) -> tuple[list[list[Bbox]], list[list[LLMFormField]]]:
         t = time.time()
-        doc: fitz.Document = self._get_cached_document(task)
+        doc: pymupdf.Document = self._get_cached_document(task)
         logger.debug(
             f"[worker {self.name}]Time to open PDF {task.input.raw_filename} for task {task.id}: {time.time() - t:.2f}s",
             extra={"task_id": task.id, "user_id": task.user_id},

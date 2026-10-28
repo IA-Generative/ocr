@@ -365,8 +365,10 @@ class BaseWorker(ABC):
             ),
         )
 
+        # Only the uploaded file: the rendered page images stay available to the page viewer
+        # until the task itself is deleted.
         try:
-            self.file_connector.delete_by_task_id(user_id=task.user_id, task_id=task.id)
+            self.file_connector.delete_by_s3_key(task.input.storage_file_path)
         except Exception as e:
             logger.warning(str(e))
 

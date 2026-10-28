@@ -1,6 +1,6 @@
 # ocr
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square)
+![Version: 0.4.1](https://img.shields.io/badge/Version-0.4.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.22.0](https://img.shields.io/badge/AppVersion-0.22.0-informational?style=flat-square)
 
 A Helm chart to deploy ocr.
 
@@ -8,10 +8,10 @@ A Helm chart to deploy ocr.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://cloudnative-pg.github.io/charts | cnpg(cluster) | 0.8.1 |
-| oci://registry-1.docker.io/cloudpirates | postgres(postgres) | 0.19.6 |
+| https://cloudnative-pg.github.io/charts | cnpg(cluster) | 0.9.0 |
+| oci://registry-1.docker.io/cloudpirates | postgres(postgres) | 0.21.2 |
 | oci://registry-1.docker.io/cloudpirates | redis(redis) | 0.27.9 |
-| oci://registry-1.docker.io/cloudpirates | rustfs(rustfs) | 0.10.0 |
+| oci://registry-1.docker.io/cloudpirates | rustfs(rustfs) | 0.10.1 |
 
 ## Values
 

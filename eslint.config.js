@@ -43,8 +43,16 @@ export default antfu(
     stylistic: {
       overrides: {
         'style/comma-dangle': ['error', 'always-multiline'],
-        'style/quote-props': ['error', 'as-needed', { keywords: false, unnecessary: true }],
-        'style/brace-style': ['error', '1tbs', { allowSingleLine: true }],
+        'style/quote-props': [
+          'error',
+          'as-needed',
+          { keywords: false, unnecessary: true },
+        ],
+        'style/brace-style': [
+          'error',
+          '1tbs',
+          { allowSingleLine: true },
+        ],
         'style/space-before-function-paren': ['error', 'always'],
       },
     },

@@ -136,8 +136,8 @@ async def openwebui_process_document(
     authorization: Annotated[Optional[str], Header()] = None,
     x_filename: Annotated[Optional[str], Header()] = None,
     content_type: Annotated[Optional[str], Header()] = None,
-    max_wait_time: Annotated[int, Header()] = 300,
-    poll_interval: Annotated[int, Header()] = 2,
+    max_wait_time: Annotated[int, Header(ge=1)] = 300,
+    poll_interval: Annotated[int, Header(ge=1)] = 2,
 ):
     _verify_api_key(authorization)
 

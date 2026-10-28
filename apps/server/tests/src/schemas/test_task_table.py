@@ -502,3 +502,50 @@ def test_delete_tasks_created_before_no_status_filter(task_table: TaskTable, db_
     deleted = task_table.delete_tasks_created_before(cutoff_date=datetime.now() - timedelta(days=365))
 
     assert [t.id for t in deleted] == [task.id]
+
+
+def test_get_tasks_by_user_id_pages_are_ordered_newest_first(task_table: TaskTable, db_session):
+    # Inserted out of order, with a tie, so only an explicit ORDER BY yields stable pages.
+    created_at_by_id = {"t-old": 100, "t-newest": 500, "t-mid-b": 300, "t-mid-a": 300, "t-new": 400}
+    for task_id, created_at in created_at_by_id.items():
+        db_session.add(
+            Task(
+                id=task_id,
+                user_id="ordered-user",
+                type="ocr",
+                status=TaskStatus.COMPLETED.value,
+                percentage=100.0,
+                created_at=created_at,
+                updated_at=created_at,
+            )
+        )
+    db_session.commit()
+
+    pages = [task_table.get_tasks_by_user_id(user_id="ordered-user", page=page, page_size=2) for page in (1, 2, 3)]
+
+    assert [[task.id for task in page] for page in pages] == [
+        ["t-newest", "t-new"],
+        ["t-mid-a", "t-mid-b"],
+        ["t-old"],
+    ]
+
+
+def test_get_tasks_by_group_id_pages_are_ordered_newest_first(task_table: TaskTable, db_session):
+    for task_id, created_at in {"g-old": 100, "g-new": 200, "g-mid": 150}.items():
+        db_session.add(
+            Task(
+                id=task_id,
+                user_id="u",
+                group_id="ordered-group",
+                type="ocr",
+                status=TaskStatus.COMPLETED.value,
+                percentage=100.0,
+                created_at=created_at,
+                updated_at=created_at,
+            )
+        )
+    db_session.commit()
+
+    page = task_table.get_tasks_by_group_id(group_id="ordered-group", page=1, page_size=10)
+
+    assert [task.id for task in page] == ["g-new", "g-mid", "g-old"]

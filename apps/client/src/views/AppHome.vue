@@ -27,7 +27,9 @@ const status = computed(() => store.status)
 const isLoading = ref(false)
 
 function selectFile (files: FileList | File[]) {
-  const file = Array.isArray(files) ? files[0] : files[0] || null
+  const file = Array.isArray(files)
+    ? files[0]
+    : files[0] || null
   if (file) {
     pdfUrl.value = URL.createObjectURL(file)
     selectedFile.value = file

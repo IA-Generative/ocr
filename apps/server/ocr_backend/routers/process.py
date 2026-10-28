@@ -52,8 +52,8 @@ def get_pages_content(task: TaskModel, size_bytes: int, filename: str, mime_type
 )
 async def process_document(
     request: Request,
-    max_wait_time: int = Header(300),
-    poll_interval: int = Header(2),
+    max_wait_time: int = Header(300, ge=1),
+    poll_interval: int = Header(2, ge=1),
     x_filename: Optional[str] = Header(None),
     content_type: Optional[str] = Header(None),
     ctx: RequestContext = Depends(TokenVerifier),

@@ -98,15 +98,33 @@ class S3Connector(BaseFileConnector):
             raise Exception(f"Erreur lors de la sauvegarde du fichier : {e}")
 
     def delete_by_task_id(self, user_id: str, task_id: str) -> bool:
-        object_key = f"{user_id}/{task_id}"
-        try:
-            self.client.delete_object(Bucket=self.bucket_name, Key=object_key)
-            return True
-        except ClientError as e:
-            if e.response["Error"]["Code"] == "NoSuchKey":
-                raise FileNotFoundError(f"Fichier non trouvé pour la tâche {task_id} de l'utilisateur {user_id} : {e}")
-            else:
-                raise e
+        """Delete everything stored for a task: the uploaded file (`<user>/<task>/<filename>`)
+        and the rendered page images (`<user>/<task>/images/...`)."""
+        prefix = f"{user_id}/{task_id}/"
+        # Also the bare `<user>/<task>` key that files were stored under before the filename
+        # became part of the key.
+        keys = [f"{user_id}/{task_id}"]
+        paginator = self.client.get_paginator("list_objects_v2")
+        for page in paginator.paginate(Bucket=self.bucket_name, Prefix=prefix):
+            keys.extend(obj["Key"] for obj in page.get("Contents", []))
+
+        self._delete_keys(keys)
+        return True
+
+    def delete_by_s3_key(self, s3_key: str) -> bool:
+        """Delete a single object by its key."""
+        self._delete_keys([s3_key])
+        return True
+
+    def _delete_keys(self, keys: list[str]) -> None:
+        batch_size = 1_000  # S3 DeleteObjects accepts at most 1000 keys per call.
+        for start in range(0, len(keys), batch_size):
+            response = self.client.delete_objects(
+                Bucket=self.bucket_name,
+                Delete={"Objects": [{"Key": key} for key in keys[start : start + batch_size]], "Quiet": True},
+            )
+            if response.get("Errors"):
+                raise Exception(f"Erreur lors de la suppression de fichiers dans S3 : {response['Errors']}")
 
     def generate_presigned_url(self, key: str, expires_in: int = 3600) -> str:
         return self.client.generate_presigned_url(

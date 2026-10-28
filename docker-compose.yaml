@@ -153,7 +153,7 @@ services:
       - .env
 
   keycloak:
-    image: quay.io/keycloak/keycloak:26.2
+    image: quay.io/keycloak/keycloak:26.8
     container_name: keycloak
     # Auto-provisions the "mirai" realm/client/test user below on every start, so local
     # login works out of the box without any manual admin-console setup.

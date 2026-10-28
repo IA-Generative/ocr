@@ -232,7 +232,11 @@ export class OCRClient {
   async createJob (filePath: string, options: CreateJobOptions = {}): Promise<TaskModel> {
     const data = await readFile(filePath)
     const form = new FormData()
-    form.append('file', new Blob([new Uint8Array(data)], { type: guessMimeType(filePath) }), basename(filePath))
+    form.append('file', new Blob([
+      new Uint8Array(data),
+    ], {
+      type: guessMimeType(filePath),
+    }), basename(filePath))
     form.append('group_id', options.groupId ?? DEFAULT_GROUP_ID)
     form.append('task_operation', options.taskOperation ?? DEFAULT_TASK_OPERATION)
     if (options.interestZone) {
@@ -260,14 +264,20 @@ export class OCRClient {
 
   /** List the authenticated user's tasks (paginated). */
   async getUserTasks (page = 1, pageSize = 10): Promise<PaginatedTasks> {
-    const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) })
+    const params = new URLSearchParams({
+      page: String(page),
+      page_size: String(pageSize),
+    })
     const response = await this.request(`/api/tasks/user/?${params}`, { method: 'GET' })
     return (await response.json()) as PaginatedTasks
   }
 
   /** Get global and per-user task statistics. */
   async getTaskStats (page = 1, pageSize = 10): Promise<TaskStats> {
-    const params = new URLSearchParams({ page: String(page), page_size: String(pageSize) })
+    const params = new URLSearchParams({
+      page: String(page),
+      page_size: String(pageSize),
+    })
     const response = await this.request(`/api/stats/tasks?${params}`, { method: 'GET' })
     return (await response.json()) as TaskStats
   }
@@ -339,7 +349,9 @@ export class OCRClient {
           'Content-Type': options.mimeType ?? guessMimeType(filePath),
         },
       },
-      { timeoutMs: Math.max(this.timeoutMs, (maxWaitTimeSeconds + 10) * 1000) },
+      {
+        timeoutMs: Math.max(this.timeoutMs, (maxWaitTimeSeconds + 10) * 1000),
+      },
     )
     return (await response.json()) as ProcessResponse[]
   }

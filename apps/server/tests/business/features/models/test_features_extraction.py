@@ -90,7 +90,12 @@ def test_feature_saver(
     mock_get_task_by_id: MagicMock,  # Mock the task retrieval
     qdrant_store: QdrantVectorStore,
     storage_service: BaseFileConnector,
+    monkeypatch: pytest.MonkeyPatch,
 ):
+    # The task's input points at a local sample instead of an uploaded object.
+    monkeypatch.setattr(
+        storage_service, "download_by_s3_key", lambda *args, **kwargs: "tests/data/valid/cerfa_13750-05-1.pdf"
+    )
     mock_task = TaskModel(
         id="test_task",
         user_id="test_user",
@@ -232,6 +237,38 @@ def test_feature_saver_set_interest_zone(
         ]
         mock_task.input.content_type = "image/png"
         feature_saver.set_interest_zone(mock_task)
+
+
+@patch("src.schemas.task.task_table.get_task_by_id")
+def test_feature_saver_set_interest_zone_reads_the_pdf_from_its_stored_key(
+    mock_get_task_by_id: MagicMock,
+    qdrant_store: QdrantVectorStore,
+):
+    file_connector = MagicMock()
+    file_connector.download_by_s3_key.return_value = "tests/data/valid/cerfa_13750-05-1.pdf"
+    task = TaskModel(
+        id="pdf_task",
+        user_id="test_user",
+        input=InputForm(
+            storage_file_path="test_user/pdf_task/cerfa_13750-05-1.pdf",
+            raw_filename="cerfa_13750-05-1.pdf",
+            content_type="application/pdf",
+            ext=".pdf",
+            size=12345,
+            interest_zone=[],
+        ),
+        group_id="dummy_collection",
+        type=TaskOperation.SAVE_TEMPLATE.value,
+        status="created",
+        created_at=1633036800,
+        updated_at=1633036800,
+    )
+    feature_saver = FeatureSaver(collection_manager=qdrant_store, file_connector=file_connector)
+
+    feature_saver.set_interest_zone(task)
+
+    # The key carries the filename; `<user>/<task>` alone points at nothing.
+    file_connector.download_by_s3_key.assert_called_once_with(s3_key="test_user/pdf_task/cerfa_13750-05-1.pdf")
 
 
 @patch("src.schemas.task.task_table.get_task_by_id")
