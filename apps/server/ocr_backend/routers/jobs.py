@@ -6,7 +6,7 @@ import traceback
 from typing import Optional
 
 from fastapi import APIRouter, File, HTTPException, UploadFile, status, Depends, Form
-import fitz
+import pymupdf
 
 from src.connector.broker_connector import celery_app, celery_config
 from src.logger import logger
@@ -29,7 +29,7 @@ WORKER_NAME = "worker.tasks.ocr"
 
 
 def _handle_pdf_interest_zone(file_path: str, interest_zone: Optional[str]) -> list[RegionOfInterest]:
-    doc = fitz.open(file_path)
+    doc = pymupdf.open(file_path)
     if doc.is_form_pdf:
         return []
     try:
