@@ -8,10 +8,10 @@ A Helm chart to deploy ocr.
 
 | Repository | Name | Version |
 |------------|------|---------|
-| https://cloudnative-pg.github.io/charts | cnpg(cluster) | 0.8.1 |
-| oci://registry-1.docker.io/cloudpirates | postgres(postgres) | 0.19.6 |
-| oci://registry-1.docker.io/cloudpirates | redis(redis) | 0.27.9 |
-| oci://registry-1.docker.io/cloudpirates | rustfs(rustfs) | 0.10.0 |
+| https://cloudnative-pg.github.io/charts | cnpg(cluster) | 0.9.0 |
+| oci://registry-1.docker.io/cloudpirates | postgres(postgres) | 0.21.2 |
+| oci://registry-1.docker.io/cloudpirates | redis(redis) | 0.37.13 |
+| oci://registry-1.docker.io/cloudpirates | rustfs(rustfs) | 0.10.1 |
 
 ## Values
 
