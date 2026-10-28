@@ -6,6 +6,7 @@ from urllib.parse import urlencode
 from fastapi import APIRouter, HTTPException, Query, Request, Response, status
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+from starlette.concurrency import run_in_threadpool
 
 from ocr_backend.core.security import keycloak_client
 from ocr_backend.core.security.claims import extract_identity
@@ -333,7 +334,9 @@ async def me(request: Request):
     sid = request.cookies.get(_keycloak_settings.SESSION_COOKIE_NAME)
     session = _session_store.get(sid) if sid else None
     if session:
-        session = _session_store.ensure_fresh(sid, session)
+        # Blocking: it can poll the refresh lock for seconds and call Keycloak, which must
+        # not stall every other request served by this event loop.
+        session = await run_in_threadpool(_session_store.ensure_fresh, sid, session)
     if not session:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="UNAUTHORIZED")
 
