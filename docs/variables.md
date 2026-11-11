@@ -19,9 +19,11 @@ Légende : ✅ = obligatoire (le service plante/refuse de démarrer si absente) 
 | `CLASSIFICATION_FOLDER` | ❌ | Sous-dossier du modèle de classification. | `classification` | `PaddleSetting` |
 | `DETECTION_BATCH_SIZE` | ❌ | Batch size pour la détection. | `2` | `PaddleSetting` |
 | `RECOGNITION_BATCH_SIZE` | ❌ | Batch size pour la reconnaissance. | `8` | `PaddleSetting` |
-| `CPU_THREADS` | ❌ | Nombre de threads CPU pour l'inférence PaddleOCR. | `2` | `PaddleSetting` |
+| `CPU_THREADS` | ❌ | Nombre de threads CPU pour l'inférence PaddleOCR (`intra_op_num_threads` avec ONNX Runtime). | `2` | `PaddleSetting` |
 | `ENABLE_MKLDNN` | ❌ | Active l'accélération MKL-DNN. | `False` | `PaddleSetting` |
-| `OCR_VERSION` | ❌ | Version du modèle PaddleOCR. | `PP-OCRv3` | `PaddleSetting` |
+| `OCR_ENGINE` | ❌ | Moteur d'inférence PaddleOCR (`onnxruntime` ou `paddle`). | `onnxruntime` | `PaddleSetting` |
+| `TEXT_DETECTION_MODEL_NAME` | ❌ | Modèle de détection de texte (variante `_onnx` téléchargée automatiquement avec `onnxruntime`). | `PP-OCRv6_tiny_det` | `PaddleSetting` |
+| `TEXT_RECOGNITION_MODEL_NAME` | ❌ | Modèle de reconnaissance de texte. | `PP-OCRv6_tiny_rec` | `PaddleSetting` |
 | `DEVICE` | ❌ | Device d'inférence (`cpu`/`gpu`). | `cpu` | `PaddleSetting` |
 | `OCR_LANG` | ❌ | Langue forcée pour l'OCR. | `None` | `PaddleSetting` |
 
