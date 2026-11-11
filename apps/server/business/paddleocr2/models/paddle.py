@@ -6,7 +6,7 @@ from PIL import Image
 from paddleocr import PaddleOCR
 import numpy as np
 
-from business.paddleocr2.configs.paddle import PaddleSetting
+from business.paddleocr2.configs.paddle import PaddleSetting, build_paddle_ocr_kwargs
 from services.base.model import BaseModelPrediction
 from src.schemas.output import Page
 from src.schemas.box import Bbox
@@ -33,11 +33,7 @@ class PaddleInferOCR2(BaseModelPrediction):
             text_recognition_model_dir=rec_dir,
             use_textline_orientation=False,
             use_doc_unwarping=False,
-            lang="fr",
-            ocr_version=paddle_settings.OCR_VERSION,
-            device=paddle_settings.DEVICE,
-            cpu_threads=paddle_settings.CPU_THREADS,
-            enable_mkldnn=paddle_settings.ENABLE_MKLDNN,
+            **build_paddle_ocr_kwargs(paddle_settings),
         )
         self.warmup()
 
