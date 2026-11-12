@@ -1,0 +1,158 @@
+{
+  "name": "paddleocr-v5-mobile-onnx",
+  "created_at": "2026-11-12T13:59:08+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv5_mobile_det",
+    "rec_model": "PP-OCRv5_mobile_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "nielsr/funsd-layoutlmv3",
+    "config": null,
+    "split": "test",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": false,
+    "shuffle_buffer": 100,
+    "pages_per_document": 1,
+    "adapter": "funsd",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 89.48,
+  "n_evaluated": 50,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.41604964573173264,
+    "wer": 0.6167479592140032
+  },
+  "profiling": {
+    "inference_s_mean": 1.6810499842399995,
+    "inference_s_p50": 1.5976311324999983,
+    "inference_s_p90": 2.474300408300002,
+    "inference_s_p95": 3.039282573999996,
+    "inference_s_p99": 4.028678625930005,
+    "inference_s_max": 4.224621464000009,
+    "s_per_megapixel": 2.199751353362993,
+    "energy_kwh_total": 0.005666157600130109,
+    "energy_kwh_mean": 0.00011332315200260218,
+    "emissions_kg_samples": 0.00031752580575369123,
+    "by_image_size": {
+      "<1MP": {
+        "n": 50,
+        "inference_s_mean": 1.6810499842399995,
+        "inference_s_p95": 3.039282573999996
+      }
+    },
+    "emissions_kg_total": 0.0003193482373336109
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "d492a85cf46416471e0d97a74bf8a8797fab6d7ead5d2ee6fb57312b5afb74da",
+  "dataset_revision": "ccd2a77745b0dc9f154a91db1219ec05c86ce7ec",
+  "worst_samples": [
+    {
+      "id": "10",
+      "reference": "COURT: Asbestos JUDGE: CASE FORM CASE NAME: LORILLARD ENTITIES DATE FILED DATE SERVED CASE TYPE: PLAINTIEE'S COUNSEL: LORILLARD COUNSEL: TRIAL DATE: 82504862 946225115 Wartnick Chaber, Harowitz, Smith& Tigerman StephenM. Tigerman 101 California Street Suite 2200 San Francisco California 94111 August 3, 1998 Lorillard Tobacco Company San Francisco Superior Court- No. 996382 Donald D. Sellers and Robin J. Sellers v. Raybestos Manhattan et al.",
+      "prediction": "CASE FORM CASE NAME: Donald D. Selers and Robin J. Sellers v. Raybestos-Manhattan, et al. COURT: San Francisco Superior Court -No.996382 LORILLARD ENTITTES: Lorillard Tobacco Company DATE FILED: DATE SERVED: August 3, 1998 CASE TYPE: Asbestos PLAINTIFF'S COUNSEL: Wartnick, Chaber, Harowitz, Smith& Tigerman StephenM.Tigerman 101 California Street, Snite 2200 San Francisco, California 94111 415/986-5566 LORILLARD COUNSEL: JUDGE: TRIAL DATE: 82504862 94625115",
+      "cer": 0.7364864864864865,
+      "wer": 0.9523809523809523,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 0.774875226000006,
+        "energy_kwh": 5.170090562542145e-05,
+        "emissions_kg": 2.8972670503429898e-06
+      }
+    },
+    {
+      "id": "9",
+      "reference": "COURT: JUDGE: Asbestos CASE FORM CASE NAME: LORILLARD ENTITIES: DATE FILED: DATE SERVED: CASE TYPE: PLAINTIFF COUNSEL: LORILLARD COUNSEL: TRIAL DATE: Wartnick, Chaber, Harowitz, Smith & Tigerman Madelyn J. Chaber 101 California Street, Suite 2200 San Francisco, California 94111 415 986- 5566 August 3, 1998 July 23, 1998 Lorillard Tobacco Company San Francisco Superior Court - No. 996378 Wanda G. Robinson and Carroll Robinson v Raybestos- Manhattan, et al. 82491256 94624999",
+      "prediction": " CASE FORM CASE NAME: Wanda G. Robinson and Carroll Robinson v. Raybestos-Manhattan, et al. COURT: San Francisco Superior Court - No. 996378 LORILLARD ENTITIES: Lorillard Tobacco Company DATE FTILED: July 23, 1998 DATE SERVED: August 3, 1998 CASE TYPE: Asbestos PLAINTIFF'S COUNSEL: Wartnick, Chaber, Harowitz, Smith& Tigerman Madelyn J. Chaber 101 California Street, Suite 2200 San Francisco, California 94111 415/986-5566 LORILLARD COUNSEL: JUDGE: TRIAL DATE: 82491256 94624999",
+      "cer": 0.7253668763102725,
+      "wer": 0.9154929577464789,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 0.8786611249999936,
+        "energy_kwh": 5.953008445198091e-05,
+        "emissions_kg": 3.3360064026045715e-06
+      }
+    },
+    {
+      "id": "37",
+      "reference": "Date: on BLEND CASTING RECASING MENIHOL Filters Cigarettes Maker Length Circumference Weight Paper Kind Circumference Weight Plast. 3/14/90 Attached None Attached None None mm 430 G White Blue White White James James MFG. Wrapping Responsibility Closures Labels Cartons Markings Shipping Requirements Laboratory Analysis: 87093315 90- B- 1 1194- 90 100 mm Filter 47.5 lbs. Original Request Made By J. H. Bell 2/15/90 Purpose of Sample Cigarette Modification B- 451 Sample Specifications Written By C. W. Lassiter FINAL FLAVOR MK 8 99.0 mm 27 mm 24.8 mm 78.0 g / 100 81- 01- 07 25- 04- 07 67 mm White Sample No. Type of Cigarette Batch Size Filter Length Tip. Paper Tip. Paper Por. Glue Roller Air Dilution 13.0 % Section A Section B 27 mm 3.3/ 35,000 OG Lt. 108 mm 400 mm 24.45 mm 75.3 30g / 100 7 % Kent 84- 52- 28 655 Rod Length Pressure Drop Plug Wrap Plug Wrap Por. Comb. Wrap Comb. Wrap Por. Tobacco Blend Filter Production Making & Packing Sample Requistion (Form 02: 20: 06) Lassiter/ Douglas Tear Tape Sample No. on each Carton Laboratory Other 1 Tray Mainstream Smoke Analysis Special Requirements Director, Product Development",
+      "prediction": "Date: 3/14/90 90-B-1 Sanple No.1194-90 Type of Cigarette 1o0 mm Filter Batch Size 47.5 1bs. Original Request Made By J.H. Bel1 on 2/15/90 Purpose of Sample Cigarette Modification B-451 Sample Specifications Written By C.W. Lassiter BTDD CASING RECASTNG FINAL FLAVOR MENIHOL Attached None Attached None None Cigarettes Filters Maker MK8 Section A Section B Iength 99.0 m 27mm mm Filter Length 27mm Kind 3.3/35,000 Circumference 24.8mm OG It. Weight 78.0g/100 Rod Length 108 Paper 81-01-07 Pressure Drop 400mm Tip. Paper 25-04-07 Circumference 24.45 mm 67 mm White Weight 75.3g/100 Tip. Paper Por. 430 Plast. 78 Kent Glue Roller G Plug Wrap 84-52-28 Air Dilution 13.08 Plug Wrap Por. 655C Camb. Wrap Comb. Wrap Por. Wrapping Responsibility Labels White Tobacco Blend Lassiter/Douglas closures Blue Filter Production MFG. Tear Tape Wnite Making & Packing James Cartons White Shipping Markings Sample No. on Sample Requistion James each Carton (Form 02:20:06) Reguirements Laboratory Laboratory Analysis: 1 Tray Mainstream Smoke Analysis Other Special Reguirenents 87093315 Director, Product Development",
+      "cer": 0.7253521126760564,
+      "wer": 0.8402061855670103,
+      "profile": {
+        "width": 771,
+        "height": 1000,
+        "megapixels": 0.771,
+        "inference_s": 2.024659364999998,
+        "energy_kwh": 0.00012280693342719886,
+        "emissions_kg": 6.881977742326803e-06
+      }
+    },
+    {
+      "id": "28",
+      "reference": "From: To: CC: Circulation(#) 86075409 Tiers II, & IV Lynnette Stevens Kelli Scruggs Vincent Losito George Baroody S. Tesh C. Hill Don Kisling Brand(s) Applicable Media Type Media Name Issue Frequency/ Year *Space/ Color Coupon Issue Date Coupon Expiration Date Geographical Area(s) Coupon Value Pack and/ or Carton? Advertising Creative Title. Signature of Initiator Date Initiated Analytical Requirements Newport Parent, Lights. & 120's Direct Mail Competitive 21- 34 years 4/ 14/ 00 9 /30 00 APPROX 600. 000 AR. AZ.A K CA CO FL ID IA. CT, ME, MASS, MN, MT, NE, NV, NM, NY ND, DK, OR, RL, SD, WA, DC, WY $1. 50 OFF PACK 21- Jan 00 FOR CONTROL USE ONLY Code Assigned Job Number Est. Redemption 05787 13% * Where Applicable",
+      "prediction": "From: Lynnette Stevens To: Kelli Scruggs CC: Vincent Losito Don Kisling George Baroody S.Tesh C.Hi ● Brand(s) Applicable Newport Parent. Lights. & 120's Media Type Direct Mail ●Media Name Competitive 21 -34 years * Issue Frcquency / Year *Spacc / Color Coupon Issue Date 4/14/00 Coupon Expiration Date 9/30/00 ● Circulation (#) APPROX.600.000 AR.AZ.AK.CA,CO.FLID.IA.CT.MEMASS.MN.MT,NE. ● Geographical Area(s) Tiers I & IV NV.NM.NY.ND.OK.OR.R1.SD.IFr.WA.D.C..WY Coupon Value S1.50OFF Pack and / or Carton? PACK •* Advertising Creative Title Amadte faye Stenens  Signature of Initiator ●Date Initiated 21-Ja Analytical Requirements: FOR CONTROL USE ONLY Code Assigned 05787 Job Number Est.Redemption 13°% 86075409 Where Applicable",
+      "cer": 0.6759002770083102,
+      "wer": 0.864,
+      "profile": {
+        "width": 802,
+        "height": 1000,
+        "megapixels": 0.802,
+        "inference_s": 1.157209924,
+        "energy_kwh": 7.130667491073769e-05,
+        "emissions_kg": 3.9959547553228346e-06
+      }
+    },
+    {
+      "id": "31",
+      "reference": "TO: FROM: SUBJECT: X GEOGRAPHY REGION: DIVISION: FULL PARTIAL x FULL PARTIAL DISTRIBUTION Seyle Dantzlen Econ 180 130 20 19 18 18 17 16 K&B Delchamps Litco 85 39 36 36 23 23 22 86230203 Page 1 of 4 MAVPROG 11-Dec-96 12/12/96 08:33 204 7348616 LORILLARD TOB NYO 1 0001/ 004 K. A. Sparrow F. Strickland MAVERICK SPECIALS- PROGRESS REPORT SUBMISSION DATE DEC 13 JAN 25 FEB 24 APR 4 (ONLY IF PARTIAL REGION CONTINUE WITH DIVISION(S) SCOPE) DIVISION NAME: DIVISION NAME: DIVISION NAME: # REPS # REPS # REPS DIVISION: DIVISION NAME: DIVISION NAME: DIRECT ACCOUNTS AND CHAINS HEADQUARTERED WITHIN THE REGION (15+ STORES) STOCKING NO MAVERICK SPECIALS NAME OF ACCOUNT NO. OF STORES NAME OF ACCOUNT NO OF STORES Winn Dixie Schwegmann Aurry Greer Double Huber Oil Morris Corp Bayou Foods Compac Foods Southeast Foods",
+      "prediction": "12/12/96 08:33 504 7348616 LORILLARD TOB +→→NYO1 001/004 - TO: K.A.Sperrow SUBMISSION.DATE. DEC 13 x FEB 24 FROM: F. Strickland JAN 25 APR4 SUBJECT: MAVERICK SPECIALS-PRQGRESS REPORT GEOGRAPHY REGION: FULL X PARTIAL (ONLY IF PARTIAL REGION CONTINUE WITH DIVISION(S) SCOPE) DIVISION: FULL PARTIAL DIVISION NAME: DIVISION NAME: REPS DIVISION NAME: DIVISION NAME: REPS DIVISION NAME: DIVISION NAME: REPS DISTRIBUTION DIRECT ACCOUNTS AND CHAINS HEADQUARTERED WITHIN THE REGION (15+ STORES) STOCKING NO MAVERICK SPECIALS NO.OF STORES 2 NAME OF ACCOUNT NAMEOFACCOUNT STORES K&B 180 Sayle Oil 20 130 Dantzler 19 Delchamps Winn Dixie 85 SoutheastFoods 18 Sohwegmann 39 Compac Foods 18 Autry Greer 36 Bayou Foods 17 36 Econ 16 80230203 Double Quick Liteo 23 Huber Oil 23 Morris Corp 22 11-Dec-96 MAVPROG Pago1of4",
+      "cer": 0.6550868486352357,
+      "wer": 0.8759124087591241,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 1.763284917,
+        "energy_kwh": 0.00010761461069362568,
+        "emissions_kg": 6.030615168660093e-06
+      }
+    }
+  ]
+}

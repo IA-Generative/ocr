@@ -1,0 +1,159 @@
+{
+  "name": "tesseract-fra",
+  "created_at": "2026-11-12T13:58:06+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "tesseract",
+    "lang": "fra",
+    "psm": 3,
+    "oem": 1,
+    "threads": 1
+  },
+  "dataset": {
+    "name": "nielsr/funsd-layoutlmv3",
+    "config": null,
+    "split": "test",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": false,
+    "shuffle_buffer": 100,
+    "pages_per_document": 1,
+    "adapter": "funsd",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 24.87,
+  "n_evaluated": 50,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.4819209143642328,
+    "wer": 0.7023396760457744
+  },
+  "profiling": {
+    "inference_s_mean": 0.4202164981799993,
+    "inference_s_p50": 0.39545249700000085,
+    "inference_s_p90": 0.6277692341999995,
+    "inference_s_p95": 0.7476712506499972,
+    "inference_s_p99": 0.8277966275200039,
+    "inference_s_max": 0.8886185890000036,
+    "s_per_megapixel": 0.549877647448311,
+    "energy_kwh_total": 6.921391808283749e-05,
+    "energy_kwh_mean": 1.3842783616567497e-06,
+    "emissions_kg_samples": 3.8786787554441315e-06,
+    "by_image_size": {
+      "<1MP": {
+        "n": 50,
+        "inference_s_mean": 0.4202164981799993,
+        "inference_s_p95": 0.7476712506499972
+      }
+    },
+    "emissions_kg_total": 4.2407297757529115e-06
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "373d4556b1de046f60b8330e47c66f0a659d102cfbc48891ca565f6ee6e6e2e5",
+  "dataset_revision": "ccd2a77745b0dc9f154a91db1219ec05c86ce7ec",
+  "worst_samples": [
+    {
+      "id": "9",
+      "reference": "COURT: JUDGE: Asbestos CASE FORM CASE NAME: LORILLARD ENTITIES: DATE FILED: DATE SERVED: CASE TYPE: PLAINTIFF COUNSEL: LORILLARD COUNSEL: TRIAL DATE: Wartnick, Chaber, Harowitz, Smith & Tigerman Madelyn J. Chaber 101 California Street, Suite 2200 San Francisco, California 94111 415 986- 5566 August 3, 1998 July 23, 1998 Lorillard Tobacco Company San Francisco Superior Court - No. 996378 Wanda G. Robinson and Carroll Robinson v Raybestos- Manhattan, et al. 82491256 94624999",
+      "prediction": "CASE FORM Wanda G. Robinson and Carroll Robinson v. Raybestos-Manhattan, et al. CASE NAME: cour: San Francisco Superior Court- No. 996378 LORILLARD ENTITIES: Lorillard Tobacco Company DATE FILED: July 23, 1998 DATE SERVED: August 3, 1998 CASE TYPE: Asbestos PLAINTIFFS COUNSEL: ‘Wartnick, Chaber, Haronite, Smith& Tigerman Madelyn J. Chaber 101 California Street, Suite 2200 San Francisco, California 94111 A15/986-5566 LORILLARD COUNSEL: JUDGE: TRIAL DATE: 9621628 666h29h6",
+      "cer": 0.7463312368972747,
+      "wer": 0.9577464788732394,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 0.2348089209999955,
+        "energy_kwh": 7.7677132868197e-07,
+        "emissions_kg": 4.352948848800905e-08
+      }
+    },
+    {
+      "id": "20",
+      "reference": "31 1818 22 15 24 19 15 209 32 151/15 81/9 138/9 140/13 117/9 118/8 166/15 115/13 163/11 DISTRIBUTION DIVISION: REGION: FULL Flint X FULL PARTIAL PARTIAL 13 12 13 X 196/13 16 TO: FROM: SUBJECT: GEOGRAPHY X 142 237 102 39 184 32 40 31 Emra Walmart 83641919 S. P. ZOLOT R. W. RICHARDSON OCT 05 SUBMISSION DATE DEC 21 NOV 16 OLD GOLD- LIGHT BOX 100'S PROGRESS REPORT (ONLY IF PARTIAL REGION, CONTINUE WITH DIVISION(S) SCOPE) DIVISION NAME: DIVISION NAME: DIVISION NAME: Detroit North Detroit East Grand Rapids DIVISION NAME: DIVISION NAME: DIVISION NAME: Detroit South Detroit West # REPS: # REPS: # REPS: Direct Accounts and Chains Headquartered within the Region (15+ Stores) Stocking No Old Gold Light Box 100's Name of Account Ind/Lor Volume Number of Stores Name of Account Ind/Lor Volume Number of Stores Quality Dairy Bay Stations Schmuckal Dil Wilson Oil Quik Stop Forwards Phil Flint Arbor Rx Imperial Oil Speedy Q Direct Accounts and Chains Headquartered Outside the Region. (15+ Stores) Stocking No Old Gold Light Box 100's Name of Account Ind/Lor Volume Number of Stores Name of Account Ind/Lor Volume Number of Stores Clark Gas 7- Eleven Southland Ultra Diamond Dairy Mart Mobil Oil ACA Amoco GOD Page 1 of 3",
+      "prediction": "TO: S.P.ZOLOT REGION: DIVISION: SUBJECT: QLD GOLD - LIGHT BOX 199'S PROGRESS REPORT BEEN ru met __x {ONLY IF PARTIAL REGION, CONTINUE WITH DIVISION(S) SCOPE) DIVISION NAME: Grand Rapids — DISTRIBUTION. E {4 Siores) Stocking No OÙ Gold Light Box 1008 0 Old Gold Light Box 1005 En EE TT es | te feuy Sons HS | [Schmuckai Oil 1389 2 __| Wilson Où non 15 £ Fate TE fers msn | PTE ETES CT RE A PT A [Clark Gas 142 Emo 27 [7-Eleven Southland 102 [Walmart 39 [Uitra Diamond 184 [Dairy Mart 32 [Mobil Oùl LI [ACA Amoco 31 œ en a = 0 © CA",
+      "cer": 0.7288414133114215,
+      "wer": 0.9090909090909091,
+      "profile": {
+        "width": 802,
+        "height": 1000,
+        "megapixels": 0.802,
+        "inference_s": 0.38763915600000587,
+        "energy_kwh": 1.2731270866577371e-06,
+        "emissions_kg": 7.134476880921297e-08
+      }
+    },
+    {
+      "id": "3",
+      "reference": "17 cc: : From: Area: Region: 5 X Chains: Independents: 82251504 11/05/97 11: 03 813 384 0683 LORILLARD TAMPA GREENSBOR 0002/ 003 Retail Excel Progress Report Submission for: Distribution by/ to: DM to RSM 1st of Month RSM to R W. C. 10th D. O. S. R. W. Caldarella Kent B. Mills July 31 August 29 September 30 October 31 November 28 December 30 Acceptance/ Response: What is the retailers response to Lorillard's Excel Merchandising plan? This program has been successful to date with chains where our \"Flex Payment\". was not place. The chains where were using the \"Flex Payment\" system we have not been las successful. The P. O. S. requirements of the P- 1 Plan with Oil Companies is difficult to obtain. Additional P. V. merchandising is being secured quickly, Additional monies have assisted Region 17 in fighting PM Exclusives and PM/ RJR co-existence situations. Hardware Evaluation/ Effectiveness: Comment on the assembly of displays and application of shields: The displays are easily assembled and durable. Some questions have been raised conceming the inability to be flush with the counter and/ or against the register. As well as the ability to place this or the Back Bar if the settlement goes through Pemanent Advertising Evaluation/ Effectiveness/ Acceptance: (P- 1/ P- 5 & C 5 Plans Only: Not available at this time",
+      "prediction": "“A/08/07 11309 613 884 0669 LORILLARD TANPA | GRBENSBOR @ooz/003 Retail Excel Progress Report Submission fer. Distibution byito: dus [e) DM to RSM st ofonth August29 () To: R.W. Caldarella RSM to RW.C. 10h September 30 ( } cc: DOS. October3t {X) From: KentB, Mils November28 ( ) December 30 ( } Area: 5 Region: 17 Acceptance/Response: What Merchandising plan? the retailers response to Lorillard's Excel Hardware Evaluation/Effectiveness: Comment on the #ssembl} of displays and application of shields: #17 v0SLScZ8",
+      "cer": 0.7231000752445448,
+      "wer": 0.8918918918918919,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 0.2904302130000076,
+        "energy_kwh": 9.556593394542028e-07,
+        "emissions_kg": 5.3554193723673997e-08
+      }
+    },
+    {
+      "id": "44",
+      "reference": "10675 PROPOSAL FOR DATE TO ADDRESS CITY STATE Attn: ITEM: MATERIAL: ALUMINUM SIZE: GAUGE COLORS: HOLES: YES EMBOSSED SQUARE CORNERS: EDGES: PACKING: OTHER: ☑ Aluminum ☑ 4 ☑ ☑ ☑ Tooling: QUANTITIES: PRICE: BILLING: WAREHOUSING: ☑ ☑ 87528380 CONDITIONS: 4050 TOTAL 8650 S ☑ 10 STOUT INDUSTRIES, INC. 6425 W. FLORISSANT AVE. ST. LOUIS MO 63136 . (314) 385- 2280 Lorillard Corporation 666 Fifth Avenue New York New York 10103 Metal \"Pack\" Plaque October 16, 1987 Mr. A. D. Steinberg YOUR REPRESENTATIVE It is our pleasure to propose the following: Mr. Robert Kennedy Harley Davidson Metal Plaque 171/4 x 231/2 \" .025\" STEEL ☐ OTHER ☐ Transparent gold, opaque black, white and orange BASE COLOR SINGLE FACE DOUBLE FACE ☐ NO ☐ NUMBER OF ROUND ☐ ANGLE ☐ CUT TO SHAPE ☐ HEMMED ☐ STAMP FRAME BEADED BORDER ☐ BACK FRAME ☐ RIGHT ANGLE BEND ☐ CURLED ☐ PER CARTON PER CRATE PER BUNDLE Price is based on reproduction of customer supplied \"Pack\" box. Form die, brass emboss die to achieve detail on eagle. 500 Plaques $ 9.18 each One time tooling Steel tips @ $ 3,015.00 $ 1,045.00 BILL AS MANUFACTURE ☐ BILL AS SHIP FOR. ☐ 6 MOS. ☐ 12 MOS SHIP IMMEDIATELY ☐ 6 MOS. WHSE. ☐ 12 MOS. WHSE PER SHIPMENT DROP SHIPPING: TERMS - NET 10 DAYS A service charge of 11/2 per month will be applied to all unpaid balances over 30 days. STOUT INDUSTRIES INC, A 15 service charge will be added to reight costs for all prepaid shipments involving 5 or more pieces. PRICES QUOTED HEREIN ARE BASED ON CURRENT COSTS AND ARE FOR IMMEDIATE ACCEPTANCE *These prices will be updated periodically from date of order, to reflect changes in material and labor costs. Prices and terms quoted herein are not subject to verbal changes unless confirmed in writing by the home office of this company in S. T. LOUIS M. O. All contracts for delivers are contingent upon fires, strikes or other causes beyond our control. Purchaser agrees to accept overun or underrun to the extent of 10% of the quantity ordered. Any taxes or governmental changes which the seller may be required to pay or collect upon the production sale storage, or delivery under any existing or future law shall be for the account of the buyer who shall promptly pay the amount hereof to the seller upon F. O. B. S. T. LOUIS MISSOURI Shipments via truck shipped freight collect.",
+      "prediction": "10675 STOUT INDUSTRIES, INC. 6425 W. FLORISSANT AVE, ST LOUIS, MO: 63136 : (314) 385-2260 PROPOSAL ro -Lorillard Corporation For Metal \"Pack\" Plaque aovkess 666 Fifth Avenue outt — October 16, I9Ë7 cr New York state __New_York 10103 Attn: Mr. Robert Kennedy JL à our pleauve ta propote the following: ITEM__ Harley Davidson Metal Plaque SIZE. 17% x 234\" MATERIAL: STEEL [ ) ALUMINUM C3 OTHER [1 GAUGE 025\" COLORS.Transparent gold, opaque black, white and orange BASE COLOR Aluminum 7 SINGLE FACE & DOUBLE FACE [1 HOLES: YES &x NOC] NUMBER OF_4 CORNERS: ROUND [} SQUARE &] ANGLECI CUT TO SHAPE EDGES: HEMMED [I CURLED [) EMBOSSED (Æ BEADED BORDER C} STAMP FRAME [3 RIGHT ANGLE BEND [J BACK FRAME [] PACKING: PER CARTON __10_ PER CRATE PER BUNDLE OTHER: Price is based on reproduction of customer supplied \"Pack\" box. Tooling: Form die, brass emboss die to achieve detail on eagle. QUANTITIES: 500 Plaques One time tooling € $3,015.00 PRICE. 59,18 each Steel tips $1,045.00 #05 T7 BILLING: Genus AS MANUFACTURE. [leu as sHir For. [lé mos. [liz mos. WAREHOUSING. Æ]SHiP IMMEDIATELY. [lé os. wnse [li2 MOs. wnse Y _ TS LR D nm 97028080 TERMS — Nero oavs srour A seniice charge of 1% per month will be applied to all unpaid balances over 30 days. : ss",
+      "cer": 0.7222946544980443,
+      "wer": 0.8345498783454988,
+      "profile": {
+        "width": 777,
+        "height": 1000,
+        "megapixels": 0.777,
+        "inference_s": 0.6376269630000024,
+        "energy_kwh": 2.097487568021083e-06,
+        "emissions_kg": 1.1754110582433338e-07
+      }
+    },
+    {
+      "id": "31",
+      "reference": "TO: FROM: SUBJECT: X GEOGRAPHY REGION: DIVISION: FULL PARTIAL x FULL PARTIAL DISTRIBUTION Seyle Dantzlen Econ 180 130 20 19 18 18 17 16 K&B Delchamps Litco 85 39 36 36 23 23 22 86230203 Page 1 of 4 MAVPROG 11-Dec-96 12/12/96 08:33 204 7348616 LORILLARD TOB NYO 1 0001/ 004 K. A. Sparrow F. Strickland MAVERICK SPECIALS- PROGRESS REPORT SUBMISSION DATE DEC 13 JAN 25 FEB 24 APR 4 (ONLY IF PARTIAL REGION CONTINUE WITH DIVISION(S) SCOPE) DIVISION NAME: DIVISION NAME: DIVISION NAME: # REPS # REPS # REPS DIVISION: DIVISION NAME: DIVISION NAME: DIRECT ACCOUNTS AND CHAINS HEADQUARTERED WITHIN THE REGION (15+ STORES) STOCKING NO MAVERICK SPECIALS NAME OF ACCOUNT NO. OF STORES NAME OF ACCOUNT NO OF STORES Winn Dixie Schwegmann Aurry Greer Double Huber Oil Morris Corp Bayou Foods Compac Foods Southeast Foods",
+      "prediction": "12712786 08:33 504 7348016 LORILLARD TOB @oo1/004 KA Sparron FROM: FSuietind oecCx] real] ses C7 APR 4 SUB | MAVERICK SPECIALS = PROGRESS REPORT eosranvl REGION: Fuut PaRnaL. ONLY IF PARTIAL REGION CONTINUE WITH BIVISION(S) SCOPE) oivision: su PARTAL oivistoN van oimsion Naus: d nes DSION au __ DMSONNANE: # Res DIVISION NAUE: Division NUE: vrers Disrmisunon DIRECT ACCOUNTS AND CHAINE HEADQUARTERED WITHIN THE RE! 131 STORES) STOCXING NO MAVERIOK SPEGI No. or | NS OF [_ NAME or AGÇOUI __ | srones STORES xa8 189] seye où 20 Delenps 120] vanter 19) ne Die 85] sounoos roos sl sonwegmann _2s/ compas Foods 1e) [ s0| Beyou Foods wl s9[ ecen 10 co 2 : Q ce Huber Où 23 Di Mons Core 2 © - sn © Cr MaveROG Pago 1 of4 11-06-86",
+      "cer": 0.6985111662531017,
+      "wer": 1.0,
+      "profile": {
+        "width": 754,
+        "height": 1000,
+        "megapixels": 0.754,
+        "inference_s": 0.41519329099999425,
+        "energy_kwh": 1.3738802996228474e-06,
+        "emissions_kg": 7.69908781105647e-08
+      }
+    }
+  ]
+}

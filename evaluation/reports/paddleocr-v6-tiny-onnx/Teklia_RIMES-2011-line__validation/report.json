@@ -1,0 +1,158 @@
+{
+  "name": "paddleocr-v6-tiny-onnx",
+  "created_at": "2026-11-12T13:59:05+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv6_tiny_det",
+    "rec_model": "PP-OCRv6_tiny_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "Teklia/RIMES-2011-line",
+    "config": null,
+    "split": "validation",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": false,
+    "shuffle_buffer": 100,
+    "pages_per_document": 1,
+    "adapter": "rimes",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 60.77,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.2736158683001621,
+    "wer": 0.7732593169901993
+  },
+  "profiling": {
+    "inference_s_mean": 0.050617044804999796,
+    "inference_s_p50": 0.04965218450001174,
+    "inference_s_p90": 0.07549102859999267,
+    "inference_s_p95": 0.08453741345000336,
+    "inference_s_p99": 0.09885662874000387,
+    "inference_s_max": 0.11621620600001847,
+    "s_per_megapixel": 0.23739825143963006,
+    "energy_kwh_total": 0.0003676894111705063,
+    "energy_kwh_mean": 3.676894111705063e-07,
+    "emissions_kg_samples": 2.060494691258403e-05,
+    "by_image_size": {
+      "<1MP": {
+        "n": 1000,
+        "inference_s_mean": 0.050617044804999796,
+        "inference_s_p95": 0.08453741345000336
+      }
+    },
+    "emissions_kg_total": 2.1690039846473293e-05
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "0ed95b6041af30c32ef6691a671c7ac06f4a04695b37acf109754aab321a24a4",
+  "dataset_revision": "ba3e6b5573094208b30a134e32d9b65dab18e74e",
+  "worst_samples": [
+    {
+      "id": "685",
+      "reference": "quelques mois ?",
+      "prediction": "eol simyle : pourty- vous mi faine unm ofhe sinilavie  cell que j'avai refuse il y a",
+      "cer": 4.933333333333334,
+      "wer": 5.666666666666667,
+      "profile": {
+        "width": 2455,
+        "height": 128,
+        "megapixels": 0.31424,
+        "inference_s": 0.07154746800000567,
+        "energy_kwh": 5.1871443333321e-07,
+        "emissions_kg": 2.9068238129560938e-08
+      }
+    },
+    {
+      "id": "374",
+      "reference": "DISTINGUEES.",
+      "prediction": "AESEORS,UExPREsiSN DE HEs SAWTAioNs DiSTiNGUEES-",
+      "cer": 3.0833333333333335,
+      "wer": 5.0,
+      "profile": {
+        "width": 2355,
+        "height": 128,
+        "megapixels": 0.30144,
+        "inference_s": 0.07289196299998935,
+        "energy_kwh": 5.288366861112012e-07,
+        "emissions_kg": 2.963547905298631e-08
+      }
+    },
+    {
+      "id": "893",
+      "reference": "agréer l'expression de mes sentiments distingués.",
+      "prediction": "olernes u aut pout ls sute a olommes , J。 a freer I'expusion oe mes Sentmcut distnes",
+      "cer": 1.2040816326530612,
+      "wer": 2.6666666666666665,
+      "profile": {
+        "width": 1091,
+        "height": 128,
+        "megapixels": 0.139648,
+        "inference_s": 0.05119752999999605,
+        "energy_kwh": 3.7191607833334884e-07,
+        "emissions_kg": 2.084180511372413e-08
+      }
+    },
+    {
+      "id": "15",
+      "reference": "Dans l'attente de votre offre, je vous prie de croire,",
+      "prediction": "Je vous rapelli que vous me comcidig abrs ien nabais de 30% sn d abonemeont d'um an.",
+      "cer": 1.2037037037037037,
+      "wer": 1.6,
+      "profile": {
+        "width": 2716,
+        "height": 128,
+        "megapixels": 0.347648,
+        "inference_s": 0.0632930490000092,
+        "energy_kwh": 4.5961803222221146e-07,
+        "emissions_kg": 2.575653490770053e-08
+      }
+    },
+    {
+      "id": "23",
+      "reference": "Je souhaite vivement obtenir un rendez-vous avec un de vos conseillers pour",
+      "prediction": "",
+      "cer": 1.0,
+      "wer": 1.0,
+      "profile": {
+        "width": 2488,
+        "height": 128,
+        "megapixels": 0.318464,
+        "inference_s": 0.05474222699999132,
+        "energy_kwh": 3.978269061110348e-07,
+        "emissions_kg": 2.229382199155637e-08
+      }
+    }
+  ]
+}

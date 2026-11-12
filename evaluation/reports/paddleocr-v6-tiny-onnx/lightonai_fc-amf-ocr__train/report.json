@@ -1,0 +1,163 @@
+{
+  "name": "paddleocr-v6-tiny-onnx",
+  "created_at": "2026-11-12T14:19:36+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv6_tiny_det",
+    "rec_model": "PP-OCRv6_tiny_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "lightonai/fc-amf-ocr",
+    "config": null,
+    "split": "train",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": true,
+    "shuffle_buffer": 50,
+    "pages_per_document": 1,
+    "adapter": "fc_amf",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 1230.83,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.722416171242036,
+    "wer": 0.3980166783840479
+  },
+  "profiling": {
+    "inference_s_mean": 1.0655663662989971,
+    "inference_s_p50": 0.9834337549999645,
+    "inference_s_p90": 1.6950376280999822,
+    "inference_s_p95": 2.094438554249973,
+    "inference_s_p99": 3.398320754180079,
+    "inference_s_max": 5.236320431999985,
+    "s_per_megapixel": 0.5315276195030246,
+    "energy_kwh_total": 0.005185778857706002,
+    "energy_kwh_mean": 5.185778857706002e-06,
+    "emissions_kg_samples": 0.00029060586140698696,
+    "by_image_size": {
+      "1-4MP": {
+        "n": 998,
+        "inference_s_mean": 1.058064270997993,
+        "inference_s_p95": 2.0762613049000205
+      },
+      ">=4MP": {
+        "n": 2,
+        "inference_s_mean": 4.809111921499962,
+        "inference_s_p95": 5.193599580949983
+      }
+    },
+    "emissions_kg_total": 0.00031314595679050677
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "073dd3f351b36ad853815996b6a492c1b107a2c9fc40b5c6f53357a125239c99",
+  "dataset_revision": "036bd28ba275c0b11068ccc7620fa1ca1de224cd",
+  "worst_samples": [
+    {
+      "id": "163_2013_07_FC163033748_20130731#p0",
+      "reference": "a",
+      "prediction": "KPMG Rapport des commissaires aux comptes sur les comptes consolidés Richel Serres de France S.A. France 13269 Marseille Cedex 8 480 avenue du Prado KPMG AUDIT SUD-EST Ce rapport contient 24 pages Richel Serres de France S.A. Exercice clos le 31 mars 2013 13810 Eygalières Quartier de la Gare 13006 Marseille 167 rue Paradis Philippe Moumas",
+      "cer": 339.0,
+      "wer": 56.0,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 0.3823176920000151,
+        "energy_kwh": 1.9181544804632022e-06,
+        "emissions_kg": 1.0749145893067783e-07
+      }
+    },
+    {
+      "id": "163_2013_07_FC163033753_20130731#p2",
+      "reference": "2 3 € e 3 3",
+      "prediction": "w 2 pomEs Exercice clos le 31 mars 2013 Associé John Evans les documents adressés aux actionnaires sur la situation financière et les comptes annuels. annuels des informations données dans le rapport de gestion du Conseil d’administration et dans Nous n'avons pas d’observation à formuler sur la sincérité et la concordance avec les comptes en France, aux vérifications spécifiques prévues par la loi. Nous avons également procédé, conformément aux normes d’exercice professionnel applicables Vérifications et informations spécifiques dans la première partie de ce rapport. annuels, pris dans leur ensemble, et ont donc contribué à la formation de notre opinion exprimée Les appréciations ainsi portées s’inscrivent dans le cadre de notre démarche d’audit des comptes application. informations fournies dans l’annexe des comptes et nous nous sommes assurés de leur correcte avons vérifié le caractère approprié des méthodes comptables visées ci-dessus et des Dans le cadre de notre appréciation des principes comptables suivis par votre société, nous à l’évaluation et à la valorisation des stocks et en-cours de production. La note « Stocks » de l’annexe des comptes expose les règles et méthodes comptables relatives justification de nos appréciations, nous portons à votre connaissance les éléments suivants. En application des dispositions de l’article L.823-9 du Code de commerce relatives à la Justification des appréciations KPMG KPMG Audit Sud-Est Actionnaire Julién Jouve Les commissaires aux comptes Marseille, le 31 juillet 2013 Philippe-Moumas Rapport des commissaires aux comptes Richel Serres de France S.A. sur les comptes annuels 31 juillet 2013 3",
+      "cer": 150.27272727272728,
+      "wer": 40.833333333333336,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 0.7125890649999747,
+        "energy_kwh": 3.3859228330929375e-06,
+        "emissions_kg": 1.8974372964369483e-07
+      }
+    },
+    {
+      "id": "pdf_323_2021_09_FC323400553_20210908#p0",
+      "reference": "a A a L L DLDDDIDDI a X L D D E a 00 L. D &00 0 D0 800 0 D - 9 D D e00 800 800 Q00 000 000 800 800 900 MDD 0D N0D 500 00 00D e00 800 800 00 w00 00 00 400 00 +00 #00 80D 800 $00 000 00 800 800 ?00 NDD Non 8on 8on Son 1 D - 11 D D a D D Bs D D 4 D 2 € 9 € 2 a 8 3 2 8 S a $ 5 5 $ 8 y of dy B la",
+      "prediction": "of el Jo o7oq el e uēis pee eep‘s/} eI (se)xoq errts esn s uondo etpM - aeeno np srq ne aetbis e arep 'seeruoco secro st no eo eoe aou ‘asoto odo.1 1os enb eleno Bueew pauoqua aoqe al 1e cw jueseidas o1 oeto onotee ugs peere: cofsstecrrscneetpe NI S.070E HSTI an O1 HSM1 /eos np sq ne tb1s 1 htep : uosste,p hte ccn er 1 aN o   ahar A7NO Nn S.ANAIO0CO-OsTTETCO eartt.1 e ctee c od cn ehoo'eto w/ ros cot c no c  'uoutc hrtsol pou eq o ry ceou s bumes ebueo) pohets cl Jo ecppe cru y rang c hrt rrtceasop oh o ep so ) eeorpette  N (t) estas ecrs :INIOe人at I 'enbueq anon sesjisuen ene uenlop suoonsu ssiuresald stl 'ieuod ne senn st inod : NOINI epis e uo suoesty of  ecrd fuetes ecor : Juruodl - o ne srtenus shoett sep ecrseñoe end zeli 'xloto eoA cee,p qhra: hroc] cds eoA a0n abuns eqnop taoA a0n eqnoa (1) escs ers (o Axod s] busn epew eq co abcrtoou « erehe6 ecse,1 ep qhrptspld ne Jnod qeenbone nn eeo (eeret e Jnod / Jerpisead ne nnod / ectrcuodsco sred eo / csse,p eo) epo se,u xouo uoe, nb st eu1s 1e eep eoeel 1se eireol el Is » (L) oA neo (rno o ep ee,1 esrent cshae et0 ueew (eeue e Jo guepield e o] sedde Aeerogne sy] (geuecesdas e o Aeoge o Mod/ greprsesd e o Aeoue go Mod/ eo pesod/ preo uopssue) pereto sy eoyouo ou gnq peubjs pue peep pnges s so e I. s6u Gcn Jo qnn - xon rp cqN cON peas|e cecp/ atss ntoR areg  - hrnrp coe,ptN sarts Jo eqnN TI O1AXOPAWESAEI TAEA5TL ‘srpos a sesuo) ep a senbypnf sepna.p setnqe ny eenuuy aneuipi0 eeiçuãO eeiqessy semaqII eI707 eiqrndas 87 na JO NAATHS sIVd 91ISL- opeT anı ‘zI (ε) ostan ne '0 (ε) esical ers SNILEW aunjeubis8 eea □ i eshrtteou e oA 'xIoo uoeshrphoeto ou suopn/otl rsp cn uO Aq eon Kw Isro 1 'acoudde af 'stce ou shounjoth : euepuodsao0 aseo e juessoou ua xjouo enne un ejeufis l s gnes NON ejon el[ 'epjqwesse ue seqjuesud juejere s|anou suognjosei sep no suwapuwe sep S Kw Jo xoq a bupets B □ □ 口 口 □ F 口 □ 口 H □ 口 口 K 口 口 口 □ □ ap safoud sa ins xoqBugpuodseoo ey6upeys Aq ooyoeupoue eeopuy I ssejunON ejoA bugeew e]6uunp pesodoud eue suognjoseu Mau Jo sueupuewe eseo uy A s0人/Ino ON/uON 'sq C ON/uON 'sqv E seA/!no ON/uON sqV G se/Ino ON/UON sqv  seA/Ino ON/uN 'sqV /oe ethcet stth cthc cbsssf enb xe epNOe ecce no coah no prrne Aq coe shnoel rsp e e Aech1 / .otnet., no ..oN.,, sete sep ccn.1 st.,  .. eoq hc Jocoshec 'xo rrrcs e Aq rrrscc ccoc eae o ror  o/ocZ as onstrr. tha  seeue no seae shonoet ep sao st so e INoa ar 10 □ 口 2 □ □ 3 □ □ 0 □ □ 030 □ □ 9 口  19 □ 口 2 口 □ 9 口 口 9 口 口 IsodA80A1/enANOd|o5h0A 8 8 口 2 □ 口 . □ 口 8 □ 口  ugeow peeue6 eyl o ueyeuo au uyode / aeeua6eelqeasse, eap uapsald ne nod euop er - o  seo anod eos uos aeWn no ew \"W e [(t) Iou on ne yl ogeud eop er - 口 口 口 3 0tts IE9 8 ep leμdeo ne sußuouy epos euot so) eensnput euoz:leoos eetS 口  1 □ 口 2 口 口 3 □ 口 4 □ □ 6 口 口 1 □ 口 2 口 口 0 □ 口 9 □ 口 eeg Au uo eon o} eeoo'ssy no syy w [(y) eseue es]uodde 1 : pe snpd ne ahtr op eeno ino copreerssho ue sud ee aoD ontco/ocA.l as :ur Jee ou peinmes eq Isnu o pee/dwoo sji 'eepisuoo eq o1 5 口 口 15 口 □ 15 口 口 3 □ □ 45 □ 口 I707/60/SC ujnon uear p.reaenog‘tSI 4 □ □ 4 口 口 4 □ □ 4 □ □ 4 □ 口 s08uy SO L6L 8LI 18E (z) asanal aes - (z) os0n ne J0 3 □ □ 3 □ □ 22 □ □ 3 □ 口 3 □ □ 2 □ 2 口 □ 2 □ □ 3 □ □ 2 □ □ …gon u usge1 1 scsqew er - ∩NNAS 00066 口 Auedoo ei Aq / 9epos e e 1 口 口 三 口 □ 2 □ 口 3 口 'sqv 4 □ 口 yueq el /q / enbhrq el e ON/UON 'sqV ON/UON 'sq ON/UON 'sq ON/UON ON/UON 'sq ASD 口",
+      "cer": 10.856164383561644,
+      "wer": 7.594059405940594,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 3.1771900520000145,
+        "energy_kwh": 1.4682589739054269e-05,
+        "emissions_kg": 8.227976463868612e-07
+      }
+    },
+    {
+      "id": "pdf_323_2022_07_FC323453717_20220729#p0",
+      "reference": "a € a (D D a - & 8 - E E o a a P 1 1 : 8 e N co 8 9 S 5 N 00 8 2 : 5 N a W S - E 2 8 B d K N C 8 a : 5 8 3 3 a  3 3 8  N - & 0 8 W - a B B M B a 8 E 3 2 9 1 a E € - o 8 8 0 0 3 B 3 3 3 2 8 8 S D 8 & 0 9 8 8 1 8 o 8 a 8 E E S a € S 8 S S I à",
+      "prediction": "les \" résultats avant amortissements et provisions \" sont obérés des moins-values liées à l'apurement des titres des sociétés ayant cessé leur activité. Ces moins-values sont couvertes par de reprises de provisions à due concurrence. sociales, etc...) c) Montant des sommes versés au titre des avantages sociaux (sécurité sociale, cœuvre b) Montant de la masse salariale a) effectif moyen des salariés pendant l'exercice. rV - Personnel c) Dividendes distribués à chaque action. b) Résultat après impôt, participation des salariés et dotation aux amortissements et  a) Résultat après Impot, participation des salariés et avant dotation aux amortissemer III - Résultat par action e) Résultat après impot, participation des salariés et dotation aux amortissements et  d) Participation des salariés due au titre de l'’exercice c) Impots sur les bénéfices b) Résuitat avant impot, participation des salariés et dotation aux amortissements et  a) Chiffre d'affaires hors taxes Ix - Opérations et résultats de l'exercice b) nombre d’actions ordinaires existantes a) Capital social I - capital en fin d'exercice Nature des indications 2017/2018 1 446356 1 965 734 2 301 744 8 631 542 160 522 471 318 0,3879 892 851 0,628 2 0 2018/ 2019 (679432) 1 791 264 2 301 744 8 631 542 164 103 470 622 0,1353 (0,295) 311463  0 2019 / 2020 (0,1278) (294 227) (489 417) 2 284 308 2301 744 8 631 542 155 693 480 268 (0,213) 2 0 2020 / 2021 (0,0333) (465 958) 2 176 065 2301 744 8 631 542 121 921 401921 (0,202) (76539) 2 0 2021 / 2022 (0,1205) (277 248) (935 388) 1889 918 2301 744 8 631 542 133 408 401119 (0,406) 0",
+      "cer": 5.945378151260504,
+      "wer": 2.2033898305084745,
+      "profile": {
+        "width": 1191,
+        "height": 1685,
+        "megapixels": 2.006835,
+        "inference_s": 1.0593969199999265,
+        "energy_kwh": 4.5819281631141046e-06,
+        "emissions_kg": 2.567666723327349e-07
+      }
+    },
+    {
+      "id": "pdf_182_2022_04_FC182442254_20220428#p217",
+      "reference": "o o o o o o o o 0 o o O O o & d8 4 o o o a de & a 0 o o o b de  9 Bs o o o e 6 8 6 8 o 4 2 o o 6 Z 218",
+      "prediction": "epuve,p y sequuop) (seęs|ençoe 09000 609 LLL 8 96 0 0 0 0 0 0 1 3 8 00LO 0910 OLLO 0810 061O 0000 0w0 0z0 0Z0 0z0 0z0 0900 |eh01 + 00800 8OL 0 06700 9 0 08000 8 0 0 0L300 7 0 0 0 09000 queeddoenap ep equuy 6 C 0 0 0 seesenoe uou sennuq sensjus inod suoisnold uonense euteW 0000 5 C 0 0 0 0 0200 4 0 2 3 4 0 1 0Z00 3 0 2 34 2 4 3 O 0700 2 C 0 0 5 4 4 3 8 0000 OL 0 969 0 89 909 1 0 0 0 00000 996L E80 OL 890l 690 OL 8806 ∠99 8 0 0 0 0 0 001 09L0 OLLO 0810 061O 0000 00oA 0z0 00zo 070 0C0 seuepeoee ctt 6-N 8-N L-N 9-N 9-N -N ε-N 乙-N L-N N 218",
+      "cer": 4.594059405940594,
+      "wer": 2.9375,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 1.4993123050001032,
+        "energy_kwh": 6.066281645254745e-06,
+        "emissions_kg": 3.3994835711844643e-07
+      }
+    }
+  ]
+}
