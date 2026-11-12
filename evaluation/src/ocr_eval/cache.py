@@ -16,7 +16,7 @@ from ocr_eval.config import DatasetConfig, RunConfig
 
 _PKG = Path(__file__).parent
 # Report rendering and CLI do not influence scores.
-_IGNORED = {"report.py", "cli.py", "cache.py", "plan.py"}
+_IGNORED = {"report.py", "cli.py", "cache.py", "plan.py", "compare.py", "charts.py"}
 
 
 @functools.cache

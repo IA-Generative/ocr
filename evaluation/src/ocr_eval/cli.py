@@ -55,7 +55,15 @@ def main(argv: list[str] | None = None) -> int:
     pl = sub.add_parser("plan", help="List the CI configs to run (JSON matrix on stdout)")
     pl.add_argument("--changed", nargs="*", default=[], help="Changed files, repo-relative")
     pl.add_argument("--all", action="store_true", help="Select every CI config")
+    cp = sub.add_parser("compare", help="Write a side-by-side README with charts from all reports")
+    cp.add_argument("reports_dir", nargs="?", default="reports")
     args = parser.parse_args(argv)
+
+    if args.command == "compare":
+        from ocr_eval.compare import build
+
+        print(build(args.reports_dir))
+        return 0
 
     if args.command == "plan":
         from pathlib import Path

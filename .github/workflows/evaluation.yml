@@ -220,6 +220,21 @@ jobs:
           cp -r "$dir"/. "evaluation/reports/$name/"
         done
 
+    - name: Set up uv
+      uses: astral-sh/setup-uv@37802adc94f370d6bfd71619e3f0bf239e1f3b78  # v7.6.0
+      with:
+        python-version: "3.13"
+        enable-cache: true
+        cache-dependency-glob: evaluation/uv.lock
+
+    - name: Build the models comparison
+      working-directory: evaluation
+      run: |
+        # Tables and charts across every model's reports (reports/README.md, reports/charts/).
+        # Deterministic: with unchanged reports it rewrites identical files, hence no diff.
+        uv sync --frozen
+        uv run ocr-eval compare reports
+
     - name: Check whether the reports changed
       id: changes
       run: |

@@ -116,10 +116,24 @@ image-size bucket. p99 is only meaningful with ~1000 samples; FUNSD's test split
 | `type` | Config | Needs |
 |---|---|---|
 | `api` | `ocr_example.yaml` | a running API (`OCR_API_URL`, `OCR_API_KEY`); never cached |
-| `paddleocr_onnx` | `paddleocr_v6_tiny_onnx.yaml` | `uv sync --extra paddle` |
+| `paddleocr_onnx` | `paddleocr_v6_{tiny,small,medium}_onnx.yaml`, `paddleocr_v5_{mobile,server}_onnx.yaml`, `paddleocr_v5_latin_onnx.yaml` (v5 detector + Latin recognizer, covers French) | `uv sync --extra paddle` |
 | `tesseract` | `tesseract_fra.yaml` | `uv sync --extra tesseract` + `apt install tesseract-ocr tesseract-ocr-fra` |
 
 Tesseract has no single multilingual model: languages are combined, `lang: fra+eng`. It is run
 single-threaded (`threads: 1`) for reproducible scores and comparable timings. `psm: 3` (auto page
 layout) suits forms and PDF pages; on RIMES' single lines `psm: 7` only moves CER from 0.63 to 0.62
 (30 samples), so the poor RIMES score is Tesseract on handwriting, not a segmentation setting.
+
+## Comparing models
+
+```bash
+uv run ocr-eval compare reports        # or reports_local
+```
+
+Reads every `<model>/<dataset>/report.json` under the folder and writes `README.md` there, with
+one table per dataset (CER, WER, mean / p50 / p90 / p95 / p99 latency, s/MP, energy per sample)
+and charts in `charts/` (error rates, latency percentiles, energy, CER against time), each as a
+light and a dark SVG. It is a comparison only: models are listed alphabetically, nothing is
+ranked or concluded. Models are rows rather than colors, so adding a model never recolors the
+others. CI runs it after the evaluations, and since the output is deterministic an unchanged set
+of reports produces no diff.
