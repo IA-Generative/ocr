@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+# Reports are versioned (CI opens a PR when they change); per-sample dumps are not.
+reports/**/samples.jsonl
+reports_local/

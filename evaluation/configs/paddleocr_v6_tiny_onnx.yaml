@@ -1,0 +1,39 @@
+# PP-OCRv6 tiny (det + rec) on onnxruntime, up to 1000 samples per dataset so that the latency
+# percentiles (p90 / p95 / p99) mean something. CI runs this file; locally:
+#   uv sync --extra paddle
+#   uv run ocr-eval run configs/paddleocr_v6_tiny_onnx.yaml --max-samples 20
+name: paddleocr-v6-tiny-onnx
+task: ocr
+ci: true                           # run by .github/workflows/evaluation.yml
+
+model:
+  type: paddleocr_onnx
+  det_model: PP-OCRv6_tiny_det
+  rec_model: PP-OCRv6_tiny_rec
+  device: cpu
+
+datasets:
+  - name: nielsr/funsd-layoutlmv3
+    adapter: funsd
+    split: test
+    max_samples: 1000                # the test split only has 50 documents: capped there
+  - name: Teklia/RIMES-2011-line
+    adapter: rimes
+    split: validation                # 1138 lines (test has 778, below 1000)
+    max_samples: 1000
+  - name: lightonai/fc-amf-ocr       # financial filings (PDF); reference = docTR output, not human
+    adapter: fc_amf
+    split: train
+    streaming: true                  # 440 GB: never downloaded in full
+    shuffle_buffer: 50
+    pages_per_document: 1
+    max_samples: 1000                # pages
+
+# No thresholds yet: this run is the baseline to set them from.
+
+profiling:
+  codecarbon: true
+  country_iso_code: FRA
+
+hardware:
+  label: null

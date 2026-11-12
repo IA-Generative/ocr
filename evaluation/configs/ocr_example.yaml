@@ -1,0 +1,43 @@
+# Example evaluation run: `uv run ocr-eval run configs/ocr_example.yaml`
+name: ocr-funsd-smoke
+task: ocr
+
+# Where the model runs. `type: api` = the deployed API (OCR_API_URL / OCR_API_KEY override
+# base_url / api_key). A local model registers its own type and takes its own params here.
+model:
+  type: api
+  base_url: http://localhost:5000
+  timeout: 60
+  max_wait_time: 300
+
+# One report per dataset: reports/<name>/<dataset>__<split>.json (+ index.json).
+datasets:
+  - name: nielsr/funsd-layoutlmv3    # forms: words + boxes
+    adapter: funsd                   # schema normalizer, see src/ocr_eval/dataset/
+    split: test
+    max_samples: 20                  # keep small for CI smoke runs
+  - name: Teklia/RIMES-2011-line     # handwritten French lines: image + text
+    adapter: rimes
+    split: test
+    max_samples: 50
+    # optional per-dataset override of the global `thresholds`
+    thresholds:
+      cer_max: 0.40
+      wer_max: 0.70
+
+# The run exits non-zero if a metric is on the wrong side of its threshold.
+thresholds:
+  cer_max: 0.30
+  wer_max: 0.50
+
+# Inference time vs image size is always recorded; codecarbon adds energy / CO2 per sample.
+# It measures the machine running ocr-eval (the model itself for local models, only the
+# client for the API backend).
+profiling:
+  codecarbon: true
+  country_iso_code: FRA
+
+# Hardware of the machine running ocr-eval (CPU, RAM, GPU, OS...) is recorded automatically.
+# For `type: api` that is only the client, so describe the server here.
+hardware:
+  label: null   # e.g. "api server: 1x A100, 32 vCPU"
