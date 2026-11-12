@@ -1,0 +1,163 @@
+{
+  "name": "paddleocr-v5-latin-onnx",
+  "created_at": "2026-11-12T14:51:32+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv5_mobile_det",
+    "rec_model": "latin_PP-OCRv5_mobile_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "lightonai/fc-amf-ocr",
+    "config": null,
+    "split": "train",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": true,
+    "shuffle_buffer": 50,
+    "pages_per_document": 1,
+    "adapter": "fc_amf",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 3027.77,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.7092444875172835,
+    "wer": 0.39211514799241864
+  },
+  "profiling": {
+    "inference_s_mean": 2.8585820576760033,
+    "inference_s_p50": 2.754908826000019,
+    "inference_s_p90": 4.487693146699985,
+    "inference_s_p95": 5.556319271550046,
+    "inference_s_p99": 7.226536164380254,
+    "inference_s_max": 13.208182898000132,
+    "s_per_megapixel": 1.425922743365041,
+    "energy_kwh_total": 0.017839269470772866,
+    "energy_kwh_mean": 1.7839269470772864e-05,
+    "emissions_kg_samples": 0.0009996948218726413,
+    "by_image_size": {
+      "1-4MP": {
+        "n": 998,
+        "inference_s_mean": 2.845678971634272,
+        "inference_s_p95": 5.488934473950013
+      },
+      ">=4MP": {
+        "n": 2,
+        "inference_s_mean": 9.2972219924998,
+        "inference_s_p95": 9.865433610749623
+      }
+    },
+    "emissions_kg_total": 0.0010223367922325601
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "9a00061b7428cbac48f56bb6ef2c85c80e5b26051d1e6ccdea653ebe40c6528d",
+  "dataset_revision": "036bd28ba275c0b11068ccc7620fa1ca1de224cd",
+  "worst_samples": [
+    {
+      "id": "163_2013_07_FC163033748_20130731#p0",
+      "reference": "a",
+      "prediction": "KPMG Rapport des commissaires aux comptes sur les comptes consolidés Richel Serres de France S.A. France 13269 Marseille Cedex 8 480 avenue du Prado KPMG AUDIT SUD-EST Ce rapport contient 24 pages Richel Serres de France S.A. Exercice clos le 31 mars 2013 13810 Eygalières Quartier de la Gare 13006 Marseille 167 rue Paradis Philippe Moumas",
+      "cer": 339.0,
+      "wer": 56.0,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 0.6679918099999895,
+        "energy_kwh": 3.960425676359297e-06,
+        "emissions_kg": 2.2193829447749846e-07
+      }
+    },
+    {
+      "id": "163_2013_07_FC163033753_20130731#p2",
+      "reference": "2 3 € e 3 3",
+      "prediction": "3 2 PohEn Exercice clos le 31 mars 2013 Associé John Evans les documents adressés aux actionnaires sur la situation financière et les comptes annuels. annuels des informations données dans le rapport de gestion du Conseil d’administration et dans Nous n'avons pas d'observation à formuler sur la sincérité et la concordance avec les comptes en France, aux vérifications spécifiques prévues par la loi. Nous avons également procédé, conformément aux normes d’exercice professionnel applicables Vérifications et informations spécifiques dans la première partie de ce rapport. annuels, pris dans leur ensemble, et ont donc contribué à la formation de notre opinion exprimée Les appréciations ainsi portées s’inscrivent dans le cadre de notre démarche d’audit des comptes application. informations fournies dans l’annexe des comptes et nous nous sommes assurés de leur correcte avons vérifié le caractère approprié des méthodes comptables visées ci-dessus et des à l’évaluation et à la valorisation des stocks et en-cours de production. La note « Stocks » de l’annexe des comptes expose les règles et méthodes comptables relatives justification de nos appréciations, nous portons à votre connaissance les éléments suivants. En application des dispositions de l’article L.823-9 du Code de commerce relatives à la Justification des appréciations KPMG KPMG Audit Sud-Est Actionnaire Julien Jouve N. Les commissaires aux comptes Marseille, le 31 juillet 2013 Philippe Moumas Rapport des commissaires aux comptes Richel Serres de France S.A. sur les comptes annuels 31 juillet 2013 3",
+      "cer": 142.1818181818182,
+      "wer": 38.833333333333336,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 1.9771635580000293,
+        "energy_kwh": 1.2421460357396174e-05,
+        "emissions_kg": 6.960862169681298e-07
+      }
+    },
+    {
+      "id": "pdf_323_2022_07_FC323453717_20220729#p0",
+      "reference": "a € a (D D a - & 8 - E E o a a P 1 1 : 8 e N co 8 9 S 5 N 00 8 2 : 5 N a W S - E 2 8 B d K N C 8 a : 5 8 3 3 a  3 3 8  N - & 0 8 W - a B B M B a 8 E 3 2 9 1 a E € - o 8 8 0 0 3 B 3 3 3 2 8 8 S D 8 & 0 9 8 8 1 8 o 8 a 8 E E S a € S 8 S S I à",
+      "prediction": "les \" résultats avant amortissements et provisions \" sont obérés des moins-values liées à l'apurement des titres des sociétés ayant cessé leur activité. Ces moins-values sont couvertes par de reprises de provisions à due concurrence. sociales, etc...) c) Montant des sommes versés au titre des avantages sociaux (sécurité sociale, œuvre b) Montant de la masse safariale a) effectif moyen des salariés pendant l'exercice. IV - Personnel c) Dividendes distribués à chaque action. b) Résultat après impôt, participation des salariés et dotation aux amortissements et p a) Résultat après impot, participation des salariés et avant dotation aux amortissemer III - Résultat par action e) Résultat après impot, participation des salariés et dotation aux amortissements et p d) Participation des salariés due au titre de l'exercice c) Impots sur les bénéfices b) Résultat avant impot, participation des salariés et dotation aux amortissements et p a) Chiffre d'affaires hors taxes II - Opérations et résuitats de l'exercice b) nombre d'actions ordinaires existantes a) Capital social I - capital en fin d'exercice Nature des indications 2017 / 2018 1 446 356 1 965 734 2 301 744 8 631 542 160 522 471 318 0,3879 892 851 0,628 2 2018 / 2019 (679 432) 1 791 264 2 301 744 8 631 542 164 103 470 622 0,1353 (0,295) 311 463 24 O 2019 / 2020 (294 227) (489 417) 2 284 308 2 301 744 8 631 542 155 693 480 268 (0,1278) (0,213) 2 O 2020 / 2021 (465 958) 2 176 065 2 301 744 8 631 542 121 921 401 921 (0,0333) (0,202) (76 539) 2 O 2021 / 2022 (277 248) (935 388) 1 889 918 2 301 744 8 631 542 133 408 401 119 (0,1205) (0,406)  *",
+      "cer": 6.0210084033613445,
+      "wer": 2.347457627118644,
+      "profile": {
+        "width": 1191,
+        "height": 1685,
+        "megapixels": 2.006835,
+        "inference_s": 2.231657734000237,
+        "energy_kwh": 1.3014686995754116e-05,
+        "emissions_kg": 7.293300445550396e-07
+      }
+    },
+    {
+      "id": "pdf_323_2021_09_FC323400553_20210908#p0",
+      "reference": "a A a L L DLDDDIDDI a X L D D E a 00 L. D &00 0 D0 800 0 D - 9 D D e00 800 800 Q00 000 000 800 800 900 MDD 0D N0D 500 00 00D e00 800 800 00 w00 00 00 400 00 +00 #00 80D 800 $00 000 00 800 800 ?00 NDD Non 8on 8on Son 1 D - 11 D D a D D Bs D D 4 D 2 € 9 € 2 a 8 3 2 8 S a $ 5 5 $ 8 y of dy B la",
+      "prediction": "ct a te too h de cb pue e ss  so  p s uode co - uro he se ne cub te c 'uodd s s ne e  mo po eo uode,   tum prem mee i te r tmden on Teeeroteet ueeepee. T    e se te Jt e e : eer e  r te    t  A I RAR R  A I M oodo  Jo    u 'r ne r  aoe danum  dd sere teen on ero a tn e eeone tn tiieretn eere  te se cr t ar e e t p  e k t e p   so u e   oe t   a tarle  to eeeemorlesoe coco   e d :  F D ( e  : E    s  tua se sea e s e : se  ce se et dann d ru t : tee - e ne se see s e u b eo d d r t : to ae ee Sae tue ooeee ad aoe  sn  ren e s te em a cn er   e ede d t  e   te de   d     ee de en  e fe   e    e  enee   e te e te e    te    se e s cee   te e  e  o  te d  ae   p e pe s oe t  p p pe p s  . wb d jo de - dd r os mma reerete Aess coed gerrr t -t Soros Wneis do Jrs □ RO C R NGONI  H KR Fr G MO TEEEAE CANTRR ss c sstp  snbirs spnp guhe St drrer ss  e 0 dqeds 8 n SI oTZI e os ne c (e eee  MENNR Stee  e o soo a ee a eoo com e uod cou soo r o co C od e  odd e se go don yn bupes B □ □ □ D □ □ □ F □ □ □ H □ □ □ K □ □ □ 0 □ Se so ses s o uuodseen eud ues Aq oo de e ene  'um e e pesood ee sose me de seme e u A □sedino oN / uoN □sqs o seino ON / UON □sqs E seno oN / uoN □sqs G se rs ON / uoN □sqs o sass ON / UON sqs eooe t  tao ce  a  d  d e c  a a  o te poe soo e o   e  oo ne o  sr  \" Je or so  to  s e 'o  e c pe eo d o coe   c se no su soo e slo da o e e   soo pu ca oo  n 0 □ □ 2 □ □ 3 □ □  □ □ 8 □ □ 9  □ A □ □ 68 □ □ 68 □ □ 6t □ □ PP GOOTOOOOO  GOS 8 □ 28 □ □  e a e   e a ae  e e   o om ce J od o c 'eno m c  ( n o ne o] o  - ∞ □ □  □ 88 □ B □ □  S 0l g 8 e d e o  □ □ 2 □ 3 □ L Zt □ □ Sstot so u ot : eo tt  e  e o □ 28 □ L 9t □ □ □ 91 □ □ 98 □ □ :p  e d cer a en c ce ad a de sooocon ce dan tu paan le m ce pena a craren a o 5 □ □ GL □ C □  3 □ G □ □ 2750/60/20 □ □ □ □ C □ □ tt 4 tl 64 □ □ on cn ron  SS S LL 82 8 ( Se e - ( oee ce  3 □ □ E1 □ □ □ π EE □ π EA □ □ 2 □ □ □ □ 2 □ □ 83 □ ε z □ □ on wo ee / /sse  ep - TARS0 ed e c n e ON / UON □'sqs < ON / uoN □'sqs 2z ON / UoN 'sqs 3 ON / uoN 'sqs Lt ON / uoN □'sqs de    eue  RSSSS o",
+      "cer": 5.9965753424657535,
+      "wer": 6.336633663366337,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 6.953367030000209,
+        "energy_kwh": 4.1170972421041355e-05,
+        "emissions_kg": 2.3071801235027053e-06
+      }
+    },
+    {
+      "id": "pdf_182_2022_04_FC182442254_20220428#p217",
+      "reference": "o o o o o o o o 0 o o O O o & d8 4 o o o a de & a 0 o o o b de  9 Bs o o o e 6 8 6 8 o 4 2 o o 6 Z 218",
+      "prediction": "enue,punn suuop) (sesns G6000 609 ZLz 8 9 6 o O o o O o 88 8 e ROLOO ROLLO ROLL0 ROLL0 RLL00 R0000 RLL0 R00 R0000 R00 R0O0 R0000 eo] + 8 0l C0000 o C6000 o o G0000 ∞ O O C0000 7 O o o G6000 Wumddoknp p uu o O o o o W rou s suaa da soon roms s G0070 5 o o o o o C0000 4 o 8 8 4 o 1 C0000 3 o o a 3 8 2 8 00000 2 O o o 5 S 4 3 8 CC0 o o 220 22Z 969  8E3 909 o C0000 996 Z 100 0 890 05 69800 £80 6 L99 8 o o o o O ROLOO ROLLO AOL0 ROLL0 R6LL0 R0000 ROLO R000 R000 R00 R0O0 Senrepns Ann 6-N 8-N Z-N 9-N 9-N t-N ε-N Z-N l-N Z 218",
+      "cer": 4.316831683168317,
+      "wer": 2.4583333333333335,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 2.844709797000178,
+        "energy_kwh": 1.4985787860067462e-05,
+        "emissions_kg": 8.397885658903035e-07
+      }
+    }
+  ]
+}

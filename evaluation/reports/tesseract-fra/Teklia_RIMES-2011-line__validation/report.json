@@ -1,0 +1,159 @@
+{
+  "name": "tesseract-fra",
+  "created_at": "2026-11-12T14:00:12+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "tesseract",
+    "lang": "fra",
+    "psm": 3,
+    "oem": 1,
+    "threads": 1
+  },
+  "dataset": {
+    "name": "Teklia/RIMES-2011-line",
+    "config": null,
+    "split": "validation",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": false,
+    "shuffle_buffer": 100,
+    "pages_per_document": 1,
+    "adapter": "rimes",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 125.62,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 9V74 80-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.636513573388669,
+    "wer": 1.1874058657029245
+  },
+  "profiling": {
+    "inference_s_mean": 0.11999178359699973,
+    "inference_s_p50": 0.12150468700000516,
+    "inference_s_p90": 0.15286503820000236,
+    "inference_s_p95": 0.16361691839997689,
+    "inference_s_p99": 0.1842593349800043,
+    "inference_s_max": 0.23148426199998084,
+    "s_per_megapixel": 0.5627716853639089,
+    "energy_kwh_total": 0.0003954334364926319,
+    "energy_kwh_mean": 3.954334364926319e-07,
+    "emissions_kg_samples": 2.2159694347610613e-05,
+    "by_image_size": {
+      "<1MP": {
+        "n": 1000,
+        "inference_s_mean": 0.11999178359699973,
+        "inference_s_p95": 0.16361691839997689
+      }
+    },
+    "emissions_kg_total": 2.2702338033064018e-05
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "81734b015b89cf4476dd39b2df3d70d72ae8bc24ed62d9907329656855d3d285",
+  "dataset_revision": "ba3e6b5573094208b30a134e32d9b65dab18e74e",
+  "worst_samples": [
+    {
+      "id": "685",
+      "reference": "quelques mois ?",
+      "prediction": "vb dnle + pourtg-amue ma Ja ee Ale ailure à all que 4 âme nue A y à",
+      "cer": 3.8666666666666667,
+      "wer": 6.0,
+      "profile": {
+        "width": 2455,
+        "height": 128,
+        "megapixels": 0.31424,
+        "inference_s": 0.15886328999999932,
+        "energy_kwh": 5.224719567013467e-07,
+        "emissions_kg": 2.9278805981586633e-08
+      }
+    },
+    {
+      "id": "374",
+      "reference": "DISTINGUEES.",
+      "prediction": "Aeeors , VLEXPAESIN DE des lauTAnsns DSTIVGUEES",
+      "cer": 3.25,
+      "wer": 7.0,
+      "profile": {
+        "width": 2355,
+        "height": 128,
+        "megapixels": 0.30144,
+        "inference_s": 0.14167671399999904,
+        "energy_kwh": 4.659905944652098e-07,
+        "emissions_kg": 2.6113646923236483e-08
+      }
+    },
+    {
+      "id": "676",
+      "reference": "Madame, Monsieur, en l'assurance",
+      "prediction": "or 2'odhmt de AO SRE de aome que de Pont, Plgaunn, Mars, on À ammense",
+      "cer": 1.65625,
+      "wer": 3.75,
+      "profile": {
+        "width": 2855,
+        "height": 128,
+        "megapixels": 0.36544,
+        "inference_s": 0.16704765299999735,
+        "energy_kwh": 5.471001391786807e-07,
+        "emissions_kg": 3.065894469943546e-08
+      }
+    },
+    {
+      "id": "62",
+      "reference": "25430 Sancey Le Long",
+      "prediction": "LL nc AE SE dé CR, js PR. à 2s 430 Sancey Re Feng",
+      "cer": 1.65,
+      "wer": 3.25,
+      "profile": {
+        "width": 799,
+        "height": 128,
+        "megapixels": 0.102272,
+        "inference_s": 0.14523998500000346,
+        "energy_kwh": 4.786544435956948e-07,
+        "emissions_kg": 2.6823316364659313e-08
+      }
+    },
+    {
+      "id": "95",
+      "reference": "mariée depuis le 10/12/2006.",
+      "prediction": "rs à Le } JAL| 25,6. ARE RE ox ds À} | |",
+      "cer": 1.25,
+      "wer": 3.0,
+      "profile": {
+        "width": 1107,
+        "height": 128,
+        "megapixels": 0.141696,
+        "inference_s": 0.11831585000000189,
+        "energy_kwh": 3.897600871400643e-07,
+        "emissions_kg": 2.1841765523242042e-08
+      }
+    }
+  ]
+}

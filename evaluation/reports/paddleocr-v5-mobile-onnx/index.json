@@ -1,0 +1,32 @@
+[
+  {
+    "dataset": "nielsr_funsd-layoutlmv3__test",
+    "created_at": "2026-11-12T13:59:08+00:00",
+    "passed": true,
+    "n_evaluated": 50,
+    "summary": {
+      "cer": 0.41604964573173264,
+      "wer": 0.6167479592140032
+    }
+  },
+  {
+    "dataset": "Teklia_RIMES-2011-line__validation",
+    "created_at": "2026-11-12T14:02:08+00:00",
+    "passed": true,
+    "n_evaluated": 1000,
+    "summary": {
+      "cer": 0.5027962448497236,
+      "wer": 0.908674515680398
+    }
+  },
+  {
+    "dataset": "lightonai_fc-amf-ocr__train",
+    "created_at": "2026-11-12T15:06:06+00:00",
+    "passed": true,
+    "n_evaluated": 1000,
+    "summary": {
+      "cer": 0.7077741759876189,
+      "wer": 0.3929081114968662
+    }
+  }
+]

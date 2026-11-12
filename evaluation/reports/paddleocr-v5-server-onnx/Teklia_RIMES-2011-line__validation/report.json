@@ -1,0 +1,158 @@
+{
+  "name": "paddleocr-v5-server-onnx",
+  "created_at": "2026-11-12T14:22:21+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv5_server_det",
+    "rec_model": "PP-OCRv5_server_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "Teklia/RIMES-2011-line",
+    "config": null,
+    "split": "validation",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": false,
+    "shuffle_buffer": 100,
+    "pages_per_document": 1,
+    "adapter": "rimes",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 1018.21,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.45081596411531055,
+    "wer": 0.8601884377060848
+  },
+  "profiling": {
+    "inference_s_mean": 1.0094577144469985,
+    "inference_s_p50": 0.9681055135000065,
+    "inference_s_p90": 1.5267346453001893,
+    "inference_s_p95": 1.7268108469499737,
+    "inference_s_p99": 2.14028605231995,
+    "inference_s_max": 2.8915720970001075,
+    "s_per_megapixel": 4.734442661265195,
+    "energy_kwh_total": 0.08120956066566469,
+    "energy_kwh_mean": 8.120956066566468e-05,
+    "emissions_kg_samples": 0.004550902570143185,
+    "by_image_size": {
+      "<1MP": {
+        "n": 1000,
+        "inference_s_mean": 1.0094577144469985,
+        "inference_s_p95": 1.7268108469499737
+      }
+    },
+    "emissions_kg_total": 0.004553313658590745
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "f8e6ce9053c44d06ba5098aa564a1fdf65aa02b1434d3b4e221a89e02d1d11a3",
+  "dataset_revision": "ba3e6b5573094208b30a134e32d9b65dab18e74e",
+  "worst_samples": [
+    {
+      "id": "374",
+      "reference": "DISTINGUEES.",
+      "prediction": "AESIEORS, UEXPRESSISN DE HES SAWTATIONS DSTiNGUEES",
+      "cer": 3.3333333333333335,
+      "wer": 6.0,
+      "profile": {
+        "width": 2355,
+        "height": 128,
+        "megapixels": 0.30144,
+        "inference_s": 1.3621529429999555,
+        "energy_kwh": 0.00010975980781944075,
+        "emissions_kg": 6.150829870393663e-06
+      }
+    },
+    {
+      "id": "893",
+      "reference": "agréer l'expression de mes sentiments distingués.",
+      "prediction": "ax semes tidn pour ts Ainte a dommet,e afreer I expurion she ues tentimeut distiniln",
+      "cer": 1.163265306122449,
+      "wer": 2.5,
+      "profile": {
+        "width": 1091,
+        "height": 128,
+        "megapixels": 0.139648,
+        "inference_s": 0.8979963740000585,
+        "energy_kwh": 7.238285239997977e-05,
+        "emissions_kg": 4.056262665642386e-06
+      }
+    },
+    {
+      "id": "15",
+      "reference": "Dans l'attente de votre offre, je vous prie de croire,",
+      "prediction": "nappll qul Concidig abrs un rabais de 30 au l abomnement dn an. vous me Je vous",
+      "cer": 1.1111111111111112,
+      "wer": 1.5,
+      "profile": {
+        "width": 2716,
+        "height": 128,
+        "megapixels": 0.347648,
+        "inference_s": 2.2002984620000916,
+        "energy_kwh": 0.00017727918675833798,
+        "emissions_kg": 9.93454834675051e-06
+      }
+    },
+    {
+      "id": "23",
+      "reference": "Je souhaite vivement obtenir un rendez-vous avec un de vos conseillers pour",
+      "prediction": "",
+      "cer": 1.0,
+      "wer": 1.0,
+      "profile": {
+        "width": 2488,
+        "height": 128,
+        "megapixels": 0.318464,
+        "inference_s": 0.9126960050000434,
+        "energy_kwh": 7.355547196389364e-05,
+        "emissions_kg": 4.121975093384641e-06
+      }
+    },
+    {
+      "id": "99",
+      "reference": "21 rue Victor Hugo",
+      "prediction": "",
+      "cer": 1.0,
+      "wer": 1.0,
+      "profile": {
+        "width": 857,
+        "height": 128,
+        "megapixels": 0.109696,
+        "inference_s": 0.3665254920000507,
+        "energy_kwh": 2.9557321108330398e-05,
+        "emissions_kg": 1.6563627175897409e-06
+      }
+    }
+  ]
+}

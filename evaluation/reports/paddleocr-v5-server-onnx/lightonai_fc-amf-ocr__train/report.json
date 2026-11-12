@@ -1,0 +1,163 @@
+{
+  "name": "paddleocr-v5-server-onnx",
+  "created_at": "2026-11-12T19:49:20+00:00",
+  "task": "ocr",
+  "model": {
+    "type": "paddleocr_onnx",
+    "det_model": "PP-OCRv5_server_det",
+    "rec_model": "PP-OCRv5_server_rec",
+    "device": "cpu"
+  },
+  "dataset": {
+    "name": "lightonai/fc-amf-ocr",
+    "config": null,
+    "split": "train",
+    "label": null,
+    "thresholds": null,
+    "max_samples": 1000,
+    "seed": 42,
+    "streaming": true,
+    "shuffle_buffer": 50,
+    "pages_per_document": 1,
+    "adapter": "fc_amf",
+    "image_column": "image",
+    "text_column": "text",
+    "bboxes_column": null,
+    "bbox_format": "xyxy",
+    "bbox_scale": "pixel"
+  },
+  "duration_s": 19619.35,
+  "n_evaluated": 1000,
+  "n_errors": 0,
+  "hardware": {
+    "label": "github-ubuntu-latest",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "cpu_cores_physical": 2,
+    "cpu_cores_logical": 4,
+    "ram_gb": 15.6,
+    "gpus": [],
+    "accelerator": "cpu",
+    "os": "Linux-7.0.0-1019-azure-x86_64-with-glibc2.43",
+    "python": "3.13.18",
+    "in_ci": true,
+    "in_container": false,
+    "libs": {
+      "torch": null,
+      "onnxruntime": "1.31.1",
+      "paddlepaddle": null,
+      "transformers": null,
+      "codecarbon": "3.3.2"
+    }
+  },
+  "summary": {
+    "cer": 0.6953244892787017,
+    "wer": 0.3810066904264424
+  },
+  "profiling": {
+    "inference_s_mean": 19.437837022829985,
+    "inference_s_p50": 19.16639723649996,
+    "inference_s_p90": 27.83029050139885,
+    "inference_s_p95": 31.279681468099657,
+    "inference_s_p99": 39.99413375783047,
+    "inference_s_max": 80.04215962499984,
+    "s_per_megapixel": 9.696014784060388,
+    "energy_kwh_total": 1.4894669679214763,
+    "energy_kwh_mean": 0.0014894669679214763,
+    "emissions_kg_samples": 0.08346823941535167,
+    "by_image_size": {
+      "1-4MP": {
+        "n": 998,
+        "inference_s_mean": 19.369647528479945,
+        "inference_s_p95": 31.18170838149995
+      },
+      ">=4MP": {
+        "n": 2,
+        "inference_s_mean": 53.46439470350083,
+        "inference_s_p95": 59.866632327951514
+      }
+    },
+    "emissions_kg_total": 0.0835562527193468
+  },
+  "failures": [],
+  "passed": true,
+  "errors": [],
+  "fingerprint": "cd1c0b85522836ba0757f2758b52b00c1af55cb4a1b2cd26e9e7f3ceaa042aff",
+  "dataset_revision": "036bd28ba275c0b11068ccc7620fa1ca1de224cd",
+  "worst_samples": [
+    {
+      "id": "163_2013_07_FC163033748_20130731#p0",
+      "reference": "a",
+      "prediction": "KPMG Rapport des commissaires aux comtes sur lescomptesconsolidés Richel Serres de France S.A. France 13269 Marseille Cedex 8 480 avenue du Prado KPMG AUDIT SUD-EST Ce rapport contient 24 pages Richel Serres de France S.A. Exercice clos le 3lmars 2013 13810 Eygalières Quartier de la Gare 13006 Marseille 167 rue Paradis PhilippeMoumas",
+      "cer": 334.0,
+      "wer": 52.0,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 8.326705676000074,
+        "energy_kwh": 0.0006399799695749608,
+        "emissions_kg": 3.586383751501103e-05
+      }
+    },
+    {
+      "id": "163_2013_07_FC163033753_20130731#p2",
+      "reference": "2 3 € e 3 3",
+      "prediction": "ω 2 Exercice closle3lmars2013 Associé John Evans les documentsadressésauxactionnairessurlasituationfinancièreetlescomptesannuels. annuelsdesinformationsdonnéesdanslerapportdegestionduConseildadministrationetdans Nous n'avons pas d'observationaformuler sur la sinceritéetlaconcordance avec lescomptes en France,auxvérifications spécifiques prévues par la loi. Nous avonsalementprocedeconormémentauxormesdexeciceproesionnelapplicables Vérifications et informations spécifiques dans la première partie de ce rapport. annuels,prisdansleurensemble,etontdonccontribuélaformationdenotreopinionexprime Les appreciationsainsiportéessinscriventdanslecadredenotre démarchedauditdescomptes application. informationsfourniesdanslannexedescomptesetnousnoussommesassuresdeleurcorrecte avons vérifiélecaractereappropriédesméthodescomptablesviséesci-dessusetdes Dans lecadredenotreappréciationdesprincipescomptablessuivisparvotresociété,nous a l'évaluationetlvalorisationdesstockseten-coursdeproduction. La noteStocksdelannexe descomptesexposelesrègleset méthodescomptablesrelatives justificationdenosapprécitionnousportonvotreconnaianceleslémentssuivants. EnapplicationdesdispositionsdelarticleL.823-9duCodedecommercerelativesala Justification des appréciations KPMG KPMG Audit Sud-Est Actionnaire Julien Jouve Marseille, le 31juillet2013 Les commissaires aux comptes Rapport des commissaires aux comptes Philippe Moumas Richel Serres de France S.A. sur les comptes annuels 4 31 juillet 2013 ω",
+      "cer": 133.36363636363637,
+      "wer": 15.666666666666666,
+      "profile": {
+        "width": 1684,
+        "height": 1190,
+        "megapixels": 2.00396,
+        "inference_s": 13.522089580000284,
+        "energy_kwh": 0.0010316804230802307,
+        "emissions_kg": 5.781433922899277e-05
+      }
+    },
+    {
+      "id": "pdf_323_2022_07_FC323453717_20220729#p0",
+      "reference": "a € a (D D a - & 8 - E E o a a P 1 1 : 8 e N co 8 9 S 5 N 00 8 2 : 5 N a W S - E 2 8 B d K N C 8 a : 5 8 3 3 a  3 3 8  N - & 0 8 W - a B B M B a 8 E 3 2 9 1 a E € - o 8 8 0 0 3 B 3 3 3 2 8 8 S D 8 & 0 9 8 8 1 8 o 8 a 8 E E S a € S 8 S S I à",
+      "prediction": "les\"resulttsavantamortissementetrovisionsontoberedemoinvluelielapuremetdettredeciteantcssleuractivit.Cesmoinvaluesontcouvrtesrdereriedeproviionduecocee. sociales, etc...) c) Montant des sommes verses au titre des avantages sociaux (sécurité sociale, cuvre b) Montant de la masse salariale a) effectif moyen des salariés pendant I'exercice. IV - Personnel c) Dividendes distribués a chaque action. b) Resultat apres impot, participation des salariés et dotation aux amortissements et a) Resultat apres impot, participation des salaries et avant dotation aux amortissemer III - Résultat par action e) Resultat apres impot,participation des salaries et dotation aux amortissements et p d) Participation des salariés due au titre de I'exercice c) Impots sur les bénefices b) Resultat avant impot,participation des salaries et dotation aux amortissements et a) Chiffre d'affaires hors taxes r - Opérations et résuitats de l'exercice b) nombre d'actions ordinaires existantes a) Capital social I -capital en fin d'exercice Nature des indications 2017/ 2018 1 446 356 1 965 734 2 301 744 8 631 542 160 522 471 318 0,3879 892 851 0,628 2 0 2018/ 2019 (679 432) 1 791 264 2 301 744 8 631 542 164 103 470 622 0,1353 (0,295) 311 463 2 0 2019/2020 (294 227) (489 417) 2 284 308 2 301 744 8 631 542 155 693 480 268 (0,1278) (0,213) 2 0 2020/2021 (465 958） 2 176 065 2 301 744 (0,0333) (76 539) 8 631 542 121 921 401 921 (0,202) 2 0 2021/2022 (0,1205) (277 248) (935 388) 1 889 918 2 301 744 8 631 542 133 408 401 119 (0,406) 2",
+      "cer": 5.617647058823529,
+      "wer": 1.9491525423728813,
+      "profile": {
+        "width": 1191,
+        "height": 1685,
+        "megapixels": 2.006835,
+        "inference_s": 16.140079798999068,
+        "energy_kwh": 0.001231039841031345,
+        "emissions_kg": 6.898624165155298e-05
+      }
+    },
+    {
+      "id": "pdf_323_2021_09_FC323400553_20210908#p0",
+      "reference": "a A a L L DLDDDIDDI a X L D D E a 00 L. D &00 0 D0 800 0 D - 9 D D e00 800 800 Q00 000 000 800 800 900 MDD 0D N0D 500 00 00D e00 800 800 00 w00 00 00 400 00 +00 #00 80D 800 $00 000 00 800 800 ?00 NDD Non 8on 8on Son 1 D - 11 D D a D D Bs D D 4 D 2 € 9 € 2 a 8 3 2 8 S a $ 5 5 $ 8 y of dy B la",
+      "prediction": "era crre rrc ra arcra rorcr TRR EETRTT eeee ree e eee e cee r 一 reeecre  e ee re o crnrar rr cror re c eee arreeeeerrrar crerrreeee eee aa araacrae eeerrrceeeeerereeerrrrcereeeeceecrece ( eee e e  e   e  e a eeceeeaeeeeceeceecerri ee  r re e  e er rrer e e  re   e rre ae e eere  e e ee ee e e  an eeee eere e rene e a ceerr   ee eee caee creee e i re  e re e  e eeeeee eeeiee ee seer r r eer t ceree  eee R    TRSRSTEEAEERE RIESTE ee  ee  e rree ere  RAREEETE re  re  e ree ee  e e  -  a ee e e SNELEEE e eeeeee eee eeieer e e □ ee r eee reaeer ce e ee r rreeerrr e e eeeee ia  ae    h o e  i B □ □ ■ - L □ □ H □ □  e eerre ee □S人/n □N/UON □S/n □N/uON S/n   A □/ □N/UON  . ■ ■ E □/ □ G 口 □N/uON □ s ON/UON St   sa eiree aer a e e eaerr errcaece c  ae      cereeeeeeere rearrr e crec ceee re e e ceear   ee e a  e ere ec  e 10口口 20 □ロ 30□口 4000 50口口 9□0 19口口 2900 390口 49□0 SRSETRTT TREE 8□□ 18口口 28口口 33口口 48□口  rr  rer e   e    700 1700 27□0 37口口 4700 r re re rer e rr rre eee e eeoreeeeeree 6 □□ 16口口 26□0 36口口 4600      a e e e are e e   creresecreeere  rr   e  r e  5 □□ 15口口 25口口 35口口 45口口 2510/0 4 □□ 24口口 34□口 4400 ee e r s     Ce eee ee -e ee ee 3 □□ 13 □□ 23□0 33□口 43□口 E  2 □□ 12口口 22□口 32口口 42口口  ede  a  1 □ 1 □ □ 21 □□ 31 □□ 4 □ □ uq , q  ON/uON Rt ON/uON t ON /uON Rt ON/UON st ON/UON SRt TARSE 口",
+      "cer": 3.7226027397260273,
+      "wer": 3.0594059405940595,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 35.529951487998915,
+        "energy_kwh": 0.0026833493038538325,
+        "emissions_kg": 0.0001503722116386677
+      }
+    },
+    {
+      "id": "pdf_182_2022_04_FC182442254_20220428#p217",
+      "reference": "o o o o o o o o 0 o o O O o & d8 4 o o o a de & a 0 o o o b de  9 Bs o o o e 6 8 6 8 o 4 2 o o 6 Z 218",
+      "prediction": "ee seope Teeeereeeee 10000 609 1128 156 O 0 0 0 0 0 1 3 82 A A100 A0OA 20000 20000 200 20 00 200 200 2S0 00  +80 2000 O 20000 6 O 20000 8 O 0 2000 7 O 0 O 000 eere e e 6 O 0 0 O  ceeee c e ee re eere re r 20 5 O O 0 O O 20 4 O 2 2 4 O 7 000 3 O O 27 34 20 24 8 2000 2 O 0 O 51 64 45 43 81 200 。 200 27 969 613 0 909 1 O 0 0000 996 3000 8900 69000 5806 L998 O O O O O  AA000 A0O0 0100 20100 000 200 0 020 20S 20 ceseeeee ee 6-N 8-N L-N 9-N 9- - 3- 2- L-N N 218",
+      "cer": 3.712871287128713,
+      "wer": 2.4166666666666665,
+      "profile": {
+        "width": 1191,
+        "height": 1684,
+        "megapixels": 2.005644,
+        "inference_s": 18.173038815999462,
+        "energy_kwh": 0.0013230902687895174,
+        "emissions_kg": 7.414465557269156e-05
+      }
+    }
+  ]
+}
